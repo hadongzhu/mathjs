@@ -66,7 +66,7 @@ expm1Number.signature = n1
  */
 export function gcdNumber (a, b) {
   if (!isInteger(a) || !isInteger(b)) {
-    throw new Error('Parameters in function gcd must be integer numbers')
+    throw new Error('函数 gcd 的参数必须为整数')
   }
 
   // https://en.wikipedia.org/wiki/Euclidean_algorithm
@@ -88,7 +88,7 @@ gcdNumber.signature = n2
  */
 export function lcmNumber (a, b) {
   if (!isInteger(a) || !isInteger(b)) {
-    throw new Error('Parameters in function lcm must be integer numbers')
+    throw new Error('函数 lcm 的参数必须为整数')
   }
 
   if (a === 0 || b === 0) {
@@ -178,10 +178,10 @@ export function nthRootNumber (a, root = 2) {
   }
 
   if (root === 0) {
-    throw new Error('Root must be non-zero')
+    throw new Error('根必须非零')
   }
   if (a < 0 && (Math.abs(root) % 2 !== 1)) {
-    throw new Error('Root must be odd when a is negative.')
+    throw new Error('当 a 为负数时，根必须为奇数。')
   }
 
   // edge cases zero and infinity
@@ -255,7 +255,7 @@ export function xgcdNumber (a, b) {
   let lasty = 0
 
   if (!isInteger(a) || !isInteger(b)) {
-    throw new Error('Parameters in function xgcd must be integer numbers')
+    throw new Error('函数 xgcd 的参数必须为整数')
   }
 
   while (b) {
@@ -311,7 +311,7 @@ powNumber.signature = n2
  */
 export function roundNumber (value, decimals = 0) {
   if (!isInteger(decimals) || decimals < 0 || decimals > 15) {
-    throw new Error('Number of decimals in function round must be an integer from 0 to 15 inclusive')
+    throw new Error('函数 round 中的小数位数必须为 0 到 15 之间的整数')
   }
   return parseFloat(toFixed(value, decimals))
 }

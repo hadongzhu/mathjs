@@ -82,7 +82,7 @@ export const createCompare = /* #__PURE__ */ factory(name, dependencies, ({ type
       },
 
       'Complex, Complex': function () {
-        throw new TypeError('No ordering relation is defined for complex numbers')
+        throw new TypeError('未定义复数排序关系')
       }
     },
     compareUnits,

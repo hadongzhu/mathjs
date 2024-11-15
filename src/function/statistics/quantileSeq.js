@@ -62,7 +62,7 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
     let probArr
     const dataArr = data.valueOf()
     if (smaller(probOrN, 0)) {
-      throw new Error('N/prob must be non-negative')
+      throw new Error('N/prob 必须为非负数')
     }
     if (smallerEq(probOrN, 1)) {
       // quantileSeq([a, b, c, d, ...], prob[,sorted])
@@ -73,13 +73,13 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
     if (larger(probOrN, 1)) {
       // quantileSeq([a, b, c, d, ...], N[,sorted])
       if (!isInteger(probOrN)) {
-        throw new Error('N must be a positive integer')
+        throw new Error('N 必须为正整数')
       }
 
       // largest possible Array length is 2^32-1
       // 2^32 < 10^15, thus safe conversion guaranteed
       if (larger(probOrN, 4294967295)) {
-        throw new Error('N must be less than or equal to 2^32-1, as that is the maximum length of an Array')
+        throw new Error('N 必须小于或等于 2^32-1，因为这是数组的最大长度')
       }
 
       const nPlusOne = add(probOrN, 1)
@@ -128,7 +128,7 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
     const flat = flatten(array)
     const len = flat.length
     if (len === 0) {
-      throw new Error('Cannot calculate quantile of an empty sequence')
+      throw new Error('无法计算空序列的分位数')
     }
 
     const index = isNumber(prob) ? prob * (len - 1) : prob.times(len - 1)

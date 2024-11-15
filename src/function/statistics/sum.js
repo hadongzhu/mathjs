@@ -40,7 +40,7 @@ export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     // sum(a, b, c, d, ...)
     '...': function (args) {
       if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function sum')
+        throw new TypeError('函数 sum 中应为标量')
       }
 
       return _sum(args)

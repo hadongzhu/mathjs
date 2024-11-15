@@ -18,7 +18,7 @@ export function compileInlineExpression (expression, math, scope) {
   })[0]
 
   if (!symbol) {
-    throw new Error('No undefined variable found in inline expression "' + expression + '"')
+    throw new Error('内联表达式 "' + expression + '" 中未找到未定义变量')
   }
 
   // create a test function for this equation

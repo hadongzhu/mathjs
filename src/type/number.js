@@ -35,7 +35,7 @@ function makeNumberFromNonDecimalParts (parts) {
   }
   const result = n + f
   if (isNaN(result)) {
-    throw new SyntaxError('String "' + parts.input + '" is not a valid number')
+    throw new SyntaxError('字符串 "' + parts.input + '" 不是有效数字')
   }
   return result
 }
@@ -91,14 +91,14 @@ export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed
       }
       let num = Number(x)
       if (isNaN(num)) {
-        throw new SyntaxError('String "' + x + '" is not a valid number')
+        throw new SyntaxError('字符串 "' + x + '" 不是有效数字')
       }
       if (wordSizeSuffixMatch) {
         // x is a signed bin, oct, or hex literal
         // num is the value of string x if x is interpreted as unsigned
         if (num > 2 ** size - 1) {
           // literal is too large for size suffix
-          throw new SyntaxError(`String "${x}" is out of range`)
+          throw new SyntaxError(`字符串 "${x}" 超出范围`)
         }
         // check if the bit at index size - 1 is set and if so do the twos complement
         if (num >= 2 ** (size - 1)) {

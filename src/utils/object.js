@@ -40,7 +40,7 @@ export function clone (x) {
     return mapObject(x, clone)
   }
 
-  throw new TypeError(`Cannot clone: unknown type of value (value: ${x})`)
+  throw new TypeError(`无法复制：未知类型的值 (值: ${x})`)
 }
 
 /**
@@ -85,7 +85,7 @@ export function extend (a, b) {
 export function deepExtend (a, b) {
   // TODO: add support for Arrays to deepExtend
   if (Array.isArray(b)) {
-    throw new TypeError('Arrays are not supported by deepExtend')
+    throw new TypeError('deepExtend 不支持数组')
   }
 
   for (const prop in b) {
@@ -102,7 +102,7 @@ export function deepExtend (a, b) {
           a[prop] = b[prop]
         }
       } else if (Array.isArray(b[prop])) {
-        throw new TypeError('Arrays are not supported by deepExtend')
+        throw new TypeError('deepExtend 不支持数组')
       } else {
         a[prop] = b[prop]
       }

@@ -45,7 +45,7 @@ export const createColumn = /* #__PURE__ */ factory(name, dependencies, ({ typed
   function _column (value, column) {
     // check dimensions
     if (value.size().length !== 2) {
-      throw new Error('Only two dimensional matrix is supported')
+      throw new Error('仅支持二维矩阵')
     }
 
     validateIndex(column, value.size()[1])

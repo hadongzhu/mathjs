@@ -116,16 +116,16 @@ function formatNumberToBase (n, base, size) {
   let suffix = ''
   if (size) {
     if (size < 1) {
-      throw new Error('size must be in greater than 0')
+      throw new Error('size 必须大于 0')
     }
     if (!isInteger(size)) {
-      throw new Error('size must be an integer')
+      throw new Error('size 必须为整数')
     }
     if (n > 2 ** (size - 1) - 1 || n < -(2 ** (size - 1))) {
-      throw new Error(`Value must be in range [-2^${size - 1}, 2^${size - 1}-1]`)
+      throw new Error(`值必须在 [-2^${size - 1}, 2^${size - 1}-1] 范围内`)
     }
     if (!isInteger(n)) {
-      throw new Error('Value must be an integer')
+      throw new Error('值必须为整数')
     }
     if (n < 0) {
       n = n + 2 ** size
@@ -271,8 +271,8 @@ export function format (value, options) {
         })
 
     default:
-      throw new Error('Unknown notation "' + notation + '". ' +
-        'Choose "auto", "exponential", "fixed", "bin", "oct", or "hex.')
+      throw new Error('未知的表示法 "' + notation + '"。' +
+      '请使用 "auto", "exponential", "fixed", "bin", "oct", 或 "hex')
   }
 }
 
@@ -298,13 +298,13 @@ export function normalizeFormatOptions (options) {
     } else if (isObject(options)) {
       if (options.precision !== undefined) {
         precision = _toNumberOrThrow(options.precision, () => {
-          throw new Error('Option "precision" must be a number or BigNumber')
+          throw new Error('选项 "precision（精度）" 必须为浮点数或大数')
         })
       }
 
       if (options.wordSize !== undefined) {
         wordSize = _toNumberOrThrow(options.wordSize, () => {
-          throw new Error('Option "wordSize" must be a number or BigNumber')
+          throw new Error('选项 "wordSize（字宽）" 必须为浮点数或大数')
         })
       }
 
@@ -312,7 +312,7 @@ export function normalizeFormatOptions (options) {
         notation = options.notation
       }
     } else {
-      throw new Error('Unsupported type of options, number, BigNumber, or object expected')
+      throw new Error('不支持的选项类型，应为浮点数、大数或对象')
     }
   }
 
@@ -329,7 +329,7 @@ export function splitNumber (value) {
   // parse the input value
   const match = String(value).toLowerCase().match(/^(-?)(\d+\.?\d*)(e([+-]?\d+))?$/)
   if (!match) {
-    throw new SyntaxError('Invalid number ' + value)
+    throw new SyntaxError('无效的浮点数 ' + value)
   }
 
   const sign = match[1]

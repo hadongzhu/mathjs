@@ -175,9 +175,9 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
 
         // note: conversion from number to BigNumber can fail if x has >15 digits
         if (digits(x) > 15) {
-          throw new TypeError('Cannot implicitly convert a number with >15 significant digits to BigNumber ' +
-            '(value: ' + x + '). ' +
-            'Use function bignumber(x) to convert to BigNumber.')
+          throw new TypeError('无法隐式将一个>15位的浮点数转换为大数' +
+          '(值: ' + x + '). ' +
+          '使用函数 bignumber(x) 转换为大数.')
         }
         return new BigNumber(x)
       }
@@ -205,8 +205,8 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       from: 'Fraction',
       to: 'BigNumber',
       convert: function (x) {
-        throw new TypeError('Cannot implicitly convert a Fraction to BigNumber or vice versa. ' +
-          'Use function bignumber(x) to convert to BigNumber or fraction(x) to convert to Fraction.')
+        throw new TypeError('无法将分数隐式转换为大数，反之亦然。' +
+        '使用函数 bignumber(x) 转换为大数或 fraction(x) 转换为分数.')
       }
     }, {
       from: 'Fraction',
@@ -228,9 +228,9 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
 
         const f = new Fraction(x)
         if (f.valueOf() !== x) {
-          throw new TypeError('Cannot implicitly convert a number to a Fraction when there will be a loss of precision ' +
-            '(value: ' + x + '). ' +
-            'Use function fraction(x) to convert to Fraction.')
+          throw new TypeError('当存在精度损失时，无法将一个数字隐式转换为分数' +
+          '(值: ' + x + '). ' +
+          '使用函数 fraction(x) 转换为分数.')
         }
         return f
       }
@@ -247,7 +247,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       convert: function (x) {
         const n = Number(x)
         if (isNaN(n)) {
-          throw new Error('Cannot convert "' + x + '" to a number')
+          throw new Error('无法将 "' + x + '" 转换为浮点数')
         }
         return n
       }
@@ -262,7 +262,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         try {
           return new BigNumber(x)
         } catch (err) {
-          throw new Error('Cannot convert "' + x + '" to BigNumber')
+          throw new Error('无法将 "' + x + '" 转换为大数')
         }
       }
     }, {
@@ -276,7 +276,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         try {
           return new Fraction(x)
         } catch (err) {
-          throw new Error('Cannot convert "' + x + '" to Fraction')
+          throw new Error('无法将 "' + x + '" 转换为分数')
         }
       }
     }, {
@@ -290,7 +290,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         try {
           return new Complex(x)
         } catch (err) {
-          throw new Error('Cannot convert "' + x + '" to Complex')
+          throw new Error('无法将 "' + x + '" 转换为复数')
         }
       }
     }, {
@@ -355,8 +355,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         // check if the function can be unary:
         signatures.some(sig => !sig.params.includes(','))) {
       const err = new TypeError(
-        `Function '${name}' doesn't apply to matrices. To call it ` +
-          `elementwise on a matrix 'M', try 'map(M, ${name})'.`)
+        `函数 '${name}' 不适用于矩阵。要对矩阵M逐元素调用函数，请使用 'map(M, ${name})'。`)
       err.data = usualError.data
       throw err
     }
@@ -374,8 +373,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
         // check if the function can be unary:
         signatures.some(sig => !sig.params.includes(','))) {
       const err = new TypeError(
-        `Function '${name}' doesn't apply to matrices. To call it ` +
-          `elementwise on a matrix 'M', try 'map(M, ${name})'.`)
+        `函数 '${name}' 不适用于矩阵。要对矩阵M逐元素调用函数，请使用 'map(M, ${name})'。`)
       err.data = usualError.data
       throw err
     }
@@ -386,17 +384,17 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
 })
 
 function throwNoBignumber (x) {
-  throw new Error(`Cannot convert value ${x} into a BigNumber: no class 'BigNumber' provided`)
+  throw new Error(`无法将值 ${x} 转换为大数：未启用大数`)
 }
 
 function throwNoComplex (x) {
-  throw new Error(`Cannot convert value ${x} into a Complex number: no class 'Complex' provided`)
+  throw new Error(`无法将值 ${x} 转换为复数：未启用复数`)
 }
 
 function throwNoMatrix () {
-  throw new Error('Cannot convert array into a Matrix: no class \'DenseMatrix\' provided')
+  throw new Error('无法将数组转换为矩阵：未启用矩阵')
 }
 
 function throwNoFraction (x) {
-  throw new Error(`Cannot convert value ${x} into a Fraction, no class 'Fraction' provided.`)
+  throw new Error(`无法将值 ${x} 转换为分数，未启用分数`)
 }

@@ -31,7 +31,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
    */
   function Index (ranges) {
     if (!(this instanceof Index)) {
-      throw new SyntaxError('Constructor must be called with the new operator')
+      throw new SyntaxError('构造函数必须使用 new 运算符调用')
     }
 
     this._dimensions = []
@@ -71,7 +71,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
         // object property (arguments.count should be 1)
         this._dimensions.push(arg)
       } else {
-        throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range')
+        throw new TypeError('维度必须为数组、矩阵、数字、字符串或范围')
       }
       this._sourceSize.push(sourceSize)
       // TODO: implement support for wildcard '*'
@@ -88,7 +88,7 @@ export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ I
     // loop array elements
     for (let i = 0, l = arg.length; i < l; i++) {
       if (typeof arg[i] !== 'number' || !isInteger(arg[i])) {
-        throw new TypeError('Index parameters must be positive integer numbers')
+        throw new TypeError('索引参数必须为正整数')
       }
     }
     // create matrix

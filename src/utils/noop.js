@@ -1,19 +1,19 @@
 export function noBignumber () {
-  throw new Error('No "bignumber" implementation available')
+  throw new Error('未启用大数')
 }
 
 export function noFraction () {
-  throw new Error('No "fraction" implementation available')
+  throw new Error('未启用分数')
 }
 
 export function noMatrix () {
-  throw new Error('No "matrix" implementation available')
+  throw new Error('未启用矩阵')
 }
 
 export function noIndex () {
-  throw new Error('No "index" implementation available')
+  throw new Error('未启用索引')
 }
 
 export function noSubset () {
-  throw new Error('No "matrix" implementation available')
+  throw new Error('未启用矩阵')
 }

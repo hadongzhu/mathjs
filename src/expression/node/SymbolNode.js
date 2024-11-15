@@ -106,7 +106,7 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
      * @param {string} name
      */
     static onUndefinedSymbol (name) {
-      throw new Error('Undefined symbol ' + name)
+      throw new Error('符号 ' + name + ' 未定义')
     }
 
     /**

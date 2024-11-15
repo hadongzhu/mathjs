@@ -62,9 +62,9 @@ export const createSlu = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
 
     'SparseMatrix, number, number': function (a, order, threshold) {
       // verify order
-      if (!isInteger(order) || order < 0 || order > 3) { throw new Error('Symbolic Ordering and Analysis order must be an integer number in the interval [0, 3]') }
+      if (!isInteger(order) || order < 0 || order > 3) { throw new Error('符号排序和分析顺序必须为 [0, 3] 中的整数') }
       // verify threshold
-      if (threshold < 0 || threshold > 1) { throw new Error('Partial pivoting threshold must be a number from 0 to 1') }
+      if (threshold < 0 || threshold > 1) { throw new Error('Partial pivoting 阈值必须为 0 到 1 之间的数字') }
 
       // perform symbolic ordering and analysis
       const s = csSqr(order, a, false)

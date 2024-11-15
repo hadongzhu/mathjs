@@ -33,9 +33,9 @@ export const createInvmod = /* #__PURE__ */ factory(name, dependencies, ({ typed
   })
 
   function invmod (a, b) {
-    if (!isInteger(a) || !isInteger(b)) throw new Error('Parameters in function invmod must be integer numbers')
+    if (!isInteger(a) || !isInteger(b)) throw new Error('函数 invmod 的参数必须为整数')
     a = mod(a, b)
-    if (equal(b, 0)) throw new Error('Divisor must be non zero')
+    if (equal(b, 0)) throw new Error('除数必须非零')
     let res = xgcd(a, b)
     res = res.valueOf()
     let [gcd, inv] = res

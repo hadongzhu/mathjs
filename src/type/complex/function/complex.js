@@ -86,7 +86,7 @@ export const createComplex = /* #__PURE__ */ factory(name, dependencies, ({ type
         return new Complex(x)
       }
 
-      throw new Error('Expected object with properties (re and im) or (r and phi) or (abs and arg)')
+      throw new Error('应为具有属性 (re 和 im) 或 (r 和 phi) 或 (abs 和 arg) 的对象')
     },
 
     'Array | Matrix': typed.referToSelf(self => x => deepMap(x, self))

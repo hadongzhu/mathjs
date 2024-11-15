@@ -113,7 +113,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       return new ConstantNode(n) // old parameters: (n.toString(), 'number')
     },
     Complex: function (s) {
-      throw new Error('Cannot convert Complex number to Node')
+      throw new Error('无法将复数转换为节点')
     },
     string: function (s) {
       return new ConstantNode(s)
@@ -472,7 +472,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
       case 'ConditionalNode':
         /* falls through */
       default:
-        throw new Error(`Unimplemented node type in simplifyConstant: ${node.type}`)
+        throw new Error(`在 simplifyConstant 中未实现的节点类型：${node.type}`)
     }
   }
 

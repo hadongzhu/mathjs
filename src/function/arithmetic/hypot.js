@@ -65,7 +65,7 @@ export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed,
 
     for (let i = 0; i < args.length; i++) {
       if (isComplex(args[i])) {
-        throw new TypeError('Unexpected type of argument to hypot')
+        throw new TypeError('函数 hypot 的参数类型错误')
       }
       const value = abs(args[i])
       if (smaller(largest, value)) {

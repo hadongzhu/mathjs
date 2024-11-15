@@ -56,7 +56,7 @@ export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
 
     Unit: typed.referToSelf(self => x => {
       if (!x._isDerived() && x.units[0].unit.offset !== 0) {
-        throw new TypeError('sign is ambiguous for units with offset')
+        throw new TypeError('带有偏移量的单位的符号不明确')
       }
       return typed.find(self, x.valueType())(x.value)
     })

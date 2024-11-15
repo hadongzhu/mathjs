@@ -53,7 +53,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
    */
   function complexErr () {
     throw new Error(
-      'Complex number not supported in function nthRoot. Use nthRoots instead.')
+        '函数 nthRoot 不支持复数。请使用 nthRoots。')
   }
 
   return typed(
@@ -82,7 +82,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
           return matAlgo06xS0S0(x, y, self)
         } else {
           // throw exception
-          throw new Error('Root must be non-zero')
+          throw new Error('根必须非零')
         }
       }),
 
@@ -93,7 +93,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
           return matAlgo01xDSid(x, y, self, false)
         } else {
           // throw exception
-          throw new Error('Root must be non-zero')
+          throw new Error('根必须非零')
         }
       }),
 
@@ -107,7 +107,7 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
           return matAlgo11xS0s(y, x, self, true)
         } else {
           // throw exception
-          throw new Error('Root must be non-zero')
+          throw new Error('根必须非零')
         }
       })
     },
@@ -138,10 +138,10 @@ export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ type
     }
 
     if (root.isZero()) {
-      throw new Error('Root must be non-zero')
+      throw new Error('根必须非零')
     }
     if (a.isNegative() && !root.abs().mod(2).equals(1)) {
-      throw new Error('Root must be odd when a is negative.')
+      throw new Error('当 a 为负数时，根必须为奇数。')
     }
 
     // edge cases zero and infinity

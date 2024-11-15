@@ -10,8 +10,8 @@ const dependencies = [
 
 export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ smaller, DenseMatrix }) => {
   function ImmutableDenseMatrix (data, datatype) {
-    if (!(this instanceof ImmutableDenseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
-    if (datatype && !isString(datatype)) { throw new Error('Invalid datatype: ' + datatype) }
+    if (!(this instanceof ImmutableDenseMatrix)) { throw new SyntaxError('构造函数必须使用 new 运算符调用') }
+    if (datatype && !isString(datatype)) { throw new Error('无效的数据类型：' + datatype) }
 
     if (isMatrix(data) || isArray(data)) {
       // use DenseMatrix implementation
@@ -31,7 +31,7 @@ export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dep
       this._max = typeof data.max !== 'undefined' ? data.max : null
     } else if (data) {
       // unsupported type
-      throw new TypeError('Unsupported type of data (' + typeOf(data) + ')')
+      throw new TypeError('不支持的数据类型 (' + typeOf(data) + ')')
     } else {
       // nothing provided
       this._data = []
@@ -83,10 +83,10 @@ export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dep
       // intentional fall through
       case 2:
       case 3:
-        throw new Error('Cannot invoke set subset on an Immutable Matrix instance')
+        throw new Error('无法在不可变矩阵实例上调用 set subset')
 
       default:
-        throw new SyntaxError('Wrong number of arguments')
+        throw new SyntaxError('参数数量错误')
     }
   }
 
@@ -100,7 +100,7 @@ export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dep
    * @return {ImmutableDenseMatrix} self
    */
   ImmutableDenseMatrix.prototype.set = function () {
-    throw new Error('Cannot invoke set on an Immutable Matrix instance')
+    throw new Error('无法在不可变矩阵实例上调用 set')
   }
 
   /**
@@ -116,7 +116,7 @@ export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dep
    * @return {Matrix}                 The resized matrix
    */
   ImmutableDenseMatrix.prototype.resize = function () {
-    throw new Error('Cannot invoke resize on an Immutable Matrix instance')
+    throw new Error('无法在不可变矩阵实例上调用 resize')
   }
 
   /**
@@ -125,7 +125,7 @@ export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dep
    * @throws {Error} Operation not allowed
    */
   ImmutableDenseMatrix.prototype.reshape = function () {
-    throw new Error('Cannot invoke reshape on an Immutable Matrix instance')
+    throw new Error('无法在不可变矩阵实例上调用 reshape')
   }
 
   /**
@@ -173,7 +173,7 @@ export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dep
    * @return {Matrix}        The matrix reference
    */
   ImmutableDenseMatrix.prototype.swapRows = function () {
-    throw new Error('Cannot invoke swapRows on an Immutable Matrix instance')
+    throw new Error('无法在不可变矩阵实例上调用 swapRows')
   }
 
   /**

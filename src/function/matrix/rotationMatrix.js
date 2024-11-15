@@ -120,7 +120,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
   function _validateVector (v) {
     const size = v.size()
     if (size.length < 1 || size[0] !== 3) {
-      throw new RangeError('Vector must be of dimensions 1x3')
+      throw new RangeError('向量必须为 1x3 维')
     }
   }
 
@@ -136,7 +136,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
       if (format === 'dense') {
         return new DenseMatrix(data)
       }
-      throw new TypeError(`Unknown matrix type "${format}"`)
+      throw new TypeError(`未知的矩阵类型 "${format}"`)
     }
     return data
   }
@@ -153,7 +153,7 @@ export const createRotationMatrix = /* #__PURE__ */ factory(name, dependencies, 
   function _rotationMatrix3x3 (theta, v, format) {
     const normV = norm(v)
     if (normV === 0) {
-      throw new RangeError('Rotation around zero vector')
+      throw new RangeError('绕零向量旋转')
     }
 
     const Big = isBigNumber(theta) ? BigNumber : null

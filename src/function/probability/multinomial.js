@@ -33,7 +33,7 @@ export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ 
 
       deepForEach(a, function (ai) {
         if (!isInteger(ai) || !isPositive(ai)) {
-          throw new TypeError('Positive integer value expected in function multinomial')
+          throw new TypeError('函数 multinomial 中应为正整数')
         }
         sum = add(sum, ai)
         denom = multiply(denom, factorial(ai))

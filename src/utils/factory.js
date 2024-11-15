@@ -137,8 +137,8 @@ export function assertDependencies (name, dependencies, scope) {
     const missingDependencies = dependencies.filter(dependency => scope[dependency] === undefined)
 
     // TODO: create a custom error class for this, a MathjsError or something like that
-    throw new Error(`Cannot create function "${name}", ` +
-      `some dependencies are missing: ${missingDependencies.map(d => `"${d}"`).join(', ')}.`)
+    throw new Error(`无法创建函数 "${name}"，` +
+    `缺少依赖项：${missingDependencies.map(d => `"${d}"`).join(', ')}`)
   }
 }
 

@@ -38,7 +38,7 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     // prod([a, b, c, d, ...], dim)
     'Array | Matrix, number | BigNumber': function (array, dim) {
       // TODO: implement prod(A, dim)
-      throw new Error('prod(A, dim) is not yet supported')
+      throw new Error('尚不支持 prod(A, dim)')
       // return reduce(arguments[0], arguments[1], math.prod)
     },
 
@@ -71,7 +71,7 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     }
 
     if (prod === undefined) {
-      throw new Error('Cannot calculate prod of an empty array')
+      throw new Error('无法计算空数组的乘积')
     }
 
     return prod

@@ -35,12 +35,12 @@ export const createAddScalar = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
     'Unit, Unit': typed.referToSelf(self => (x, y) => {
       if (x.value === null || x.value === undefined) {
-        throw new Error('Parameter x contains a unit with undefined value')
+        throw new Error('参数 x 包含一个未定义单位的值')
       }
       if (y.value === null || y.value === undefined) {
-        throw new Error('Parameter y contains a unit with undefined value')
+        throw new Error('参数 y 包含一个未定义单位的值')
       }
-      if (!x.equalBase(y)) throw new Error('Units do not match')
+      if (!x.equalBase(y)) throw new Error('单位不匹配')
 
       const res = x.clone()
       res.value =

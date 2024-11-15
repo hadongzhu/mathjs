@@ -113,7 +113,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
   function _broadcastReplacement (replacement, index) {
     if (typeof replacement === 'string') {
-      throw new Error('can\'t boradcast a string')
+      throw new Error('无法广播字符串')
     }
     if (index._isScalar) {
       return replacement
@@ -142,7 +142,7 @@ export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed
 function _getSubstring (str, index) {
   if (!isIndex(index)) {
     // TODO: better error message
-    throw new TypeError('Index expected')
+    throw new TypeError('应为索引')
   }
 
   if (isEmptyIndex(index)) { return '' }
@@ -180,7 +180,7 @@ function _getSubstring (str, index) {
 function _setSubstring (str, index, replacement, defaultValue) {
   if (!index || index.isIndex !== true) {
     // TODO: better error message
-    throw new TypeError('Index expected')
+    throw new TypeError('应为索引')
   }
   if (isEmptyIndex(index)) { return str }
   validateIndexSourceSize(Array.from(str), index)
@@ -189,7 +189,7 @@ function _setSubstring (str, index, replacement, defaultValue) {
   }
   if (defaultValue !== undefined) {
     if (typeof defaultValue !== 'string' || defaultValue.length !== 1) {
-      throw new TypeError('Single character expected as defaultValue')
+      throw new TypeError('应为单个字符作为默认值')
     }
   } else {
     defaultValue = ' '
@@ -245,7 +245,7 @@ function _getObjectProperty (object, index) {
 
   const key = index.dimension(0)
   if (typeof key !== 'string') {
-    throw new TypeError('String expected as index to retrieve an object property')
+    throw new TypeError('应为字符串作为检索对象属性的索引')
   }
 
   return getSafeProperty(object, key)
@@ -267,7 +267,7 @@ function _setObjectProperty (object, index, replacement) {
 
   const key = index.dimension(0)
   if (typeof key !== 'string') {
-    throw new TypeError('String expected as index to retrieve an object property')
+    throw new TypeError('应为字符串作为检索对象属性的索引')
   }
 
   // clone the object, and apply the property to the clone

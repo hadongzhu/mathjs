@@ -78,7 +78,7 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
       }
 
       if (config.predictable) {
-        throw new Error('Result of pow is non-rational and cannot be expressed as a fraction')
+        throw new Error('pow 的结果为非有理数，无法表示为分数')
       } else {
         return _pow(x.valueOf(), y.valueOf())
       }
@@ -163,22 +163,22 @@ export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
    */
   function _powArray (x, y) {
     if (!isInteger(y)) {
-      throw new TypeError('For A^b, b must be an integer (value is ' + y + ')')
+      throw new TypeError('对 A^b，b 必须为整数 (值为 ' + y + ')')
     }
     // verify that A is a 2 dimensional square matrix
     const s = size(x)
     if (s.length !== 2) {
-      throw new Error('For A^b, A must be 2 dimensional (A has ' + s.length + ' dimensions)')
+      throw new Error('对 A^b，A 必须为 2 维 (A 有 ' + s.length + ' 维)')
     }
     if (s[0] !== s[1]) {
-      throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')')
+      throw new Error('对 A^b，A 必须为方阵 (大小为 ' + s[0] + 'x' + s[1] + ')')
     }
     if (y < 0) {
       try {
         return _powArray(inv(x), -y)
       } catch (error) {
         if (error.message === 'Cannot calculate inverse, determinant is zero') {
-          throw new TypeError('For A^b, when A is not invertible, b must be a positive integer (value is ' + y + ')')
+          throw new TypeError('对 A^b，当 A 不可逆时，b 必须为正整数 (值为 ' + y + ')')
         }
         throw error
       }

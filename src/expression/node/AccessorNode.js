@@ -51,10 +51,10 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
     constructor (object, index) {
       super()
       if (!isNode(object)) {
-        throw new TypeError('Node expected for parameter "object"')
+        throw new TypeError('参数 "object" 应为节点')
       }
       if (!isIndexNode(index)) {
-        throw new TypeError('IndexNode expected for parameter "index"')
+        throw new TypeError('参数 "index" 应为索引节点')
       }
 
       this.object = object

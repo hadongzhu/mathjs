@@ -75,7 +75,7 @@ export const createPolynomialRoot = /* #__PURE__ */ factory(name, dependencies, 
       }
       if (coeffs.length < 2) {
         throw new RangeError(
-          `Polynomial [${constant}, ${restCoeffs}] must have a non-zero non-constant coefficient`)
+            `多项式 [${constant}, ${restCoeffs}] 必须具有非零非常数系数`)
       }
       switch (coeffs.length) {
         case 2: // linear
@@ -146,7 +146,7 @@ export const createPolynomialRoot = /* #__PURE__ */ factory(name, dependencies, 
           })
         }
         default:
-          throw new RangeError(`only implemented for cubic or lower-order polynomials, not ${coeffs}`)
+          throw new RangeError(`仅支持三次或更低阶多项式，而不是 ${coeffs}`)
       }
     }
   })

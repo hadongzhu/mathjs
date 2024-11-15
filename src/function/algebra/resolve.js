@@ -56,8 +56,8 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
       if (within.has(node.name)) {
         const variables = Array.from(within).join(', ')
         throw new ReferenceError(
-          `recursive loop of variable definitions among {${variables}}`
-        )
+            `变量定义中存在循环引用 {${variables}}`
+          )
       }
       const value = scope.get(node.name)
       if (isNode(value)) {

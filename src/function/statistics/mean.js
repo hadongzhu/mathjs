@@ -44,7 +44,7 @@ export const createMean = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     // mean(a, b, c, d, ...)
     '...': function (args) {
       if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function mean')
+        throw new TypeError('函数 mean 中应为标量')
       }
 
       return _mean(args)
@@ -89,7 +89,7 @@ export const createMean = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     })
 
     if (num === 0) {
-      throw new Error('Cannot calculate the mean of an empty array')
+      throw new Error('无法计算空数组的平均值')
     }
     return divide(sum, num)
   }

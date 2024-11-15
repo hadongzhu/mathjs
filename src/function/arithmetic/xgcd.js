@@ -66,7 +66,7 @@ export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     let lasty = zero
 
     if (!a.isInt() || !b.isInt()) {
-      throw new Error('Parameters in function xgcd must be integer numbers')
+      throw new Error('函数 xgcd 的参数必须为整数')
     }
 
     while (!b.isZero()) {

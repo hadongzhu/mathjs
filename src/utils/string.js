@@ -205,12 +205,12 @@ function looksLikeFraction (value) {
 export function compareText (x, y) {
   // we don't want to convert numbers to string, only accept string input
   if (!isString(x)) {
-    throw new TypeError('Unexpected type of argument in function compareText ' +
-      '(expected: string or Array or Matrix, actual: ' + typeOf(x) + ', index: 0)')
+    throw new TypeError('函数 compareText 的参数类型错误' +
+    '(应为字符串或数组或矩阵，实际为 ' + typeOf(x) + ', 索引: 0)')
   }
   if (!isString(y)) {
-    throw new TypeError('Unexpected type of argument in function compareText ' +
-      '(expected: string or Array or Matrix, actual: ' + typeOf(y) + ', index: 1)')
+    throw new TypeError('函数 compareText 的参数类型错误' +
+    '(应为字符串或数组或矩阵，实际为 ' + typeOf(y) + ', 索引: 1)')
   }
 
   return (x === y)

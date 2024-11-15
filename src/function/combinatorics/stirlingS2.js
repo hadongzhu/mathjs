@@ -68,9 +68,9 @@ export const createStirlingS2 = /* #__PURE__ */ factory(name, dependencies, (
   return typed(name, {
     'number | BigNumber, number | BigNumber': function (n, k) {
       if (!isInteger(n) || isNegative(n) || !isInteger(k) || isNegative(k)) {
-        throw new TypeError('Non-negative integer value expected in function stirlingS2')
+        throw new TypeError('函数 stirlingS2 中应为非负整数')
       } else if (larger(k, n)) {
-        throw new TypeError('k must be less than or equal to n in function stirlingS2')
+        throw new TypeError('函数 stirlingS2 中的 k 必须小于或等于 n')
       }
 
       const big = !(isNumber(n) && isNumber(k))

@@ -15,10 +15,10 @@ function getSafeProperty (object, prop) {
   }
 
   if (typeof object[prop] === 'function' && isSafeMethod(object, prop)) {
-    throw new Error('Cannot access method "' + prop + '" as a property')
+    throw new Error('无法将方法 "' + prop + '" 作为属性访问')
   }
 
-  throw new Error('No access to property "' + prop + '"')
+  throw new Error('无法访问属性 "' + prop + '"')
 }
 
 /**
@@ -38,7 +38,7 @@ function setSafeProperty (object, prop, value) {
     return value
   }
 
-  throw new Error('No access to property "' + prop + '"')
+  throw new Error('无法访问属性 "' + prop + '"')
 }
 
 function getSafeProperties (object) {
@@ -92,7 +92,7 @@ function isSafeProperty (object, prop) {
  */
 function getSafeMethod (object, method) {
   if (!isSafeMethod(object, method)) {
-    throw new Error('No access to method "' + method + '"')
+    throw new Error('无法访问方法 "' + method + '"')
   }
 
   return object[method]

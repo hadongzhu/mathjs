@@ -9,14 +9,14 @@
  */
 export function DimensionError (actual, expected, relation) {
   if (!(this instanceof DimensionError)) {
-    throw new SyntaxError('Constructor must be called with the new operator')
+    throw new SyntaxError('构造函数必须使用 new 运算符调用')
   }
 
   this.actual = actual
   this.expected = expected
   this.relation = relation
 
-  this.message = 'Dimension mismatch (' +
+  this.message = '维度不匹配 (' +
       (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
       ' ' + (this.relation || '!=') + ' ' +
       (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +

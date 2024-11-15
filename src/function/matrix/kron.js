@@ -66,8 +66,8 @@ export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       b = [b]
     }
     if (size(a).length > 2 || size(b).length > 2) {
-      throw new RangeError('Vectors with dimensions greater then 2 are not supported expected ' +
-            '(Size x = ' + JSON.stringify(a.length) + ', y = ' + JSON.stringify(b.length) + ')')
+      throw new RangeError('不支持维度大于 2 的向量，应为 ' +
+      '(大小 x = ' + JSON.stringify(a.length) + ', y = ' + JSON.stringify(b.length) + ')')
     }
     const t = []
     let r = []

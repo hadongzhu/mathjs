@@ -49,7 +49,7 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     // min(a, b, c, d, ...)
     '...': function (args) {
       if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function min')
+        throw new TypeError('函数 min 中应为标量')
       }
 
       return _min(args)
@@ -93,7 +93,7 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     })
 
     if (min === undefined) {
-      throw new Error('Cannot calculate min of an empty array')
+      throw new Error('无法计算空数组的最小值')
     }
 
     // make sure returning numeric value: parse a string into a numeric value

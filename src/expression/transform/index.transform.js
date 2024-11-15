@@ -33,7 +33,7 @@ export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, 
       } else if (typeof arg === 'string') {
       // leave as is
       } else {
-        throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range')
+        throw new TypeError('维度必须为数组、矩阵、数字、字符串或范围')
       }
 
       args[i] = arg

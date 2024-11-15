@@ -86,7 +86,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
         if (is1d(array)) {
           return self(...array)
         }
-        throw new ArgumentsError('gcd() supports only 1d matrices!')
+        throw new ArgumentsError('gcd() 仅支持1维矩阵！')
       }),
       Matrix: typed.referToSelf(self => (matrix) => {
         return self(matrix.toArray())
@@ -103,7 +103,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
  */
   function _gcdNumber (a, b) {
     if (!isInteger(a) || !isInteger(b)) {
-      throw new Error('Parameters in function gcd must be integer numbers')
+      throw new Error('函数 gcd 的参数必须为整数')
     }
 
     // https://en.wikipedia.org/wiki/Euclidean_algorithm
@@ -125,7 +125,7 @@ export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    */
   function _gcdBigNumber (a, b) {
     if (!a.isInt() || !b.isInt()) {
-      throw new Error('Parameters in function gcd must be integer numbers')
+      throw new Error('函数 gcd 的参数必须为整数')
     }
 
     // https://en.wikipedia.org/wiki/Euclidean_algorithm

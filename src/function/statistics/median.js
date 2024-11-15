@@ -19,7 +19,7 @@ export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
       const num = array.length
       if (num === 0) {
-        throw new Error('Cannot calculate median of an empty array')
+        throw new Error('无法计算空数组的中位数')
       }
 
       if (num % 2 === 0) {
@@ -94,14 +94,14 @@ export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed
     // median([a, b, c, d, ...], dim)
     'Array | Matrix, number | BigNumber': function (array, dim) {
       // TODO: implement median(A, dim)
-      throw new Error('median(A, dim) is not yet supported')
+      throw new Error('尚不支持 median(A, dim)')
       // return reduce(arguments[0], arguments[1], ...)
     },
 
     // median(a, b, c, d, ...)
     '...': function (args) {
       if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function median')
+        throw new TypeError('函数 median 中应为标量')
       }
 
       return _median(args)

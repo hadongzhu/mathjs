@@ -81,6 +81,6 @@ export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed
       return new SparseMatrix(data, datatype)
     }
 
-    throw new TypeError('Unknown matrix type ' + JSON.stringify(format) + '.')
+    throw new TypeError('未知的矩阵类型 ' + JSON.stringify(format) + '.')
   }
 })

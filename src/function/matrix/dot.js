@@ -43,7 +43,7 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
     } else if (xSize.length === 2 && xSize[1] === 1) {
       xLen = xSize[0]
     } else {
-      throw new RangeError('Expected a column vector, instead got a matrix of size (' + xSize.join(', ') + ')')
+      throw new RangeError('应为列向量，而不是大小 (' + xSize.join(', ') + ') 的矩阵')
     }
 
     if (ySize.length === 1) {
@@ -51,11 +51,11 @@ export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
     } else if (ySize.length === 2 && ySize[1] === 1) {
       yLen = ySize[0]
     } else {
-      throw new RangeError('Expected a column vector, instead got a matrix of size (' + ySize.join(', ') + ')')
+      throw new RangeError('应为列向量，而不是大小 (' + ySize.join(', ') + ') 的矩阵')
     }
 
-    if (xLen !== yLen) throw new RangeError('Vectors must have equal length (' + xLen + ' != ' + yLen + ')')
-    if (xLen === 0) throw new RangeError('Cannot calculate the dot product of empty vectors')
+    if (xLen !== yLen) throw new RangeError('向量必须具有相同的长度 (' + xLen + ' != ' + yLen + ')')
+    if (xLen === 0) throw new RangeError('无法计算空向量的点积')
 
     return xLen
   }

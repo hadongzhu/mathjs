@@ -148,7 +148,7 @@ export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, 
     }
 
     // this should not occur...
-    throw new TypeError('Unsupported type of value "' + typeX + '"')
+    throw new TypeError('不支持的值类型 "' + typeX + '"')
   }
 
   /**

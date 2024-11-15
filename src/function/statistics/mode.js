@@ -48,7 +48,7 @@ export const createMode = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     values = flatten(values.valueOf())
     const num = values.length
     if (num === 0) {
-      throw new Error('Cannot calculate mode of an empty array')
+      throw new Error('无法计算空数组的众数')
     }
 
     const count = {}
@@ -58,7 +58,7 @@ export const createMode = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       const value = values[i]
 
       if (isNumeric(value) && isNaN(value)) {
-        throw new Error('Cannot calculate mode of an array containing NaN values')
+        throw new Error('无法计算包含 NaN 值的数组的众数')
       }
 
       if (!(value in count)) {

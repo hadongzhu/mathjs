@@ -19,8 +19,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @enum {{ value, index: number[] }}
    */
   function DenseMatrix (data, datatype) {
-    if (!(this instanceof DenseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
-    if (datatype && !isString(datatype)) { throw new Error('Invalid datatype: ' + datatype) }
+    if (!(this instanceof DenseMatrix)) { throw new SyntaxError('构造函数必须使用 new 运算符调用') }
+    if (datatype && !isString(datatype)) { throw new Error('无效的数据类型：' + datatype) }
 
     if (isMatrix(data)) {
       // check data is a DenseMatrix
@@ -53,7 +53,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       this._datatype = datatype
     } else if (data) {
       // unsupported type
-      throw new TypeError('Unsupported type of data (' + typeOf(data) + ')')
+      throw new TypeError('不支持的数据类型 (' + typeOf(data) + ')')
     } else {
       // nothing provided
       this._data = []
@@ -153,7 +153,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
         return _set(this, index, replacement, defaultValue)
 
       default:
-        throw new SyntaxError('Wrong number of arguments')
+        throw newSyntaxError('参数数量错误')
     }
   }
 
@@ -164,7 +164,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @return {*} value
    */
   DenseMatrix.prototype.get = function (index) {
-    if (!isArray(index)) { throw new TypeError('Array expected') }
+    if (!isArray(index)) { throw new TypeError('应为数组') }
     if (index.length !== this._size.length) { throw new DimensionError(index.length, this._size.length) }
 
     // check index
@@ -191,7 +191,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @return {DenseMatrix} self
    */
   DenseMatrix.prototype.set = function (index, value, defaultValue) {
-    if (!isArray(index)) { throw new TypeError('Array expected') }
+    if (!isArray(index)) { throw new TypeError('应为数组') }
     if (index.length < this._size.length) { throw new DimensionError(index.length, this._size.length, '<') }
 
     let i, ii, indexI
@@ -227,7 +227,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    */
   function _get (matrix, index) {
     if (!isIndex(index)) {
-      throw new TypeError('Invalid index')
+      throw new TypeError('索引无效')
     }
 
     const isScalar = index.isScalar()
@@ -298,7 +298,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    */
   function _set (matrix, index, submatrix, defaultValue) {
     if (!index || index.isIndex !== true) {
-      throw new TypeError('Invalid index')
+      throw new TypeError('索引无效')
     }
 
     // get index size and check whether the index contains a single value
@@ -319,7 +319,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
       // check whether submatrix is a scalar
       if (sSize.length !== 0) {
-        throw new TypeError('Scalar expected')
+        throw new TypeError('应为标量')
       }
       matrix.set(index.min(), submatrix, defaultValue)
     } else {
@@ -422,7 +422,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.resize = function (size, defaultValue, copy) {
     // validate arguments
     if (!isCollection(size)) {
-      throw new TypeError('Array or Matrix expected')
+      throw new TypeError('应为数组或矩阵')
     }
 
     // SparseMatrix input is always 2d, flatten this into 1d if it's indeed a vector
@@ -625,7 +625,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     const s = this.size()
     if (s.length !== 2) {
-      throw new TypeError('Rows can only be returned for a 2D matrix.')
+      throw new TypeError('只能返回2维矩阵的行')
     }
 
     const data = this._data
@@ -645,7 +645,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
 
     const s = this.size()
     if (s.length !== 2) {
-      throw new TypeError('Rows can only be returned for a 2D matrix.')
+      throw new TypeError('只能返回2维矩阵的行')
     }
 
     const data = this._data
@@ -726,7 +726,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       if (isBigNumber(k)) { k = k.toNumber() }
       // is must be an integer
       if (!isNumber(k) || !isInteger(k)) {
-        throw new TypeError('The parameter k must be an integer number')
+        throw new TypeError('参数 k 必须为整数')
       }
     } else {
       // default value
@@ -772,8 +772,8 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
    * @returns {DenseMatrix}
    */
   DenseMatrix.diagonal = function (size, value, k, defaultValue) {
-    if (!isArray(size)) { throw new TypeError('Array expected, size parameter') }
-    if (size.length !== 2) { throw new Error('Only two dimensions matrix are supported') }
+    if (!isArray(size)) { throw new TypeError('应为数组，大小参数') }
+    if (size.length !== 2) { throw new Error('仅支持二维矩阵') }
 
     // map size & validate
     size = size.map(function (s) {
@@ -784,7 +784,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       }
       // validate arguments
       if (!isNumber(s) || !isInteger(s) || s < 1) {
-        throw new Error('Size values must be positive integers')
+        throw new Error('大小值必须为正整数')
       }
       return s
     })
@@ -795,7 +795,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       if (isBigNumber(k)) { k = k.toNumber() }
       // is must be an integer
       if (!isNumber(k) || !isInteger(k)) {
-        throw new TypeError('The parameter k must be an integer number')
+        throw new TypeError('参数 k 必须为整数')
       }
     } else {
       // default value
@@ -820,7 +820,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       // validate array
       if (value.length !== n) {
         // number of values in array must be n
-        throw new Error('Invalid value array length')
+        throw new Error('无效的值数组长度')
       }
       // define function
       _value = function (i) {
@@ -833,7 +833,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       // validate matrix
       if (ms.length !== 1 || ms[0] !== n) {
         // number of values in array must be n
-        throw new Error('Invalid matrix length')
+        throw new Error('无效的矩阵长度')
       }
       // define function
       _value = function (i) {
@@ -900,11 +900,11 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   DenseMatrix.prototype.swapRows = function (i, j) {
     // check index
     if (!isNumber(i) || !isInteger(i) || !isNumber(j) || !isInteger(j)) {
-      throw new Error('Row index must be positive integers')
+      throw new Error('行索引必须为正整数')
     }
     // check dimensions
     if (this._size.length !== 2) {
-      throw new Error('Only two dimensional matrix is supported')
+      throw new Error('仅支持二维矩阵')
     }
     // validate index
     validateIndex(i, this._size[0])

@@ -55,9 +55,9 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     y = _coerceArr(y)
     plane = _coerceArr(plane)
 
-    if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
-    if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
-    if (!_4d(plane)) { throw new TypeError('Array with 4 numbers expected as third argument') }
+    if (!_3d(x)) { throw new TypeError('第一个参数应为包含 3 个浮点数或大数的数组') }
+    if (!_3d(y)) { throw new TypeError('第二个参数应为包含 3 个浮点数或大数的数组') }
+    if (!_4d(plane)) { throw new TypeError('第三个参数应为包含 4 个浮点数的数组') }
 
     return _intersectLinePlane(x[0], x[1], x[2], y[0], y[1], y[2], plane[0], plane[1], plane[2], plane[3])
   }
@@ -69,21 +69,21 @@ export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ ty
     z = _coerceArr(z)
 
     if (w.length === 2) {
-      if (!_2d(w)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
-      if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument') }
-      if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for third argument') }
-      if (!_2d(z)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for fourth argument') }
+      if (!_2d(w)) { throw new TypeError('第一个参数应为包含 2 个浮点数或大数的数组') }
+      if (!_2d(x)) { throw new TypeError('第二个参数应为包含 2 个浮点数或大数的数组') }
+      if (!_2d(y)) { throw new TypeError('第三个参数应为包含 2 个浮点数或大数的数组') }
+      if (!_2d(z)) { throw new TypeError('第四个参数应为包含 2 个浮点数或大数的数组') }
 
       return _intersect2d(w, x, y, z)
     } else if (w.length === 3) {
-      if (!_3d(w)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
-      if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
-      if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for third argument') }
-      if (!_3d(z)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for fourth argument') }
+      if (!_3d(w)) { throw new TypeError('第一个参数应为包含 3 个浮点数或大数的数组') }
+      if (!_3d(x)) { throw new TypeError('第二个参数应为包含 3 个浮点数或大数的数组') }
+      if (!_3d(y)) { throw new TypeError('第三个参数应为包含 3 个浮点数或大数的数组') }
+      if (!_3d(z)) { throw new TypeError('第四个参数应为包含 3 个浮点数或大数的数组') }
 
       return _intersect3d(w[0], w[1], w[2], x[0], x[1], x[2], y[0], y[1], y[2], z[0], z[1], z[2])
     } else {
-      throw new TypeError('Arrays with two or thee dimensional points expected')
+      throw new TypeError('应为二维或三维点的数组')
     }
   }
 

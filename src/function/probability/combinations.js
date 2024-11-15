@@ -38,10 +38,10 @@ export const createCombinations = /* #__PURE__ */ factory(name, dependencies, ({
       const one = new BigNumber(1)
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
-        throw new TypeError('Positive integer value expected in function combinations')
+        throw new TypeError('函数 combinations 中应为正整数')
       }
       if (k.gt(n)) {
-        throw new TypeError('k must be less than n in function combinations')
+        throw new TypeError('函数 combinations 中的 k 必须小于 n')
       }
 
       result = one

@@ -35,13 +35,13 @@ export const createPermutations = /* #__PURE__ */ factory(name, dependencies, ({
     'number | BigNumber': factorial,
     'number, number': function (n, k) {
       if (!isInteger(n) || n < 0) {
-        throw new TypeError('Positive integer value expected in function permutations')
+        throw new TypeError('函数 permutations 中应为正整数')
       }
       if (!isInteger(k) || k < 0) {
-        throw new TypeError('Positive integer value expected in function permutations')
+        throw new TypeError('函数 permutations 中应为正整数')
       }
       if (k > n) {
-        throw new TypeError('second argument k must be less than or equal to first argument n')
+        throw new TypeError('第二个参数 k 必须小于或等于第一个参数 n')
       }
       // Permute n objects, k at a time
       return product((n - k) + 1, n)
@@ -51,10 +51,10 @@ export const createPermutations = /* #__PURE__ */ factory(name, dependencies, ({
       let result, i
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
-        throw new TypeError('Positive integer value expected in function permutations')
+        throw new TypeError('函数 permutations 中应为正整数')
       }
       if (k.gt(n)) {
-        throw new TypeError('second argument k must be less than or equal to first argument n')
+        throw new TypeError('第二个参数 k 必须小于或等于第一个参数 n')
       }
 
       const one = n.mul(0).add(1)

@@ -119,7 +119,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
       if (typeOf(x.value) === 'string') {
         return _derivTex(expr, parse(x.value))
       } else {
-        throw new Error("The second parameter to 'derivative' is a non-string constant")
+        throw new Error("函数 'derivative' 的第二个参数应为非字符串常数")
       }
     },
     'Node, SymbolNode, ConstantNode': function (expr, x, order) {
@@ -563,8 +563,8 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
           break
         case 'gamma': // Needs digamma function, d/dx(gamma(x)) = gamma(x)digamma(x)
         default:
-          throw new Error('Cannot process function "' + node.name + '" in derivative: ' +
-          'the function is not supported, undefined, or the number of arguments passed to it are not supported')
+          throw new Error('无法处理函数 "' + node.name + '"：' +
+          '，不支持、未定义或传递给它的参数数量不受支持')
       }
 
       let op, func
@@ -741,8 +741,8 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
         ])
       }
 
-      throw new Error('Cannot process operator "' + node.op + '" in derivative: ' +
-        'the operator is not supported, undefined, or the number of arguments passed to it are not supported')
+      throw new Error('无法处理运算符 "' + node.op + '"：' +
+      '，不支持、未定义或传递给它的参数数量不受支持')
     }
   })
 

@@ -30,7 +30,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({ ty
   return typed(name, {
     number: function (n) {
       if (n < 0) {
-        throw new Error('Value must be non-negative')
+        throw new Error('值必须为非负数')
       }
 
       return gamma(n + 1)
@@ -38,7 +38,7 @@ export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
     BigNumber: function (n) {
       if (n.isNegative()) {
-        throw new Error('Value must be non-negative')
+        throw new Error('值必须为非负数')
       }
 
       return gamma(n.plus(1))

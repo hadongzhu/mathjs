@@ -12,7 +12,7 @@ export const createResultSet = /* #__PURE__ */ factory(name, dependencies, () =>
    */
   function ResultSet (entries) {
     if (!(this instanceof ResultSet)) {
-      throw new SyntaxError('Constructor must be called with the new operator')
+      throw new SyntaxError('构造函数必须使用 new 运算符调用')
     }
 
     this.entries = entries || []

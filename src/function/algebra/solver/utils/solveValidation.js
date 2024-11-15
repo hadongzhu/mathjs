@@ -16,14 +16,14 @@ export function createSolveValidation ({ DenseMatrix }) {
     const mSize = m.size()
 
     if (mSize.length !== 2) {
-      throw new RangeError('Matrix must be two dimensional (size: ' + format(mSize) + ')')
+      throw new RangeError('矩阵必须是二维的 (大小: ' + format(mSize) + ')')
     }
 
     const rows = mSize[0]
     const columns = mSize[1]
 
     if (rows !== columns) {
-      throw new RangeError('Matrix must be square (size: ' + format(mSize) + ')')
+      throw new RangeError('矩阵必须是方阵 (大小: ' + format(mSize) + ')')
     }
 
     let data = []
@@ -35,7 +35,7 @@ export function createSolveValidation ({ DenseMatrix }) {
       // 1-dim vector
       if (bSize.length === 1) {
         if (bSize[0] !== rows) {
-          throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
+          throw new RangeError('维度不匹配。矩阵列必须与向量长度匹配。')
         }
 
         for (let i = 0; i < rows; i++) {
@@ -52,7 +52,7 @@ export function createSolveValidation ({ DenseMatrix }) {
       // 2-dim column
       if (bSize.length === 2) {
         if (bSize[0] !== rows || bSize[1] !== 1) {
-          throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
+          throw new RangeError('维度不匹配。矩阵列必须与向量长度匹配。')
         }
 
         if (isDenseMatrix(b)) {
@@ -93,7 +93,7 @@ export function createSolveValidation ({ DenseMatrix }) {
         }
       }
 
-      throw new RangeError('Dimension mismatch. The right side has to be either 1- or 2-dimensional vector.')
+      throw new RangeError('维度不匹配。右侧必须是 1 或 2 维向量。')
     }
 
     if (isArray(b)) {
@@ -101,7 +101,7 @@ export function createSolveValidation ({ DenseMatrix }) {
 
       if (bsize.length === 1) {
         if (bsize[0] !== rows) {
-          throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
+          throw new RangeError('维度不匹配。矩阵列必须与向量长度匹配。')
         }
 
         for (let i = 0; i < rows; i++) {
@@ -116,7 +116,7 @@ export function createSolveValidation ({ DenseMatrix }) {
 
       if (bsize.length === 2) {
         if (bsize[0] !== rows || bsize[1] !== 1) {
-          throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
+          throw new RangeError('维度不匹配。矩阵列必须与向量长度匹配。')
         }
 
         for (let i = 0; i < rows; i++) {
@@ -129,7 +129,7 @@ export function createSolveValidation ({ DenseMatrix }) {
         })
       }
 
-      throw new RangeError('Dimension mismatch. The right side has to be either 1- or 2-dimensional vector.')
+      throw new RangeError('维度不匹配。右侧必须是 1 或 2 维向量。')
     }
   }
 }

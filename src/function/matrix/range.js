@@ -105,7 +105,7 @@ export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed,
   function _strRange (str, includeEnd) {
     const r = _parse(str)
     if (!r) {
-      throw new SyntaxError('String "' + str + '" is no valid range')
+      throw new SyntaxError('字符串 "' + str + '" 不是有效范围')
     }
 
     if (config.number === 'BigNumber') {

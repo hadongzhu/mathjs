@@ -56,11 +56,9 @@ export function applyCallback (callback, value, index, array, mappingFnName) {
         if (args.length >= 2) { argsDesc.push(`index: ${_typeOf(index)}`) }
         if (args.length >= 3) { argsDesc.push(`array: ${_typeOf(array)}`) }
 
-        throw new TypeError(`Function ${mappingFnName} cannot apply callback arguments ` +
-          `${callback.name}(${argsDesc.join(', ')}) at index ${JSON.stringify(index)}`)
+        throw new TypeError(`函数 ${mappingFnName} 无法将回调参数应用 ${callback.name}(${argsDesc.join(', ')}) 到索引 ${JSON.stringify(index)}`)
       } else {
-        throw new TypeError(`Function ${mappingFnName} cannot apply callback arguments ` +
-          `to function ${callback.name}: ${err.message}`)
+        throw new TypeError(`函数 ${mappingFnName} 无法将回调参数应用到函数 ${callback.name}：${err.message}`)
       }
     }
   }

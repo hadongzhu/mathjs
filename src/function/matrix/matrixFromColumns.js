@@ -38,7 +38,7 @@ export const createMatrixFromColumns = /* #__PURE__ */ factory(name, dependencie
   })
 
   function _createArray (arr) {
-    if (arr.length === 0) throw new TypeError('At least one column is needed to construct a matrix.')
+    if (arr.length === 0) throw new TypeError('至少需要一列来构造矩阵。')
     const N = checkVectorTypeAndReturnLength(arr[0])
 
     // create an array with empty rows
@@ -52,7 +52,7 @@ export const createMatrixFromColumns = /* #__PURE__ */ factory(name, dependencie
       const colLength = checkVectorTypeAndReturnLength(col)
 
       if (colLength !== N) {
-        throw new TypeError('The vectors had different length: ' + (N | 0) + ' ≠ ' + (colLength | 0))
+        throw new TypeError('向量长度不同：' + (N | 0) + ' ≠ ' + (colLength | 0))
       }
 
       const f = flatten(col)
@@ -77,10 +77,10 @@ export const createMatrixFromColumns = /* #__PURE__ */ factory(name, dependencie
       } else if (s[1] === 1) { // col vector
         return s[0]
       } else {
-        throw new TypeError('At least one of the arguments is not a vector.')
+        throw new TypeError('至少一个参数不是向量。')
       }
     } else {
-      throw new TypeError('Only one- or two-dimensional vectors are supported.')
+      throw new TypeError('仅支持一维或二维向量。')
     }
   }
 })

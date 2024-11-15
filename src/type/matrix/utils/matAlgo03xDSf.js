@@ -40,10 +40,10 @@ export const createMatAlgo03xDSf = /* #__PURE__ */ factory(name, dependencies, (
     if (asize.length !== bsize.length) { throw new DimensionError(asize.length, bsize.length) }
 
     // check rows & columns
-    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) { throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')') }
+    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) { throw new RangeError('维度不匹配。矩阵 A (' + asize + ') 必须与矩阵 B (' + bsize + ') 匹配') }
 
     // sparse matrix cannot be a Pattern matrix
-    if (!bvalues) { throw new Error('Cannot perform operation on Dense Matrix and Pattern Sparse Matrix') }
+    if (!bvalues) { throw new Error('无法在稠密矩阵和模式稀疏矩阵上执行操作') }
 
     // rows & columns
     const rows = asize[0]

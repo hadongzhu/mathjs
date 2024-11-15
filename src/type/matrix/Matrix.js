@@ -28,7 +28,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   function Matrix () {
     if (!(this instanceof Matrix)) {
-      throw new SyntaxError('Constructor must be called with the new operator')
+      throw new SyntaxError('构造函数必须使用 new 运算符调用')
     }
   }
 
@@ -48,7 +48,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.storage = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke storage on a Matrix interface')
+    throw new Error('无法在矩阵上调用 storage')
   }
 
   /**
@@ -61,7 +61,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.datatype = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke datatype on a Matrix interface')
+    throw new Error('无法在矩阵上调用 datatype')
   }
 
   /**
@@ -70,7 +70,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    * @param {string} [datatype]
    */
   Matrix.prototype.create = function (data, datatype) {
-    throw new Error('Cannot invoke create on a Matrix interface')
+    throw new Error('无法在矩阵上调用 create')
   }
 
   /**
@@ -88,7 +88,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.subset = function (index, replacement, defaultValue) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke subset on a Matrix interface')
+    throw new Error('无法在矩阵上调用 subset')
   }
 
   /**
@@ -98,7 +98,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.get = function (index) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke get on a Matrix interface')
+    throw new Error('无法在矩阵上调用 get')
   }
 
   /**
@@ -112,7 +112,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.set = function (index, value, defaultValue) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke set on a Matrix interface')
+    throw new Error('无法在矩阵上调用 set')
   }
 
   /**
@@ -129,7 +129,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.resize = function (size, defaultValue) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke resize on a Matrix interface')
+    throw new Error('无法在矩阵上调用 resize')
   }
 
   /**
@@ -143,7 +143,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.reshape = function (size, defaultValue) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke reshape on a Matrix interface')
+    throw new Error('无法在矩阵上调用 reshape')
   }
 
   /**
@@ -152,7 +152,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.clone = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke clone on a Matrix interface')
+    throw new Error('无法在矩阵上调用 clone')
   }
 
   /**
@@ -161,7 +161,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.size = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke size on a Matrix interface')
+    throw new Error('无法在矩阵上调用 size')
   }
 
   /**
@@ -176,7 +176,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.map = function (callback, skipZeros) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke map on a Matrix interface')
+    throw new Error('无法在矩阵上调用 map')
   }
 
   /**
@@ -187,7 +187,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.forEach = function (callback) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke forEach on a Matrix interface')
+    throw new Error('无法在矩阵上调用 forEach')
   }
 
   /**
@@ -196,7 +196,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype[Symbol.iterator] = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot iterate a Matrix interface')
+    throw new Error('无法迭代矩阵')
   }
 
   /**
@@ -205,7 +205,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.toArray = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke toArray on a Matrix interface')
+    throw new Error('无法在矩阵上调用 toArray')
   }
 
   /**
@@ -214,7 +214,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.valueOf = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke valueOf on a Matrix interface')
+    throw new Error('无法在矩阵上调用 valueOf')
   }
 
   /**
@@ -227,7 +227,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.format = function (options) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke format on a Matrix interface')
+    throw new Error('无法在矩阵上调用 format')
   }
 
   /**
@@ -236,7 +236,7 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
    */
   Matrix.prototype.toString = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke toString on a Matrix interface')
+    throw new Error('无法在矩阵上调用 toString')
   }
 
   return Matrix

@@ -71,8 +71,8 @@ export const createCross = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     const ySize = arraySize(y)
 
     if (xSize.length !== 1 || ySize.length !== 1 || xSize[0] !== 3 || ySize[0] !== 3) {
-      throw new RangeError('Vectors with length 3 expected ' +
-      '(Size A = [' + xSize.join(', ') + '], B = [' + ySize.join(', ') + '])')
+      throw new RangeError('应为长度为 3 的向量 ' +
+      '(大小 A = [' + xSize.join(', ') + '], B = [' + ySize.join(', ') + '])')
     }
 
     const product = [

@@ -46,7 +46,7 @@ export const createCatalan = /* #__PURE__ */ factory(name, dependencies, (
   return typed(name, {
     'number | BigNumber': function (n) {
       if (!isInteger(n) || isNegative(n)) {
-        throw new TypeError('Non-negative integer value expected in function catalan')
+        throw new TypeError('函数 catalan 中应为非负整数')
       }
 
       return divideScalar(combinations(multiplyScalar(n, 2), n), addScalar(n, 1))

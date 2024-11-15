@@ -54,7 +54,7 @@ export const createReshape = /* #__PURE__ */ factory(name, dependencies, ({ type
     'Array, Array': function (x, sizes) {
       sizes.forEach(function (size) {
         if (!isInteger(size)) {
-          throw new TypeError('Invalid size for dimension: ' + size)
+          throw new TypeError('维度大小无效：' + size)
         }
       })
       return arrayReshape(x, sizes)

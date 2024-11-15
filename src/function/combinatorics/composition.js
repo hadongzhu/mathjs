@@ -47,9 +47,9 @@ export const createComposition = /* #__PURE__ */ factory(name, dependencies, (
   return typed(name, {
     'number | BigNumber, number | BigNumber': function (n, k) {
       if (!isInteger(n) || !isPositive(n) || !isInteger(k) || !isPositive(k)) {
-        throw new TypeError('Positive integer value expected in function composition')
+        throw new TypeError('函数 composition 中应为正整数')
       } else if (larger(k, n)) {
-        throw new TypeError('k must be less than or equal to n in function composition')
+        throw new TypeError('函数 composition 中的 k 必须小于或等于 n')
       }
 
       return combinations(addScalar(n, -1), addScalar(k, -1))

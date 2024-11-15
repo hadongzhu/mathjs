@@ -28,18 +28,18 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
             // Vector x Vector
             if (size1[0] !== size2[0]) {
               // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Vectors must have the same length')
+              throw new RangeError('乘法中的维度不匹配。向量必须具有相同的长度')
             }
             break
           case 2:
             // Vector x Matrix
             if (size1[0] !== size2[0]) {
               // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Vector length (' + size1[0] + ') must match Matrix rows (' + size2[0] + ')')
+              throw new RangeError('乘法中的维度不匹配。向量长度 (' + size1[0] + ') 必须与矩阵行 (' + size2[0] + ') 匹配')
             }
             break
           default:
-            throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix B has ' + size2.length + ' dimensions)')
+            throw new Error('只能乘以 1 或 2 维矩阵 (矩阵 B 有 ' + size2.length + ' 维)')
         }
         break
       case 2:
@@ -49,22 +49,22 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
             // Matrix x Vector
             if (size1[1] !== size2[0]) {
               // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Matrix columns (' + size1[1] + ') must match Vector length (' + size2[0] + ')')
+              throw new RangeError('乘法中的维度不匹配。矩阵列 (' + size1[1] + ') 必须与向量长度 (' + size2[0] + ') 匹配')
             }
             break
           case 2:
             // Matrix x Matrix
             if (size1[1] !== size2[0]) {
               // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Matrix A columns (' + size1[1] + ') must match Matrix B rows (' + size2[0] + ')')
+              throw new RangeError('乘法中的维度不匹配。矩阵 A 列 (' + size1[1] + ') 必须与矩阵 B 行 (' + size2[0] + ') 匹配')
             }
             break
           default:
-            throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix B has ' + size2.length + ' dimensions)')
+            throw new Error('只能乘以 1 或 2 维矩阵 (矩阵 B 有 ' + size2.length + ' 维)')
         }
         break
       default:
-        throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix A has ' + size1.length + ' dimensions)')
+        throw new Error('只能乘以 1 或 2 维矩阵 (矩阵 A 有 ' + size1.length + ' 维)')
     }
   }
 
@@ -78,7 +78,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
    */
   function _multiplyVectorVector (a, b, n) {
     // check empty vector
-    if (n === 0) { throw new Error('Cannot multiply two empty vectors') }
+    if (n === 0) { throw new Error('无法乘以两个空向量') }
     return dot(a, b)
   }
 
@@ -93,7 +93,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
   function _multiplyVectorMatrix (a, b) {
     // process storage
     if (b.storage() !== 'dense') {
-      throw new Error('Support for SparseMatrix not implemented')
+      throw new Error('尚未实现稀疏矩阵')
     }
     return _multiplyVectorDenseMatrix(a, b)
   }
@@ -335,7 +335,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const bsize = b._size
     const bdt = b._datatype || b._data === undefined ? b._datatype : b.getDataType()
     // validate b matrix
-    if (!bvalues) { throw new Error('Cannot multiply Dense Matrix times Pattern only Matrix') }
+    if (!bvalues) { throw new Error('无法将稠密矩阵乘以仅为模式的矩阵') }
     // rows & columns
     const arows = asize[0]
     const bcolumns = bsize[1]
@@ -439,7 +439,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const aptr = a._ptr
     const adt = a._datatype || a._data === undefined ? a._datatype : a.getDataType()
     // validate a matrix
-    if (!avalues) { throw new Error('Cannot multiply Pattern only Matrix times Dense Matrix') }
+    if (!avalues) { throw new Error('无法将仅为模式的矩阵乘以稠密矩阵') }
     // b dense
     const bdata = b._data
     const bdt = b._datatype || b.getDataType()
@@ -541,7 +541,7 @@ export const createMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typ
     const aptr = a._ptr
     const adt = a._datatype || a._data === undefined ? a._datatype : a.getDataType()
     // validate a matrix
-    if (!avalues) { throw new Error('Cannot multiply Pattern only Matrix times Dense Matrix') }
+    if (!avalues) { throw new Error('无法将仅为模式的矩阵乘以稠密矩阵') }
     // b dense
     const bdata = b._data
     const bdt = b._datatype || b.getDataType()

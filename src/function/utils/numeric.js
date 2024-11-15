@@ -54,15 +54,16 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
    */
   return function numeric (value, outputType = 'number', check) {
     if (check !== undefined) {
-      throw new SyntaxError('numeric() takes one or two arguments')
+      throw new SyntaxError('numeric() 接受一个或两个参数')
     }
     const inputType = typeOf(value)
 
     if (!(inputType in validInputTypes)) {
-      throw new TypeError('Cannot convert ' + value + ' of type "' + inputType + '"; valid input types are ' + Object.keys(validInputTypes).join(', '))
+      throw new TypeError('无法转换类型为 "' + inputType + '" 的 ' + value + '；有效的输入类型为 ' + Object.keys(validInputTypes).join(', '))
     }
     if (!(outputType in validOutputTypes)) {
-      throw new TypeError('Cannot convert ' + value + ' to type "' + outputType + '"; valid output types are ' + Object.keys(validOutputTypes).join(', '))
+      throw new TypeError('无法将 ' + value + ' 转换为类型 "' + outputType + '"；有效的输出类型为 ' + Object.keys(validOutputTypes).join(', '))
+
     }
 
     if (outputType === inputType) {

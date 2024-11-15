@@ -14,20 +14,20 @@ export function improveErrorMessage (err, fnName, value) {
   // TODO: add information with the index (also needs transform in expression parser)
   let details
 
-  if (String(err).indexOf('Unexpected type') !== -1) {
+  if (String(err).indexOf('不支持的类型') !== -1) {
     details = arguments.length > 2
-      ? ' (type: ' + typeOf(value) + ', value: ' + JSON.stringify(value) + ')'
-      : ' (type: ' + err.data.actual + ')'
+      ? ' (类型: ' + typeOf(value) + ', 值: ' + JSON.stringify(value) + ')'
+      : ' (类型: ' + err.data.actual + ')'
 
-    return new TypeError('Cannot calculate ' + fnName + ', unexpected type of argument' + details)
+    return new TypeError('无法计算 ' + fnName + '，参数类型错误' + details)
   }
 
-  if (String(err).indexOf('complex numbers') !== -1) {
+  if (String(err).indexOf('复数') !== -1) {
     details = arguments.length > 2
-      ? ' (type: ' + typeOf(value) + ', value: ' + JSON.stringify(value) + ')'
+      ? ' (类型: ' + typeOf(value) + ', 值: ' + JSON.stringify(value) + ')'
       : ''
 
-    return new TypeError('Cannot calculate ' + fnName + ', no ordering relation is defined for complex numbers' + details)
+    return new TypeError('无法计算 ' + fnName + '，未定义复数排序关系' + details)
   }
 
   return err

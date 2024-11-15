@@ -24,12 +24,12 @@ export function accessFactory ({ subset }) {
         return subset(object, index)
       } else if (typeof object === 'object') {
         if (!index.isObjectProperty()) {
-          throw new TypeError('Cannot apply a numeric index as object property')
+          throw new TypeError('无法将数值索引应用为对象属性')
         }
 
         return getSafeProperty(object, index.getObjectProperty())
       } else {
-        throw new TypeError('Cannot apply index: unsupported type of object')
+        throw new TypeError('无法应用索引：不支持的对象类型')
       }
     } catch (err) {
       throw errorTransform(err)

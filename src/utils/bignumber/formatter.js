@@ -14,16 +14,16 @@ function formatBigNumberToBase (n, base, size) {
   let suffix = ''
   if (size) {
     if (size < 1) {
-      throw new Error('size must be in greater than 0')
+      throw new Error('size 须大于 0')
     }
     if (!isInteger(size)) {
-      throw new Error('size must be an integer')
+      throw new Error('size 须为整数')
     }
     if (n.greaterThan(big2.pow(size - 1).sub(1)) || n.lessThan(big2.pow(size - 1).mul(-1))) {
-      throw new Error(`Value must be in range [-2^${size - 1}, 2^${size - 1}-1]`)
+      throw new Error(`值须在 [-2^${size - 1}, 2^${size - 1}-1] 范围内`)
     }
     if (!n.isInteger()) {
-      throw new Error('Value must be an integer')
+      throw new Error('值须为整数')
     }
     if (n.lessThan(0)) {
       n = n.add(big2.pow(size))
@@ -34,7 +34,7 @@ function formatBigNumberToBase (n, base, size) {
     case 2: return `${n.toBinary()}${suffix}`
     case 8: return `${n.toOctal()}${suffix}`
     case 16: return `${n.toHexadecimal()}${suffix}`
-    default: throw new Error(`Base ${base} not supported `)
+    default: throw new Error(`不支持 ${base} 进制`)
   }
 }
 
@@ -182,8 +182,8 @@ export function format (value, options) {
       })
     }
     default:
-      throw new Error('Unknown notation "' + notation + '". ' +
-          'Choose "auto", "exponential", "fixed", "bin", "oct", or "hex.')
+      throw new Error('未知的表示法 "' + notation + '"。' +
+      '请使用 "auto", "exponential", "fixed", "bin", "oct", 或 "hex')
   }
 }
 

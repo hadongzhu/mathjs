@@ -104,7 +104,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     // parse an array or matrix with expressions
     return deepMap(expressions, function (elem) {
-      if (typeof elem !== 'string') throw new TypeError('String expected')
+      if (typeof elem !== 'string') throw new TypeError('应为字符串')
 
       return parseStart(elem, extraNodes)
     })
@@ -408,7 +408,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           }
           // Scientific notation MUST be followed by an exponent
           if (!parse.isDigit(currentCharacter(state))) {
-            throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
+            throw createSyntaxError(state, '应为数字，但是得到 "' + currentCharacter(state) + '"')
           }
 
           while (parse.isDigit(currentCharacter(state))) {
@@ -417,11 +417,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           }
 
           if (parse.isDecimalMark(currentCharacter(state), nextCharacter(state))) {
-            throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
+            throw createSyntaxError(state, '应为数字，但是得到 "' + currentCharacter(state) + '"')
           }
         } else if (nextCharacter(state) === '.') {
           next(state)
-          throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
+          throw createSyntaxError(state, '应为数字，但是得到 "' + currentCharacter(state) + '"')
         }
       }
 
@@ -450,7 +450,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       state.token += currentCharacter(state)
       next(state)
     }
-    throw createSyntaxError(state, 'Syntax error in part "' + state.token + '"')
+    throw createSyntaxError(state, '在 "' + state.token + '" 中存在语法错误')
   }
 
   /**
@@ -603,9 +603,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         // user entered a not existing operator like "//"
 
         // TODO: give hints for aliases, for example with "<>" give as hint " did you mean !== ?"
-        throw createError(state, 'Unexpected operator ' + state.token)
+        throw createError(state, '意外的运算符 ' + state.token)
       } else {
-        throw createSyntaxError(state, 'Unexpected part "' + state.token + '"')
+        throw createSyntaxError(state, '意外的部分 "' + state.token + '"')
       }
     }
 
@@ -739,7 +739,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       const condition = node
       const trueExpr = parseAssignment(state)
 
-      if (state.token !== ':') throw createSyntaxError(state, 'False part of conditional expression expected')
+      if (state.token !== ':') throw createSyntaxError(state, '应为条件表达式的 false 部分')
 
       state.conditionalLevel = null
       getTokenSkipNewline(state)
@@ -1311,7 +1311,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
 
         if (state.token !== ')') {
-          throw createSyntaxError(state, 'Parenthesis ) expected')
+          throw createSyntaxError(state, '应为右括号 )')
         }
         closeParams(state)
         getToken(state)
@@ -1393,7 +1393,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           }
 
           if (state.token !== ')') {
-            throw createSyntaxError(state, 'Parenthesis ) expected')
+            throw createSyntaxError(state, '应为右括号 )')
           }
           closeParams(state)
           getToken(state)
@@ -1421,7 +1421,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         }
 
         if (state.token !== ']') {
-          throw createSyntaxError(state, 'Parenthesis ] expected')
+          throw createSyntaxError(state, '应为右方括号 ]')
         }
         closeParams(state)
         getToken(state)
@@ -1434,7 +1434,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         const isPropertyName = state.tokenType === TOKENTYPE.SYMBOL ||
           (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)
         if (!isPropertyName) {
-          throw createSyntaxError(state, 'Property name expected after dot')
+          throw createSyntaxError(state, '点 . 后应为属性名')
         }
 
         params.push(new ConstantNode(state.token))
@@ -1497,10 +1497,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             str += String.fromCharCode(parseInt(unicode, 16))
             state.index += 5
           } else {
-            throw createSyntaxError(state, `Invalid unicode character \\u${unicode}`)
+            throw createSyntaxError(state, `无效的 Unicode 字符 \\u${unicode}`)
           }
         } else {
-          throw createSyntaxError(state, `Bad escape character \\${char}`)
+          throw createSyntaxError(state, `错误的转义字符 \\${char}`)
         }
       } else {
         // any regular character
@@ -1511,7 +1511,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
     getToken(state)
     if (state.token !== quote) {
-      throw createSyntaxError(state, `End of string ${quote} expected`)
+      throw createSyntaxError(state, `应为 ${quote} 字符串结束`)
     }
     getToken(state)
 
@@ -1551,7 +1551,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           }
 
           if (state.token !== ']') {
-            throw createSyntaxError(state, 'End of matrix ] expected')
+            throw createSyntaxError(state, '矩阵末尾应为 ]')
           }
           closeParams(state)
           getToken(state)
@@ -1560,8 +1560,8 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           cols = params[0].items.length
           for (let r = 1; r < rows; r++) {
             if (params[r].items.length !== cols) {
-              throw createError(state, 'Column dimensions mismatch ' +
-                  '(' + params[r].items.length + ' !== ' + cols + ')')
+              throw createError(state, '列维度不匹配 ' +
+              '(' + params[r].items.length + ' !== ' + cols + ')')
             }
           }
 
@@ -1569,7 +1569,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
         } else {
           // 1 dimensional vector
           if (state.token !== ']') {
-            throw createSyntaxError(state, 'End of matrix ] expected')
+            throw createSyntaxError(state, '矩阵末尾应为 ]')
           }
           closeParams(state)
           getToken(state)
@@ -1632,12 +1632,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
             key = state.token
             getToken(state)
           } else {
-            throw createSyntaxError(state, 'Symbol or string expected as object key')
+            throw createSyntaxError(state, '对象键应为符号或字符串')
           }
 
           // parse key/value separator
           if (state.token !== ':') {
-            throw createSyntaxError(state, 'Colon : expected after object key')
+            throw createSyntaxError(state, '对象键后应为冒号 :')
           }
           getToken(state)
 
@@ -1648,7 +1648,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       while (state.token === ',') // eslint-disable-line no-unmodified-loop-condition
 
       if (state.token !== '}') {
-        throw createSyntaxError(state, 'Comma , or bracket } expected after object value')
+        throw createSyntaxError(state, '对象值后应为逗号 , 或右大括号 }')
       }
       closeParams(state)
       getToken(state)
@@ -1700,7 +1700,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       node = parseAssignment(state) // start again
 
       if (state.token !== ')') {
-        throw createSyntaxError(state, 'Parenthesis ) expected')
+        throw createSyntaxError(state, '应为右括号 )')
       }
       closeParams(state)
       getToken(state)
@@ -1721,9 +1721,9 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   function parseEnd (state) {
     if (state.token === '') {
       // syntax error or unexpected end of expression
-      throw createSyntaxError(state, 'Unexpected end of expression')
+      throw createSyntaxError(state, '表达式不完整')
     } else {
-      throw createSyntaxError(state, 'Value expected')
+      throw createSyntaxError(state, '缺少值')
     }
   }
 
@@ -1756,7 +1756,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function createSyntaxError (state, message) {
     const c = col(state)
-    const error = new SyntaxError(message + ' (char ' + c + ')')
+    const error = new SyntaxError(message + ' (第 ' + c + ' 字符处)')
     error.char = c
 
     return error

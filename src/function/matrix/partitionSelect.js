@@ -57,7 +57,7 @@ export const createPartitionSelect = /* #__PURE__ */ factory(name, dependencies,
       } else if (compare === 'desc') {
         return _partitionSelect(x, k, desc)
       } else {
-        throw new Error('Compare string must be "asc" or "desc"')
+        throw new Error('比较字符串必须为 "asc" 或 "desc"')
       }
     },
 
@@ -66,13 +66,13 @@ export const createPartitionSelect = /* #__PURE__ */ factory(name, dependencies,
 
   function _partitionSelect (x, k, compare) {
     if (!isInteger(k) || k < 0) {
-      throw new Error('k must be a non-negative integer')
+      throw new Error('k 必须为非负整数')
     }
 
     if (isMatrix(x)) {
       const size = x.size()
       if (size.length > 1) {
-        throw new Error('Only one dimensional matrices supported')
+        throw new Error('仅支持一维矩阵')
       }
       return quickSelect(x.valueOf(), k, compare)
     }
@@ -94,7 +94,7 @@ export const createPartitionSelect = /* #__PURE__ */ factory(name, dependencies,
    */
   function quickSelect (arr, k, compare) {
     if (k >= arr.length) {
-      throw new Error('k out of bounds')
+      throw new Error('k 越界')
     }
 
     // check for NaN values since these can cause an infinite while loop

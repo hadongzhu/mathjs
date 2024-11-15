@@ -114,7 +114,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
         enumerable: false, // to make sure that the eigenvectors can still be
         // converted to string.
         get: () => {
-          throw new Error('eigs(M).vectors replaced with eigs(M).eigenvectors')
+          throw new Error('eigs(M).vectors 已替换为 eigs(M).eigenvectors')
         }
       })
     }
@@ -127,7 +127,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
     const asize = mat.size()
 
     if (asize.length !== 2 || asize[0] !== asize[1]) {
-      throw new RangeError(`Matrix must be square (size: ${format(asize)})`)
+      throw new RangeError(`矩阵必须是方阵 (大小: ${format(asize)})`)
     }
 
     const N = asize[0]
@@ -205,7 +205,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
         } else if (isComplex(el)) {
           hasComplex = true
         } else {
-          throw TypeError('Unsupported type in Matrix: ' + typeOf(el))
+          throw TypeError('矩阵中不支持的类型：' + typeOf(el))
         }
       }
     }
@@ -243,7 +243,7 @@ export const createEigs = /* #__PURE__ */ factory(name, dependencies, ({ config,
 
       return 'number'
     } else {
-      throw TypeError('Matrix contains unsupported types only.')
+      throw TypeError('矩阵仅包含不支持的类型。')
     }
   }
 })

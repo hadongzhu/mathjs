@@ -99,26 +99,26 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
       // adaptive runge kutta methods
       const wrongTSpan = !((tspan.length === 2) && (tspan.every(isNumOrBig) || tspan.every(isUnit)))
       if (wrongTSpan) {
-        throw new Error('"tspan" must be an Array of two numeric values or two units [tStart, tEnd]')
+        throw new Error('"tspan" 必须为两个数值或两个单位的数组 [tStart, tEnd]')
       }
       const t0 = tspan[0] // initial time
       const tf = tspan[1] // final time
       const isForwards = larger(tf, t0)
       const firstStep = options.firstStep
       if (firstStep !== undefined && !isPositive(firstStep)) {
-        throw new Error('"firstStep" must be positive')
+        throw new Error('"firstStep" 必须为正数')
       }
       const maxStep = options.maxStep
       if (maxStep !== undefined && !isPositive(maxStep)) {
-        throw new Error('"maxStep" must be positive')
+        throw new Error('"maxStep" 必须为正数')
       }
       const minStep = options.minStep
       if (minStep && isNegative(minStep)) {
-        throw new Error('"minStep" must be positive or zero')
+        throw newError('"minStep" 必须为正数或零')
       }
       const timeVars = [t0, tf, firstStep, minStep, maxStep].filter(x => x !== undefined)
       if (!(timeVars.every(isNumOrBig) || timeVars.every(isUnit))) {
-        throw new Error('Inconsistent type of "t" dependant variables')
+        throw new Error('"t" 依赖变量的类型不一致')
       }
       const steps = 1 // divide time in this number of steps
       const tol = options.tol ? options.tol : 1e-4 // define a tolerance (must be an option)
@@ -202,7 +202,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
         }
         iter++
         if (iter > maxIter) {
-          throw new Error('Maximum number of iterations reached, try changing options')
+          throw new Error('达到最大迭代次数，请尝试更改选项')
         }
       }
       return { t, y }
@@ -269,7 +269,7 @@ export const createSolveODE = /* #__PURE__ */ factory(name, dependencies, (
       const methodsWithQuotes = Object.keys(methods).map(x => `"${x}"`)
       // generates a string of methods like: "BDF", "RK23" and "RK45"
       const availableMethodsString = `${methodsWithQuotes.slice(0, -1).join(', ')} and ${methodsWithQuotes.slice(-1)}`
-      throw new Error(`Unavailable method "${method}". Available methods are ${availableMethodsString}`)
+      throw new Error(`不可用方法 "${method}"。可用方法为 ${availableMethodsString}`)
     }
   }
 

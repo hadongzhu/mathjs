@@ -9,7 +9,7 @@ export const createSpaClass = /* #__PURE__ */ factory(name, dependencies, ({ add
    * of the vector elements and an ordered list of non-zero elements.
    */
   function Spa () {
-    if (!(this instanceof Spa)) { throw new SyntaxError('Constructor must be called with the new operator') }
+    if (!(this instanceof Spa)) { throw new SyntaxError('构造函数必须使用 new 运算符调用') }
 
     // allocate vector, TODO use typed arrays
     this._values = []

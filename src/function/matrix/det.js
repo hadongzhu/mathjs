@@ -61,8 +61,8 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
           } if (size[0] === 0) {
             return 1 // det of an empty matrix is per definition 1
           } else {
-            throw new RangeError('Matrix must be square ' +
-            '(size: ' + format(size) + ')')
+            throw new RangeError('矩阵必须是方阵 ' +
+            '(大小: ' + format(size) + ')')
           }
 
         case 2:
@@ -75,15 +75,15 @@ export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
           } if (cols === 0) {
             return 1 // det of an empty matrix is per definition 1
           } else {
-            throw new RangeError('Matrix must be square ' +
-              '(size: ' + format(size) + ')')
+            throw new RangeError('矩阵必须是方阵 ' +
+            '(大小: ' + format(size) + ')')
           }
         }
 
         default:
           // multi dimensional array
-          throw new RangeError('Matrix must be two dimensional ' +
-          '(size: ' + format(size) + ')')
+          throw new RangeError('矩阵必须是二维的 ' +
+          '(大小: ' + format(size) + ')')
       }
     }
   })

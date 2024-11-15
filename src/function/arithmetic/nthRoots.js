@@ -24,9 +24,9 @@ export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * @return {Array} array of n Complex Roots
    */
   function _nthComplexRoots (a, root) {
-    if (root < 0) throw new Error('Root must be greater than zero')
-    if (root === 0) throw new Error('Root must be non-zero')
-    if (root % 1 !== 0) throw new Error('Root must be an integer')
+    if (root < 0) throw new Error('根必须大于零')
+    if (root === 0) throw new Error('根必须非零')
+    if (root % 1 !== 0) throw new Error('根必须为整数')
     if (a === 0 || a.abs() === 0) return [new Complex(0, 0)]
     const aIsNumeric = typeof (a) === 'number'
     let offset

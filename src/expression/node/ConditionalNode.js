@@ -38,7 +38,7 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
       return false
     }
 
-    throw new TypeError('Unsupported type of condition "' + typeOf(condition) + '"')
+    throw new TypeError('不支持的条件类型 "' + typeOf(condition) + '"')
   }
 
   class ConditionalNode extends Node {
@@ -54,9 +54,9 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
      */
     constructor (condition, trueExpr, falseExpr) {
       super()
-      if (!isNode(condition)) { throw new TypeError('Parameter condition must be a Node') }
-      if (!isNode(trueExpr)) { throw new TypeError('Parameter trueExpr must be a Node') }
-      if (!isNode(falseExpr)) { throw new TypeError('Parameter falseExpr must be a Node') }
+      if (!isNode(condition)) { throw new TypeError('参数 condition 必须为节点') }
+      if (!isNode(trueExpr)) { throw new TypeError('参数 trueExpr 必须为节点') }
+      if (!isNode(falseExpr)) { throw new TypeError('参数 falseExpr 必须为节点') }
 
       this.condition = condition
       this.trueExpr = trueExpr

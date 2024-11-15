@@ -45,18 +45,18 @@ export const createCorr = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const correlations = []
     if (Array.isArray(A[0]) && Array.isArray(B[0])) {
       if (A.length !== B.length) {
-        throw new SyntaxError('Dimension mismatch. Array A and B must have the same length.')
+        throw new SyntaxError('维度不匹配。数组 A 和 B 必须具有相同的长度。')
       }
       for (let i = 0; i < A.length; i++) {
         if (A[i].length !== B[i].length) {
-          throw new SyntaxError('Dimension mismatch. Array A and B must have the same number of elements.')
+          throw new SyntaxError('维度不匹配。数组 A 和 B 必须具有相同的元素数量。')
         }
         correlations.push(correlation(A[i], B[i]))
       }
       return correlations
     } else {
       if (A.length !== B.length) {
-        throw new SyntaxError('Dimension mismatch. Array A and B must have the same number of elements.')
+        throw new SyntaxError('维度不匹配。数组 A 和 B 必须具有相同的元素数量。')
       }
       return correlation(A, B)
     }

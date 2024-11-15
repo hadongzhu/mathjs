@@ -115,12 +115,12 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ t
 
     if (typeof weights !== 'undefined') {
       if (weights.length !== possibles.length) {
-        throw new Error('Weights must have the same length as possibles')
+        throw new Error('权重必须与可能性具有相同的长度')
       }
 
       for (let i = 0, len = weights.length; i < len; i++) {
         if (!isNumber(weights[i]) || weights[i] < 0) {
-          throw new Error('Weights must be an array of positive numbers')
+          throw new Error('权重必须为正数数组')
         }
 
         totalWeights += weights[i]

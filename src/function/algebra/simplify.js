@@ -442,7 +442,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
         newRule.l = lr[0]
         newRule.r = lr[1]
       } else {
-        throw SyntaxError('Could not parse rule: ' + ruleObject.s)
+        throw SyntaxError('无法解析规则：' + ruleObject.s)
       }
     } else {
       newRule.l = ruleObject.l
@@ -527,7 +527,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
           newRule = rule
           break
         default:
-          throw TypeError('Unsupported type of rule: ' + ruleType)
+          throw TypeError('不支持的规则类型：' + ruleType)
       }
       // console.log('Adding rule: ' + rules[i])
       // console.log(newRule)
@@ -906,7 +906,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
              * It's a bit complicated, and unlikely to come up since there
              * are very few ternary or higher operators. So punt for now.
              */
-            throw new Error('permuting >2 commutative non-associative rule arguments not yet implemented')
+            throw new Error('尚未实现 >2 个可交换的非结合规则参数的置换')
           }
           /* Exactly two arguments, try them reversed */
           const leftMatch = _ruleMatch(rule.args[0], node.args[1], context)
@@ -931,7 +931,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
         }
         return splitMatches
       } else if (rule.args.length > 2) {
-        throw Error('Unexpected non-binary associative function: ' + rule.toString())
+        throw Error('意外的非二元结合函数：' + rule.toString())
       } else {
         // Incorrect number of arguments in rule and node, so no match
         return []
@@ -941,7 +941,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
       // according to the first one or two characters of the symbol node name.
       // These meanings are expalined in the documentation for simplify()
       if (rule.name.length === 0) {
-        throw new Error('Symbol in rule has 0 length...!?')
+        throw new Error('规则中的符号长度为 0...!?')
       }
       if (SUPPORTED_CONSTANTS[rule.name]) {
         // built-in constant must match exactly
@@ -1023,7 +1023,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
             }
             break
           default:
-            throw new Error('Invalid symbol in rule: ' + rule.name)
+            throw new Error('规则中的无效符号：' + rule.name)
         }
       }
     } else if (rule instanceof ConstantNode) {

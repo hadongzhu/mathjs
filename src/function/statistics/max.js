@@ -49,7 +49,7 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     // max(a, b, c, d, ...)
     '...': function (args) {
       if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function max')
+        throw new TypeError('函数 max 中应为标量')
       }
 
       return _max(args)
@@ -93,7 +93,7 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, c
     })
 
     if (res === undefined) {
-      throw new Error('Cannot calculate max of an empty array')
+      throw new Error('无法计算空数组的最大值')
     }
 
     // make sure returning numeric value: parse a string into a numeric value

@@ -342,8 +342,8 @@ export function getAssociativity (_node, parenthesis) {
       return 'right'
     }
     // associativity is invalid
-    throw Error('\'' + identifier + '\' has the invalid associativity \'' +
-                property.associativity + '\'.')
+    throw Error('\'' + identifier + '\' 具有无效的结合性 \'' +
+    property.associativity + '\'')
   }
 
   // associativity is undefined

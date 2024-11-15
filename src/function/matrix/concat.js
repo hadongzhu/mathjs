@@ -58,7 +58,7 @@ export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
         if (isNumber(arg) || isBigNumber(arg)) {
           if (i !== len - 1) {
-            throw new Error('Dimension must be specified as last argument')
+            throw new Error('维度必须作为最后一个参数指定')
           }
 
           // last argument contains the dimension on which to concatenate
@@ -66,7 +66,7 @@ export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed
           dim = arg.valueOf() // change BigNumber to number
 
           if (!isInteger(dim)) {
-            throw new TypeError('Integer number expected for dimension')
+            throw new TypeError('维度应为整数')
           }
 
           if (dim < 0 || (i > 0 && dim > prevDim)) {
@@ -89,7 +89,7 @@ export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed
       }
 
       if (matrices.length === 0) {
-        throw new SyntaxError('At least one matrix expected')
+        throw new SyntaxError('至少应为一个矩阵')
       }
 
       let res = matrices.shift()

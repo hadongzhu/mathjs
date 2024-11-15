@@ -74,16 +74,16 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
 
       // validate input
       if (!isSymbolNode(object) && !isAccessorNode(object)) {
-        throw new TypeError('SymbolNode or AccessorNode expected as "object"')
+        throw new TypeError('应为 SymbolNode 或 AccessorNode 作为 "object"')
       }
       if (isSymbolNode(object) && object.name === 'end') {
-        throw new Error('Cannot assign to symbol "end"')
+        throw new Error('无法分配给符号 "end"')
       }
       if (this.index && !isIndexNode(this.index)) { // index is optional
-        throw new TypeError('IndexNode expected as "index"')
+        throw new TypeError('应为索引节点作为 "index"')
       }
       if (!isNode(this.value)) {
-        throw new TypeError('Node expected as "value"')
+        throw new TypeError('应为节点作为 "value"')
       }
     }
 
@@ -126,7 +126,7 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
       if (!this.index) {
         // apply a variable to the scope, for example `a=2`
         if (!isSymbolNode(this.object)) {
-          throw new TypeError('SymbolNode expected as object')
+          throw new TypeError('应为 SymbolNode 作为对象')
         }
 
         return function evalAssignmentNode (scope, args, context) {

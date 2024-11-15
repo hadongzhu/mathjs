@@ -67,11 +67,11 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   function Unit (value, valuelessUnit) {
     if (!(this instanceof Unit)) {
-      throw new Error('Constructor must be called with the new operator')
+      throw new Error('构造函数必须使用 new 运算符调用')
     }
 
     if (!(value === null || value === undefined || isNumeric(value) || isComplex(value))) {
-      throw new TypeError('First parameter in Unit constructor must be number, BigNumber, Fraction, Complex, or undefined')
+      throw new TypeError('Unit 构造函数的第一个参数应为浮点数、大数、分数、复数或undefined（未定义）')
     }
 
     this.fixPrefix = false // if true, function format will not search for the
@@ -96,7 +96,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       this.dimensions = valuelessUnit.dimensions.slice(0)
       this.units = valuelessUnit.units.map(u => Object.assign({}, u))
     } else {
-      throw new TypeError('Second parameter in Unit constructor must be a string or valueless Unit')
+      throw new TypeError('Unit 构造函数的第二个参数应为字符串或无值单位')
     }
 
     this.value = this._normalize(value)
@@ -255,7 +255,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     c = ''
 
     if (typeof text !== 'string') {
-      throw new TypeError('Invalid argument in Unit.parse, string expected')
+      throw new TypeError('Unit.parse 的参数无效，应为字符串')
     }
 
     const unit = new Unit()
@@ -335,7 +335,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         const oldC = c
         uStr = parseUnit()
         if (uStr === null) {
-          throw new SyntaxError('Unexpected "' + oldC + '" in "' + text + '" at index ' + index.toString())
+          throw new SyntaxError('在 "' + text + '" 中，索引 ' + index.toString() + ' 处出现意外字符 "' + oldC + '"')
         }
       } else {
         // End of input.
@@ -346,7 +346,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       const res = _findUnit(uStr)
       if (res === null) {
         // Unit not found.
-        throw new SyntaxError('Unit "' + uStr + '" not found.')
+        throw new SyntaxError('未找到单位 "' + uStr + '"')
       }
 
       let power = powerMultiplierCurrent * powerMultiplierStackProduct
@@ -357,7 +357,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         const p = parseNumber()
         if (p === null) {
           // No valid number found for the power!
-          throw new SyntaxError('In "' + str + '", "^" must be followed by a floating-point number')
+          throw new SyntaxError('在 "' + str + '" 中，"^" 后应为浮点数')
         }
         power *= p
       }
@@ -377,7 +377,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       skipWhitespace()
       while (c === ')') {
         if (powerMultiplierStack.length === 0) {
-          throw new SyntaxError('Unmatched ")" in "' + text + '" at index ' + index.toString())
+          throw new SyntaxError('"(" 在 "' + text + '" 中未匹配，索引 ' + index.toString())
         }
         powerMultiplierStackProduct /= powerMultiplierStack.pop()
         next()
@@ -414,22 +414,22 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     // Has the string been entirely consumed?
     skipWhitespace()
     if (c) {
-      throw new SyntaxError('Could not parse: "' + str + '"')
+      throw new SyntaxError('无法解析："' + str + '"')
     }
 
     // Is there a trailing slash?
     if (expectingUnit) {
-      throw new SyntaxError('Trailing characters: "' + str + '"')
+      throw new SyntaxError('尾部字符："' + str + '"')
     }
 
     // Is the parentheses stack empty?
     if (powerMultiplierStack.length !== 0) {
-      throw new SyntaxError('Unmatched "(" in "' + text + '"')
+      throw new SyntaxError('"(" 在 "' + text + '" 中未匹配 ')
     }
 
     // Are there any units at all?
     if (unit.units.length === 0 && !options.allowNoUnits) {
-      throw new SyntaxError('"' + str + '" contains no units')
+      throw new SyntaxError('"' + str + '" 不包含单位')
     }
 
     unit.value = (value !== undefined) ? unit._normalize(value) : null
@@ -817,14 +817,14 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     } else if (isUnit(valuelessUnit)) {
       other = valuelessUnit.clone()
     } else {
-      throw new Error('String or Unit expected as parameter')
+      throw new Error('应为字符串或单位')
     }
 
     if (!this.equalBase(other)) {
-      throw new Error(`Units do not match ('${other.toString()}' != '${this.toString()}')`)
+      throw new Error(`单位不匹配 ('${other.toString()}' != '${this.toString()}')`)
     }
     if (other.value !== null) {
-      throw new Error('Cannot convert to a unit with a value')
+      throw new Error('无法转换为带有值的单位')
     }
 
     if (this.value === null || this._isDerived() ||
@@ -1015,7 +1015,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
             power: ret.dimensions[i] || 0
           })
         } else {
-          throw new Error('Cannot express custom unit ' + baseDim + ' in SI units')
+          throw new Error('无法用国际单位制表示自定义单位 ' + baseDim)
         }
       }
     }
@@ -1160,10 +1160,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   Unit.prototype._bestPrefix = function () {
     if (this.units.length !== 1) {
-      throw new Error('Can only compute the best prefix for single units with integer powers, like kg, s^2, N^-1, and so forth!')
+      throw new Error('只能计算整数次幂的单位的最佳前缀，如 kg、s^2、N^-1 等！')
     }
     if (Math.abs(this.units[0].power - Math.round(this.units[0].power)) >= 1e-14) {
-      throw new Error('Can only compute the best prefix for single units with integer powers, like kg, s^2, N^-1, and so forth!')
+      throw new Error('只能计算整数次幂的单位的最佳前缀，如 kg、s^2、N^-1 等！')
     }
 
     // find the best prefix value (resulting in the value of which
@@ -2981,7 +2981,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     if (hasOwnProperty(UNIT_SYSTEMS, name)) {
       currentUnitSystem = UNIT_SYSTEMS[name]
     } else {
-      throw new Error('Unit system ' + name + ' does not exist. Choices are: ' + Object.keys(UNIT_SYSTEMS).join(', '))
+      throw new Error('单位制 ' + name + ' 不存在。可选项为：' + Object.keys(UNIT_SYSTEMS).join(', '))
     }
   }
 
@@ -3035,7 +3035,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     if (convert) {
       return convert
     }
-    throw new TypeError('Unsupported Unit value type "' + this.valueType() + '"')
+    throw new TypeError('不支持的单位值类型 "' + this.valueType() + '"')
   }
 
   /**
@@ -3090,10 +3090,10 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     for (let i = 0; i < name.length; i++) {
       c = name.charAt(i)
 
-      if (i === 0 && !Unit.isValidAlpha(c)) { throw new Error('Invalid unit name (must begin with alpha character): "' + name + '"') }
+      if (i === 0 && !Unit.isValidAlpha(c)) { throw new Error('无效的单位名称（必须以字母开头）："' + name + '"') }
 
       if (i > 0 && !(Unit.isValidAlpha(c) ||
-        isDigit(c))) { throw new Error('Invalid unit name (only alphanumeric characters are allowed): "' + name + '"') }
+        isDigit(c))) { throw new Error('无效的单位名称（只允许字母数字字符）："' + name + '"') }
     }
   }
 
@@ -3117,7 +3117,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
    */
   Unit.createUnit = function (obj, options) {
     if (typeof (obj) !== 'object') {
-      throw new TypeError("createUnit expects first parameter to be of type 'Object'")
+      throw new TypeError('createUnit 的第一个参数应为对象')
     }
 
     // Remove all units and aliases we are overriding
@@ -3173,12 +3173,12 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
     }
 
     if (typeof (name) !== 'string') {
-      throw new TypeError("createUnitSingle expects first parameter to be of type 'string'")
+      throw new TypeError('createUnitSingle 的第一个参数应为字符串')
     }
 
     // Check collisions with existing units
     if (hasOwnProperty(UNITS, name)) {
-      throw new Error('Cannot create unit "' + name + '": a unit with that name already exists')
+      throw new Error('无法创建单位 "' + name + '"：已存在同名单位')
     }
 
     // TODO: Validate name for collisions with other built-in functions (like abs or cos, for example), and for acceptable variable names. For example, '42' is probably not a valid unit. Nor is '%', since it is also an operator.
@@ -3206,13 +3206,13 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
         aliases = obj.aliases.valueOf() // aliases could be a Matrix, so convert to Array
       }
     } else {
-      throw new TypeError('Cannot create unit "' + name + '" from "' + obj.toString() + '": expecting "string" or "Unit" or "Object"')
+      throw new TypeError('无法从 "' + obj.toString() + '" 创建单位 "' + name + '"：应为字符串、单位或对象')
     }
 
     if (aliases) {
       for (let i = 0; i < aliases.length; i++) {
         if (hasOwnProperty(UNITS, aliases[i])) {
-          throw new Error('Cannot create alias "' + aliases[i] + '": a unit with that name already exists')
+          throw new Error('无法创建别名 "' + aliases[i] + '"：已存在同名单位')
         }
       }
     }
@@ -3221,7 +3221,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       try {
         defUnit = Unit.parse(definition, { allowNoUnits: true })
       } catch (ex) {
-        ex.message = 'Could not create unit "' + name + '" from "' + definition + '": ' + ex.message
+        ex.message = '无法从 "' + definition + '" 创建单位 "' + name + '"：' + ex.message
         throw (ex)
       }
     } else if (definition && definition.type === 'Unit') {
@@ -3239,7 +3239,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
       // Add a new base dimension
       baseName = baseName || name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
       if (BASE_DIMENSIONS.indexOf(baseName) >= 0) {
-        throw new Error('Cannot create new base unit "' + name + '": a base unit with that name already exists (and cannot be overridden)')
+        throw new Error('无法创建新的基本单位 "' + name + '"：已存在同名基本单位（无法覆盖）')
       }
       BASE_DIMENSIONS.push(baseName)
 

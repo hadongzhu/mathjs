@@ -22,8 +22,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * @class SparseMatrix
    */
   function SparseMatrix (data, datatype) {
-    if (!(this instanceof SparseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
-    if (datatype && !isString(datatype)) { throw new Error('Invalid datatype: ' + datatype) }
+    if (!(this instanceof SparseMatrix)) { throw new SyntaxError('构造函数必须使用 new 运算符调用') }
+    if (datatype && !isString(datatype)) { throw new Error('无效的数据类型：' + datatype) }
 
     if (isMatrix(data)) {
       // create from matrix
@@ -40,7 +40,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       _createFromArray(this, data, datatype)
     } else if (data) {
       // unsupported type
-      throw new TypeError('Unsupported type of data (' + typeOf(data) + ')')
+      throw new TypeError('不支持的数据类型 (' + typeOf(data) + ')')
     } else {
       // nothing provided
       this._values = []
@@ -236,7 +236,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    *                                  new matrix elements will be filled with zeros.
    */
   SparseMatrix.prototype.subset = function (index, replacement, defaultValue) { // check it is a pattern matrix
-    if (!this._values) { throw new Error('Cannot invoke subset on a Pattern only matrix') }
+    if (!this._values) { throw new Error('无法在仅模式的矩阵上调用 subset') }
 
     // check arguments
     switch (arguments.length) {
@@ -249,14 +249,14 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
         return _setsubset(this, index, replacement, defaultValue)
 
       default:
-        throw new SyntaxError('Wrong number of arguments')
+        throw new SyntaxError('参数数量错误')
     }
   }
 
   function _getsubset (matrix, idx) {
     // check idx
     if (!isIndex(idx)) {
-      throw new TypeError('Invalid index')
+      throw new TypeError('索引无效')
     }
 
     const isScalar = idx.isScalar()
@@ -340,7 +340,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
   function _setsubset (matrix, index, submatrix, defaultValue) {
     // check index
     if (!index || index.isIndex !== true) {
-      throw new TypeError('Invalid index')
+      throw new TypeError('索引无效')
     }
 
     // get index size and check whether the index contains a single value
@@ -363,7 +363,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     if (isScalar) {
       // verify submatrix is a scalar
       if (sSize.length !== 0) {
-        throw new TypeError('Scalar expected')
+        throw new TypeError('应为标量')
       }
       // set value
       matrix.set(index.min(), submatrix, defaultValue)
@@ -425,11 +425,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * @return {*} value
    */
   SparseMatrix.prototype.get = function (index) {
-    if (!isArray(index)) { throw new TypeError('Array expected') }
+    if (!isArray(index)) { throw new TypeError('应为数组') }
     if (index.length !== this._size.length) { throw new DimensionError(index.length, this._size.length) }
 
     // check it is a pattern matrix
-    if (!this._values) { throw new Error('Cannot invoke get on a Pattern only matrix') }
+    if (!this._values) { throw new Error('无法在仅模式的矩阵上调用 get') }
 
     // row and column
     const i = index[0]
@@ -458,11 +458,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * @return {SparseMatrix} self
    */
   SparseMatrix.prototype.set = function (index, v, defaultValue) {
-    if (!isArray(index)) { throw new TypeError('Array expected') }
+    if (!isArray(index)) { throw new TypeError('应为数组') }
     if (index.length !== this._size.length) { throw new DimensionError(index.length, this._size.length) }
 
     // check it is a pattern matrix
-    if (!this._values) { throw new Error('Cannot invoke set on a Pattern only matrix') }
+    if (!this._values) { throw new Error('无法在仅模式的矩阵上调用 set') }
 
     // row and column
     const i = index[0]
@@ -566,7 +566,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
   SparseMatrix.prototype.resize = function (size, defaultValue, copy) {
     // validate arguments
     if (!isCollection(size)) {
-      throw new TypeError('Array or Matrix expected')
+      throw new TypeError('应为数组或矩阵')
     }
 
     // SparseMatrix input is always 2d, flatten this into 1d if it's indeed a vector
@@ -581,8 +581,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
     // check sizes
     sizeArray.forEach(function (value) {
       if (!isNumber(value) || !isInteger(value) || value < 0) {
-        throw new TypeError('Invalid size, must contain positive integers ' +
-          '(size: ' + format(sizeArray) + ')')
+        throw new TypeError('无效的大小，应为正整数 ' +
+        '(大小: ' + format(sizeArray) + ')')
       }
     })
 
@@ -728,14 +728,14 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    */
   SparseMatrix.prototype.reshape = function (sizes, copy) {
     // validate arguments
-    if (!isArray(sizes)) { throw new TypeError('Array expected') }
-    if (sizes.length !== 2) { throw new Error('Sparse matrices can only be reshaped in two dimensions') }
+    if (!isArray(sizes)) { throw new TypeError('应为数组') }
+    if (sizes.length !== 2) { throw new Error('稀疏矩阵只能在二维中重塑') }
 
     // check sizes
     sizes.forEach(function (value) {
       if (!isNumber(value) || !isInteger(value) || value <= -2 || value === 0) {
-        throw new TypeError('Invalid size, must contain positive integers or -1 ' +
-          '(size: ' + format(sizes) + ')')
+        throw new TypeError('无效的大小，须为正整数或 -1 ' +
+        '(大小: ' + format(sizes) + ')')
       }
     })
 
@@ -745,7 +745,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
 
     // m * n must not change
     if (currentLength !== newLength) {
-      throw new Error('Reshaping sparse matrix will result in the wrong number of elements')
+      throw new Error('调整稀疏矩阵的形状会导致元素数量错误')
     }
 
     // matrix to reshape
@@ -958,7 +958,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    */
   SparseMatrix.prototype.forEach = function (callback, skipZeros) {
     // check it is a pattern matrix
-    if (!this._values) { throw new Error('Cannot invoke forEach on a Pattern only matrix') }
+    if (!this._values) { throw new Error('无法在仅为模式的矩阵上调用 forEach') }
     // matrix instance
     const me = this
     // rows and columns
@@ -1002,7 +1002,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * @return {Iterable<{ value, index: number[] }>}
    */
   SparseMatrix.prototype[Symbol.iterator] = function * () {
-    if (!this._values) { throw new Error('Cannot iterate a Pattern only matrix') }
+    if (!this._values) { throw new Error('无法迭代仅为模式的矩阵') }
 
     const columns = this._size[1]
 
@@ -1140,7 +1140,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       if (isBigNumber(k)) { k = k.toNumber() }
       // is must be an integer
       if (!isNumber(k) || !isInteger(k)) {
-        throw new TypeError('The parameter k must be an integer number')
+        throw new TypeError('参数 k 须为整数')
       }
     } else {
       // default value
@@ -1219,8 +1219,8 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
    * @returns {SparseMatrix}
    */
   SparseMatrix.diagonal = function (size, value, k, defaultValue, datatype) {
-    if (!isArray(size)) { throw new TypeError('Array expected, size parameter') }
-    if (size.length !== 2) { throw new Error('Only two dimensions matrix are supported') }
+    if (!isArray(size)) { throw new TypeError('应为数组，size 参数') }
+    if (size.length !== 2) { throw new Error('仅支持二维矩阵') }
 
     // map size & validate
     size = size.map(function (s) {
@@ -1231,7 +1231,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       }
       // validate arguments
       if (!isNumber(s) || !isInteger(s) || s < 1) {
-        throw new Error('Size values must be positive integers')
+        throw new Error('size值须为正整数')
       }
       return s
     })
@@ -1242,7 +1242,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       if (isBigNumber(k)) { k = k.toNumber() }
       // is must be an integer
       if (!isNumber(k) || !isInteger(k)) {
-        throw new TypeError('The parameter k must be an integer number')
+        throw new TypeError('参数 k 须为整数')
       }
     } else {
       // default value
@@ -1279,7 +1279,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       // validate array
       if (value.length !== n) {
         // number of values in array must be n
-        throw new Error('Invalid value array length')
+        throw new Error('数组长度无效')
       }
       // define function
       _value = function (i) {
@@ -1292,7 +1292,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       // validate matrix
       if (ms.length !== 1 || ms[0] !== n) {
         // number of values in array must be n
-        throw new Error('Invalid matrix length')
+        throw new Error('矩阵长度无效')
       }
       // define function
       _value = function (i) {
@@ -1354,11 +1354,11 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
   SparseMatrix.prototype.swapRows = function (i, j) {
     // check index
     if (!isNumber(i) || !isInteger(i) || !isNumber(j) || !isInteger(j)) {
-      throw new Error('Row index must be positive integers')
+      throw new Error('行索引必须为正整数')
     }
     // check dimensions
     if (this._size.length !== 2) {
-      throw new Error('Only two dimensional matrix is supported')
+      throw new Error('仅支持二维矩阵')
     }
     // validate index
     validateIndex(i, this._size[0])

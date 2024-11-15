@@ -32,13 +32,13 @@ export const createCombinationsWithRep = /* #__PURE__ */ factory(name, dependenc
   return typed(name, {
     'number, number': function (n, k) {
       if (!isInteger(n) || n < 0) {
-        throw new TypeError('Positive integer value expected in function combinationsWithRep')
+        throw new TypeError('函数 combinationsWithRep 中应为正整数')
       }
       if (!isInteger(k) || k < 0) {
-        throw new TypeError('Positive integer value expected in function combinationsWithRep')
+        throw new TypeError('函数 combinationsWithRep 中应为正整数')
       }
       if (n < 1) {
-        throw new TypeError('k must be less than or equal to n + k - 1')
+        throw new TypeError('k 必须小于或等于 n + k - 1')
       }
 
       if (k < n - 1) {
@@ -56,10 +56,10 @@ export const createCombinationsWithRep = /* #__PURE__ */ factory(name, dependenc
       const nMinusOne = n.minus(one)
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
-        throw new TypeError('Positive integer value expected in function combinationsWithRep')
+        throw new TypeError('函数 combinationsWithRep 中应为正整数')
       }
       if (n.lt(one)) {
-        throw new TypeError('k must be less than or equal to n + k - 1 in function combinationsWithRep')
+        throw new TypeError('函数 combinationsWithRep 中的 k 必须小于或等于 n + k - 1')
       }
 
       result = one

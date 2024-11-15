@@ -101,7 +101,7 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let num = 0
 
     if (array.length === 0) {
-      throw new SyntaxError('Function variance requires one or more parameters (0 provided)')
+      throw new SyntaxError('函数 variance 需要一个或多个参数 (提供了 0 个)')
     }
 
     // calculate the mean and number of elements
@@ -113,7 +113,7 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         throw improveErrorMessage(err, 'variance', value)
       }
     })
-    if (num === 0) throw new Error('Cannot calculate variance of an empty array')
+    if (num === 0) throw new Error('无法计算空数组的方差')
 
     const mean = divide(sum, num)
 
@@ -142,15 +142,15 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
       }
 
       default:
-        throw new Error('Unknown normalization "' + normalization + '". ' +
-        'Choose "unbiased" (default), "uncorrected", or "biased".')
+        throw new Error('未知的归一化 "' + normalization + '"。' +
+        '选择 "unbiased" (默认), "uncorrected" 或 "biased"。')
     }
   }
 
   function _varDim (array, dim, normalization) {
     try {
       if (array.length === 0) {
-        throw new SyntaxError('Function variance requires one or more parameters (0 provided)')
+        throw new SyntaxError('函数 variance 需要一个或多个参数 (提供了 0 个)')
       }
       return apply(array, dim, (x) => _var(x, normalization))
     } catch (err) {

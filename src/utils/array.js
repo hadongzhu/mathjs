@@ -104,7 +104,7 @@ export function validateIndexSourceSize (value, index) {
 export function validateIndex (index, length) {
   if (index !== undefined) {
     if (!isNumber(index) || !isInteger(index)) {
-      throw new TypeError('Index must be an integer (value: ' + index + ')')
+      throw new TypeError('索引必须为整数 (值: ' + index + ')')
     }
     if (index < 0 || (typeof length === 'number' && index >= length)) {
       throw new IndexError(index, length)
@@ -149,17 +149,17 @@ export function isEmptyIndex (index) {
 export function resize (array, size, defaultValue) {
   // check the type of the arguments
   if (!Array.isArray(size)) {
-    throw new TypeError('Array expected')
+    throw new TypeError('应为数组')
   }
   if (size.length === 0) {
-    throw new Error('Resizing to scalar is not supported')
+    throw new TypeError('应为数组')
   }
 
   // check whether size contains positive integers
   size.forEach(function (value) {
     if (!isNumber(value) || !isInteger(value) || value < 0) {
-      throw new TypeError('Invalid size, must contain positive integers ' +
-        '(size: ' + format(size) + ')')
+      throw new TypeError('无效的大小，须为正整数 ' +
+      '(大小: ' + format(size) + ')')
     }
   })
 
@@ -250,7 +250,7 @@ export function reshape (array, sizes) {
   const currentLength = flatArray.length
 
   if (!Array.isArray(array) || !Array.isArray(sizes)) {
-    throw new TypeError('Array expected')
+    throw new TypeError('应为数组')
   }
 
   if (sizes.length === 0) {
@@ -296,7 +296,7 @@ export function processSizesWildcard (sizes, currentLength) {
 
   const isMoreThanOneWildcard = sizes.indexOf(WILDCARD, wildCardIndex + 1) >= 0
   if (isMoreThanOneWildcard) {
-    throw new Error('More than one wildcard in sizes')
+    throw new Error('sizes中有多个通配符')
   }
 
   const hasWildcard = wildCardIndex >= 0
@@ -306,7 +306,7 @@ export function processSizesWildcard (sizes, currentLength) {
     if (canReplaceWildcard) {
       processedSizes[wildCardIndex] = -currentLength / newLength
     } else {
-      throw new Error('Could not replace wildcard, since ' + currentLength + ' is no multiple of ' + (-newLength))
+      throw new Error('无法替换通配符，' + currentLength + ' 不是 ' + (-newLength) + ' 的倍数')
     }
   }
   return processedSizes
@@ -510,7 +510,7 @@ export function forEach (array, callback) {
  */
 export function filter (array, callback) {
   if (arraySize(array).length !== 1) {
-    throw new Error('Only one dimensional matrices supported')
+    throw new Error('仅支持一维矩阵')
   }
 
   return Array.prototype.filter.call(array, callback)
@@ -525,7 +525,7 @@ export function filter (array, callback) {
  */
 export function filterRegExp (array, regexp) {
   if (arraySize(array).length !== 1) {
-    throw new Error('Only one dimensional matrices supported')
+    throw new Error('仅支持一维矩阵')
   }
 
   return Array.prototype.filter.call(array, (entry) => regexp.test(entry))
@@ -547,7 +547,7 @@ export function join (array, separator) {
  */
 export function identify (a) {
   if (!Array.isArray(a)) {
-    throw new TypeError('Array input expected')
+    throw new TypeError('应为数组')
   }
 
   if (a.length === 0) {
@@ -575,7 +575,7 @@ export function identify (a) {
  */
 export function generalize (a) {
   if (!Array.isArray(a)) {
-    throw new TypeError('Array input expected')
+    throw new TypeError('应为数组')
   }
 
   if (a.length === 0) {
@@ -704,7 +704,7 @@ export function concat () {
   if (arrays.length > 1) {
     return arrays.slice(1).reduce(function (A, B) { return concatRecursive(A, B, concatDim, 0) }, arrays[0])
   } else {
-    throw new Error('Wrong number of arguments in function concat')
+    throw new Error('函数 concat 参数数量错误')
   }
 }
 
@@ -746,7 +746,7 @@ export function checkBroadcastingRules (size, toSize) {
     const n = N - dim + j
     if ((size[j] < toSize[n] && size[j] > 1) || (size[j] > toSize[n])) {
       throw new Error(
-        `shape missmatch: missmatch is found in arg with shape (${size}) not possible to broadcast dimension ${dim} with size ${size[j]} to size ${toSize[n]}`
+        `维度不匹配：在维度为 (${size}) 的参数中发现不匹配，无法将维度 ${dim} 的大小 ${size[j]} 广播到大小 ${toSize[n]}`
       )
     }
   }
@@ -792,7 +792,7 @@ export function broadcastTo (array, toSize) {
  */
 export function broadcastArrays (...arrays) {
   if (arrays.length === 0) {
-    throw new Error('Insuficient number of argumnets in function broadcastArrays')
+    throw new Error('函数 broadcastArrays 参数数量不足')
   }
   if (arrays.length === 1) {
     return arrays[0]

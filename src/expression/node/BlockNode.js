@@ -23,7 +23,7 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
     constructor (blocks) {
       super()
       // validate input, copy blocks
-      if (!Array.isArray(blocks)) throw new Error('Array expected')
+      if (!Array.isArray(blocks)) throw new Error('应为数组')
       this.blocks = blocks.map(function (block) {
         const node = block && block.node
         const visible = block &&
@@ -31,8 +31,8 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
           ? block.visible
           : true
 
-        if (!isNode(node)) throw new TypeError('Property "node" must be a Node')
-        if (typeof visible !== 'boolean') { throw new TypeError('Property "visible" must be a boolean') }
+        if (!isNode(node)) throw new TypeError('属性 "node" 必须为节点')
+        if (typeof visible !== 'boolean') { throw new TypeError('属性 "visible" 必须为布尔值') }
 
         return { node, visible }
       })

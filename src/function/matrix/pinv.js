@@ -97,8 +97,8 @@ export const createPinv = /* #__PURE__ */ factory(name, dependencies, ({
 
         default:
           // multi dimensional array
-          throw new RangeError('Matrix must be two dimensional ' +
-          '(size: ' + format(size) + ')')
+          throw new RangeError('矩阵必须是二维的 ' +
+          '(大小: ' + format(size) + ')')
       }
     },
 

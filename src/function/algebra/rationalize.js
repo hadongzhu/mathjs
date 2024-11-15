@@ -242,18 +242,18 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
       const tp = node.type // node type
       if (tp === 'FunctionNode') {
         // No function call in polynomial expression
-        throw new Error('There is an unsolved function call')
+        throw new Error('存在未解析的函数调用')
       } else if (tp === 'OperatorNode') {
         if (node.op === '^') {
           // TODO: handle negative exponents like in '1/x^(-2)'
           if (node.args[1].type !== 'ConstantNode' || !isInteger(parseFloat(node.args[1].value))) {
-            throw new Error('There is a non-integer exponent')
+            throw new Error('存在非整数指数')
           } else {
             recPoly(node.args[0])
           }
         } else {
           if (oper.indexOf(node.op) === -1) {
-            throw new Error('Operator ' + node.op + ' invalid in polynomial expression')
+            throw new Error('多项式表达式中的运算符 ' + node.op + ' 无效')
           }
           for (let i = 0; i < node.args.length; i++) {
             recPoly(node.args[i])
@@ -269,7 +269,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
       } else if (tp === 'ParenthesisNode') {
         recPoly(node.content)
       } else if (tp !== 'ConstantNode') {
-        throw new Error('type ' + tp + ' is not allowed in polynomial expression')
+        throw new Error('多项式表达式中不允许的类型 ' + tp)
       }
     } // end of recPoly
   } // end of polynomial
@@ -533,23 +533,23 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
       if (tp === 'FunctionNode') {
         // ***** FunctionName *****
         // No function call in polynomial expression
-        throw new Error('There is an unsolved function call')
+        throw new Error('存在未解析的函数调用')
       } else if (tp === 'OperatorNode') {
         // ***** OperatorName *****
-        if ('+-*^'.indexOf(node.op) === -1) throw new Error('Operator ' + node.op + ' invalid')
+        if ('+-*^'.indexOf(node.op) === -1) throw new Error('运算符 ' + node.op + ' 无效')
 
         if (noPai !== null) {
           // -(unary),^  : children of *,+,-
           if ((node.fn === 'unaryMinus' || node.fn === 'pow') && noPai.fn !== 'add' &&
-                                noPai.fn !== 'subtract' && noPai.fn !== 'multiply') { throw new Error('Invalid ' + node.op + ' placing') }
+                                noPai.fn !== 'subtract' && noPai.fn !== 'multiply') { throw new Error(node.op + ' 位置无效') }
 
           // -,+,* : children of +,-
           if ((node.fn === 'subtract' || node.fn === 'add' || node.fn === 'multiply') &&
-              noPai.fn !== 'add' && noPai.fn !== 'subtract') { throw new Error('Invalid ' + node.op + ' placing') }
+              noPai.fn !== 'add' && noPai.fn !== 'subtract') { throw new Error(node.op + ' 位置无效') }
 
           // -,+ : first child
           if ((node.fn === 'subtract' || node.fn === 'add' ||
-            node.fn === 'unaryMinus') && o.noFil !== 0) { throw new Error('Invalid ' + node.op + ' placing') }
+            node.fn === 'unaryMinus') && o.noFil !== 0) { throw new Error(node.op + ' 位置无效') }
         } // Has parent
 
         // Firers: ^,*       Old:   ^,&,-(unary): firers
@@ -569,7 +569,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
           recurPol(node.args[i], node, o)
         } // for in children
       } else if (tp === 'SymbolNode') { // ***** SymbolName *****
-        if (node.name !== varname && varname !== '') { throw new Error('There is more than one variable') }
+        if (node.name !== varname && varname !== '') { throw new Error('存在多个变量') }
         varname = node.name
         if (noPai === null) {
           coefficients[1] = 1
@@ -580,7 +580,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
         if (noPai.op === '^' && o.noFil !== 0) { throw new Error('In power the variable should be the first parameter') }
 
         // *: Symbol is Second child
-        if (noPai.op === '*' && o.noFil !== 1) { throw new Error('In multiply the variable should be the second parameter') }
+        if (noPai.op === '*' && o.noFil !== 1) { throw new Error('在 multiply 中，变量应为第二个参数') }
 
         // Symbol: firers '',* => it means there is no exponent above, so it's 1 (cte * var)
         if (o.fire === '' || o.fire === '*') {
@@ -596,9 +596,9 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
         }
         if (noPai.op === '^') {
           // cte: second  child of power
-          if (o.noFil !== 1) throw new Error('Constant cannot be powered')
+          if (o.noFil !== 1) throw new Error('常数不能求幂')
 
-          if (!isInteger(valor) || valor <= 0) { throw new Error('Non-integer exponent is not allowed') }
+          if (!isInteger(valor) || valor <= 0) { throw new Error('不允许非整数指数') }
 
           for (let i = maxExpo + 1; i < valor; i++) coefficients[i] = 0
           if (valor > maxExpo) coefficients[valor] = 0
@@ -610,7 +610,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
 
         // Cte: firer '' => There is no exponent and no multiplication, so the exponent is 0.
         if (o.fire === '') { coefficients[0] += o.cte * (o.oper === '+' ? 1 : -1) }
-      } else { throw new Error('Type ' + tp + ' is not allowed') }
+      } else { throw new Error('不允许类型 ' + tp) }
     } // End of recurPol
   } // End of polyToCanonical
 })
