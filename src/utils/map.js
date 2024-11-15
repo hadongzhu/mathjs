@@ -189,7 +189,7 @@ export function createMap (mapOrObject) {
     return new ObjectWrappingMap(mapOrObject)
   }
 
-  throw new Error('createMap can create maps from objects or Maps')
+  throw new Error('createMap 只能从对象或 Map 创建映射')
 }
 
 /**

@@ -45,7 +45,7 @@ export const createRow = /* #__PURE__ */ factory(name, dependencies, ({ typed, I
   function _row (value, row) {
     // check dimensions
     if (value.size().length !== 2) {
-      throw new Error('Only two dimensional matrix is supported')
+      throw new Error('仅支持二维矩阵')
     }
 
     validateIndex(row, value.size()[0])

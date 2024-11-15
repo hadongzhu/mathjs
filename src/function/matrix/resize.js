@@ -97,7 +97,7 @@ export const createResize = /* #__PURE__ */ factory(name, dependencies, ({ confi
   function _resizeString (str, size, defaultChar) {
     if (defaultChar !== undefined) {
       if (typeof defaultChar !== 'string' || defaultChar.length !== 1) {
-        throw new TypeError('Single character expected as defaultValue')
+        throw new TypeError('应为单个字符作为默认值')
       }
     } else {
       defaultChar = ' '
@@ -108,8 +108,8 @@ export const createResize = /* #__PURE__ */ factory(name, dependencies, ({ confi
     }
     const len = size[0]
     if (typeof len !== 'number' || !isInteger(len)) {
-      throw new TypeError('Invalid size, must contain positive integers ' +
-          '(size: ' + format(size) + ')')
+      throw new TypeError('无效的大小，应为正整数 ' +
+      '(大小: ' + format(size) + ')')
     }
 
     if (str.length > len) {

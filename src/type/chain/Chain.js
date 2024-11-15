@@ -27,7 +27,7 @@ export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ o
    */
   function Chain (value) {
     if (!(this instanceof Chain)) {
-      throw new SyntaxError('Constructor must be called with the new operator')
+      throw new SyntaxError('构造函数必须使用 new 运算符调用')
     }
 
     if (isChain(value)) {
@@ -146,7 +146,7 @@ export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ o
         // exactly one parameter (which then must be a rest parameter
         // as it is matching at least two actual arguments).
         if (sigObject.params.length === 1) {
-          throw new Error('chain function ' + fn.name + ' cannot match rest parameter between chain value and additional arguments.')
+          throw new Error('链函数 ' + fn.name + ' 无法匹配链值和额外参数之间的剩余参数。')
         }
         return new Chain(sigObject.implementation.apply(fn, args))
       }

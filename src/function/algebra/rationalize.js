@@ -242,7 +242,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
       const tp = node.type // node type
       if (tp === 'FunctionNode') {
         // No function call in polynomial expression
-        throw new Error('There is an unsolved function call')
+        throw new Error('存在未解析的函数调用')
       } else if (tp === 'OperatorNode') {
         if (node.op === '^') {
           // TODO: handle negative exponents like in '1/x^(-2)'
@@ -536,7 +536,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
         throw new Error('There is an unsolved function call')
       } else if (tp === 'OperatorNode') {
         // ***** OperatorName *****
-        if (!'+-*^'.includes(node.op)) throw new Error('Operator ' + node.op + ' invalid')
+        if (!'+-*^'.includes(node.op)) throw new Error('运算符 ' + node.op + ' 无效')
 
         if (noPai !== null) {
           // -(unary),^  : children of *,+,-

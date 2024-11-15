@@ -119,7 +119,7 @@ export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
   function _validate (size) {
     size.forEach(function (value) {
       if (typeof value !== 'number' || !isInteger(value) || value < 0) {
-        throw new Error('Parameters in function ones must be positive integers')
+        throw new Error('函数 ones 的参数必须为正整数')
       }
     })
   }

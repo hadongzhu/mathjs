@@ -3,13 +3,13 @@ import { product } from '../../utils/product.js'
 
 export function combinationsNumber (n, k) {
   if (!isInteger(n) || n < 0) {
-    throw new TypeError('Positive integer value expected in function combinations')
+    throw new TypeError('函数 combinations 中应为正整数')
   }
   if (!isInteger(k) || k < 0) {
-    throw new TypeError('Positive integer value expected in function combinations')
+    throw new TypeError('函数 combinations 中应为正整数')
   }
   if (k > n) {
-    throw new TypeError('k must be less than or equal to n')
+    throw new TypeError('k 必须小于或等于 n')
   }
 
   const nMinusk = n - k

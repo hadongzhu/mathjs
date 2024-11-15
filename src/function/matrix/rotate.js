@@ -67,13 +67,13 @@ export const createRotate = /* #__PURE__ */ factory(name, dependencies, (
   function _validateSize (v, expectedSize) {
     const actualSize = Array.isArray(v) ? arraySize(v) : v.size()
     if (actualSize.length > 2) {
-      throw new RangeError(`Vector must be of dimensions 1x${expectedSize}`)
+      throw new RangeError(`向量必须为 1x${expectedSize} 维`)
     }
     if (actualSize.length === 2 && actualSize[1] !== 1) {
-      throw new RangeError(`Vector must be of dimensions 1x${expectedSize}`)
+      throw new RangeError(`向量必须为 1x${expectedSize} 维`)
     }
     if (actualSize[0] !== expectedSize) {
-      throw new RangeError(`Vector must be of dimensions 1x${expectedSize}`)
+      throw new RangeError(`向量必须为 1x${expectedSize} 维`)
     }
   }
 })

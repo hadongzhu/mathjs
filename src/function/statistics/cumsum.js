@@ -51,7 +51,7 @@ export const createCumSum = /* #__PURE__ */ factory(name, dependencies, ({ typed
     // cumsum(a, b, c, d, ...)
     '...': function (args) {
       if (containsCollections(args)) {
-        throw new TypeError('All values expected to be scalar in function cumsum')
+        throw new TypeError('函数 cumsum 中应为标量')
       }
 
       return _cumsum(args)

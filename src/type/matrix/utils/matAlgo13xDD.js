@@ -37,7 +37,7 @@ export const createMatAlgo13xDD = /* #__PURE__ */ factory(name, dependencies, ({
     // validate each one of the dimension sizes
     for (let s = 0; s < asize.length; s++) {
       // must match
-      if (asize[s] !== bsize[s]) { throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')') }
+      if (asize[s] !== bsize[s]) { throw new RangeError('维度不匹配。矩阵 A (' + asize + ') 必须与矩阵 B (' + bsize + ') 匹配') }
       // update dimension in c
       csize[s] = asize[s]
     }

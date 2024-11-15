@@ -69,25 +69,25 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     'Array, Array, Array': function (x, y, z) {
       // Point to Line 2D (x=Point, y=LinePoint1, z=LinePoint2)
       if (x.length === 2 && y.length === 2 && z.length === 2) {
-        if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
-        if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument') }
-        if (!_2d(z)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for third argument') }
-        if (deepEqual(y, z)) { throw new TypeError('LinePoint1 should not be same with LinePoint2') }
+        if (!_2d(x)) { throw new TypeError('第一个参数应为包含 2 个浮点数或大数的数组') }
+        if (!_2d(y)) { throw new TypeError('第二个参数应为包含 2 个浮点数或大数的数组') }
+        if (!_2d(z)) { throw new TypeError('第三个参数应为包含 2 个浮点数或大数的数组') }
+        if (deepEqual(y, z)) { throw new TypeError('LinePoint1 不应与 LinePoint2 相同') }
         const xCoeff = subtractScalar(z[1], y[1])
         const yCoeff = subtractScalar(y[0], z[0])
         const constant = subtractScalar(multiplyScalar(z[0], y[1]), multiplyScalar(y[0], z[1]))
 
         return _distancePointLine2D(x[0], x[1], xCoeff, yCoeff, constant)
       } else {
-        throw new TypeError('Invalid Arguments: Try again')
+        throw new TypeError('参数无效')
       }
     },
     'Object, Object, Object': function (x, y, z) {
       if (Object.keys(x).length === 2 && Object.keys(y).length === 2 && Object.keys(z).length === 2) {
-        if (!_2d(x)) { throw new TypeError('Values of pointX and pointY should be numbers or BigNumbers') }
-        if (!_2d(y)) { throw new TypeError('Values of lineOnePtX and lineOnePtY should be numbers or BigNumbers') }
-        if (!_2d(z)) { throw new TypeError('Values of lineTwoPtX and lineTwoPtY should be numbers or BigNumbers') }
-        if (deepEqual(_objectToArray(y), _objectToArray(z))) { throw new TypeError('LinePoint1 should not be same with LinePoint2') }
+        if (!_2d(x)) { throw new TypeError('pointX 和 pointY 的值应为浮点数或大数') }
+        if (!_2d(y)) { throw new TypeError('lineOnePtX 和 lineOnePtY 的值应为浮点数或大数') }
+        if (!_2d(z)) { throw new TypeError('lineTwoPtX 和 lineTwoPtY 的值应为浮点数或大数') }
+        if (deepEqual(_objectToArray(y), _objectToArray(z))) { throw new TypeError('LinePoint1 不应与 LinePoint2 相同') }
         if ('pointX' in x && 'pointY' in x && 'lineOnePtX' in y &&
           'lineOnePtY' in y && 'lineTwoPtX' in z && 'lineTwoPtY' in z) {
           const xCoeff = subtractScalar(z.lineTwoPtY, y.lineOnePtY)
@@ -95,107 +95,107 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
           const constant = subtractScalar(multiplyScalar(z.lineTwoPtX, y.lineOnePtY), multiplyScalar(y.lineOnePtX, z.lineTwoPtY))
           return _distancePointLine2D(x.pointX, x.pointY, xCoeff, yCoeff, constant)
         } else {
-          throw new TypeError('Key names do not match')
+          throw new TypeError('键名不匹配')
         }
       } else {
-        throw new TypeError('Invalid Arguments: Try again')
+        throw new TypeError('参数无效')
       }
     },
     'Array, Array': function (x, y) {
       // Point to Line 2D (x=[pointX, pointY], y=[x-coeff, y-coeff, const])
       if (x.length === 2 && y.length === 3) {
         if (!_2d(x)) {
-          throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument')
+          throw new TypeError('第一个参数应为包含 2 个浮点数或大数的数组')
         }
         if (!_3d(y)) {
-          throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument')
+          throw new TypeError('第二个参数应为包含 3 个浮点数或大数的数组')
         }
 
         return _distancePointLine2D(x[0], x[1], y[0], y[1], y[2])
       } else if (x.length === 3 && y.length === 6) {
         // Point to Line 3D
         if (!_3d(x)) {
-          throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument')
+          throw new TypeError('第一个参数应为包含 3 个浮点数或大数的数组')
         }
         if (!_parametricLine(y)) {
-          throw new TypeError('Array with 6 numbers or BigNumbers expected for second argument')
+          throw new TypeError('第二个参数应为包含 6 个浮点数或大数的数组')
         }
 
         return _distancePointLine3D(x[0], x[1], x[2], y[0], y[1], y[2], y[3], y[4], y[5])
       } else if (x.length === y.length && x.length > 0) {
         // Point to Point N-dimensions
         if (!_containsOnlyNumbers(x)) {
-          throw new TypeError('All values of an array should be numbers or BigNumbers')
+          throw new TypeError('数组的所有值应为浮点数或大数')
         }
         if (!_containsOnlyNumbers(y)) {
-          throw new TypeError('All values of an array should be numbers or BigNumbers')
+          throw new TypeError('数组的所有值应为浮点数或大数')
         }
 
         return _euclideanDistance(x, y)
       } else {
-        throw new TypeError('Invalid Arguments: Try again')
+        throw new TypeError('参数无效')
       }
     },
     'Object, Object': function (x, y) {
       if (Object.keys(x).length === 2 && Object.keys(y).length === 3) {
         if (!_2d(x)) {
-          throw new TypeError('Values of pointX and pointY should be numbers or BigNumbers')
+          throw new TypeError('pointX 和 pointY 的值应为浮点数或大数')
         }
         if (!_3d(y)) {
-          throw new TypeError('Values of xCoeffLine, yCoeffLine and constant should be numbers or BigNumbers')
+          throw new TypeError('xCoeffLine、yCoeffLine 和 constant 的值应为浮点数或大数')
         }
         if ('pointX' in x && 'pointY' in x && 'xCoeffLine' in y && 'yCoeffLine' in y && 'constant' in y) {
           return _distancePointLine2D(x.pointX, x.pointY, y.xCoeffLine, y.yCoeffLine, y.constant)
         } else {
-          throw new TypeError('Key names do not match')
+          throw new TypeError('键名不匹配')
         }
       } else if (Object.keys(x).length === 3 && Object.keys(y).length === 6) {
         // Point to Line 3D
         if (!_3d(x)) {
-          throw new TypeError('Values of pointX, pointY and pointZ should be numbers or BigNumbers')
+          throw new TypeError('pointX、pointY 和 pointZ 的值应为浮点数或大数')
         }
         if (!_parametricLine(y)) {
-          throw new TypeError('Values of x0, y0, z0, a, b and c should be numbers or BigNumbers')
+          throw new TypeError('x0、y0、z0、a、b 和 c 的值应为浮点数或大数')
         }
         if ('pointX' in x && 'pointY' in x && 'x0' in y && 'y0' in y && 'z0' in y && 'a' in y && 'b' in y && 'c' in y) {
           return _distancePointLine3D(x.pointX, x.pointY, x.pointZ, y.x0, y.y0, y.z0, y.a, y.b, y.c)
         } else {
-          throw new TypeError('Key names do not match')
+          throw new TypeError('键名不匹配')
         }
       } else if (Object.keys(x).length === 2 && Object.keys(y).length === 2) {
         // Point to Point 2D
         if (!_2d(x)) {
-          throw new TypeError('Values of pointOneX and pointOneY should be numbers or BigNumbers')
+          throw new TypeError('pointOneX 和 pointOneY 的值应为浮点数或大数')
         }
         if (!_2d(y)) {
-          throw new TypeError('Values of pointTwoX and pointTwoY should be numbers or BigNumbers')
+          throw new TypeError('pointTwoX 和 pointTwoY 的值应为浮点数或大数')
         }
         if ('pointOneX' in x && 'pointOneY' in x && 'pointTwoX' in y && 'pointTwoY' in y) {
           return _euclideanDistance([x.pointOneX, x.pointOneY], [y.pointTwoX, y.pointTwoY])
         } else {
-          throw new TypeError('Key names do not match')
+          throw new TypeError('键名不匹配')
         }
       } else if (Object.keys(x).length === 3 && Object.keys(y).length === 3) {
         // Point to Point 3D
         if (!_3d(x)) {
-          throw new TypeError('Values of pointOneX, pointOneY and pointOneZ should be numbers or BigNumbers')
+          throw new TypeError('pointOneX、pointOneY 和 pointOneZ 的值应为浮点数或大数')
         }
         if (!_3d(y)) {
-          throw new TypeError('Values of pointTwoX, pointTwoY and pointTwoZ should be numbers or BigNumbers')
+          throw new TypeError('pointTwoX、pointTwoY 和 pointTwoZ 的值应为浮点数或大数')
         }
         if ('pointOneX' in x && 'pointOneY' in x && 'pointOneZ' in x &&
           'pointTwoX' in y && 'pointTwoY' in y && 'pointTwoZ' in y
         ) {
           return _euclideanDistance([x.pointOneX, x.pointOneY, x.pointOneZ], [y.pointTwoX, y.pointTwoY, y.pointTwoZ])
         } else {
-          throw new TypeError('Key names do not match')
+          throw new TypeError('键名不匹配')
         }
       } else {
-        throw new TypeError('Invalid Arguments: Try again')
+        throw new TypeError('参数无效')
       }
     },
     Array: function (arr) {
-      if (!_pairwise(arr)) { throw new TypeError('Incorrect array format entered for pairwise distance calculation') }
+      if (!_pairwise(arr)) { throw new TypeError('输入的成对距离计算格式不正确') }
 
       return _distancePairwise(arr)
     }

@@ -38,8 +38,8 @@ export const createExpm = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       const size = A.size()
 
       if (size.length !== 2 || size[0] !== size[1]) {
-        throw new RangeError('Matrix must be square ' +
-          '(size: ' + format(size) + ')')
+        throw new RangeError('矩阵必须是方阵 ' +
+        '(大小: ' + format(size) + ')')
       }
 
       const n = size[0]
@@ -135,7 +135,7 @@ export const createExpm = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
         }
       }
     }
-    throw new Error('Could not find acceptable parameters to compute the matrix exponential (try increasing maxSearchSize in expm.js)')
+    throw new Error('无法找到可接受的参数来计算矩阵指数（尝试增加 expm.js 中的 maxSearchSize）')
   }
 
   /**

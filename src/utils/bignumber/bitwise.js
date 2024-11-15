@@ -21,7 +21,7 @@
  */
 export function bitAndBigNumber (x, y) {
   if ((x.isFinite() && !x.isInteger()) || (y.isFinite() && !y.isInteger())) {
-    throw new Error('Integers expected in function bitAnd')
+    throw new Error('函数bitAnd的参数须为整数')
   }
 
   const BigNumber = x.constructor
@@ -73,7 +73,7 @@ export function bitAndBigNumber (x, y) {
  */
 export function bitNotBigNumber (x) {
   if (x.isFinite() && !x.isInteger()) {
-    throw new Error('Integer expected in function bitNot')
+    throw new Error('函数bitNot的参数须为整数')
   }
 
   const BigNumber = x.constructor
@@ -109,7 +109,7 @@ export function bitNotBigNumber (x) {
  */
 export function bitOrBigNumber (x, y) {
   if ((x.isFinite() && !x.isInteger()) || (y.isFinite() && !y.isInteger())) {
-    throw new Error('Integers expected in function bitOr')
+    throw new Error('函数bitOr的参数须为整数')
   }
 
   const BigNumber = x.constructor
@@ -291,7 +291,7 @@ function decCoefficientToBinaryString (x) {
  */
 export function bitXor (x, y) {
   if ((x.isFinite() && !x.isInteger()) || (y.isFinite() && !y.isInteger())) {
-    throw new Error('Integers expected in function bitXor')
+    throw new Error('函数bitXor的参数须为整数')
   }
 
   const BigNumber = x.constructor
@@ -348,7 +348,7 @@ export function bitXor (x, y) {
  */
 export function leftShiftBigNumber (x, y) {
   if ((x.isFinite() && !x.isInteger()) || (y.isFinite() && !y.isInteger())) {
-    throw new Error('Integers expected in function leftShift')
+    throw new Error('函数leftShift的参数须为整数')
   }
 
   const BigNumber = x.constructor
@@ -390,7 +390,7 @@ export function leftShiftBigNumber (x, y) {
  */
 export function rightArithShiftBigNumber (x, y) {
   if ((x.isFinite() && !x.isInteger()) || (y.isFinite() && !y.isInteger())) {
-    throw new Error('Integers expected in function rightArithShift')
+    throw new Error('函数rightArithShift的参数须为整数')
   }
 
   const BigNumber = x.constructor

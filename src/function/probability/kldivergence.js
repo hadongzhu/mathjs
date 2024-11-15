@@ -43,26 +43,26 @@ export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({
     const plength = p.size().length
     const qlength = q.size().length
     if (plength > 1) {
-      throw new Error('first object must be one dimensional')
+      throw new Error('第一个对象必须是一维的')
     }
 
     if (qlength > 1) {
-      throw new Error('second object must be one dimensional')
+      throw new Error('第二个对象必须是一维的')
     }
 
     if (plength !== qlength) {
-      throw new Error('Length of two vectors must be equal')
+      throw new Error('两个向量的长度必须相等')
     }
 
     // Before calculation, apply normalization
     const sumq = sum(q)
     if (sumq === 0) {
-      throw new Error('Sum of elements in first object must be non zero')
+      throw new Error('第一个对象中元素的和必须非零')
     }
 
     const sump = sum(p)
     if (sump === 0) {
-      throw new Error('Sum of elements in second object must be non zero')
+      throw new Error('第二个对象中元素的和必须非零')
     }
     const qnorm = divide(q, sum(q))
     const pnorm = divide(p, sum(p))

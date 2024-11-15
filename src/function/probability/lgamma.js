@@ -62,7 +62,7 @@ export const createLgamma = /* #__PURE__ */ factory(name, dependencies, ({ Compl
     number: lgammaNumber,
     Complex: lgammaComplex,
     BigNumber: function () {
-      throw new Error("mathjs doesn't yet provide an implementation of the algorithm lgamma for BigNumber")
+      throw new Error('lgamma函数暂不支持大数')
     }
   })
 

@@ -91,7 +91,7 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
       case 0: return format ? matrix(format) : []
       case 1: return _identity(size[0], size[0], format)
       case 2: return _identity(size[0], size[1], format)
-      default: throw new Error('Vector containing two values expected')
+      default: throw new Error('应为包含两个值的向量')
     }
   }
 
@@ -113,10 +113,10 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
     if (isBigNumber(cols)) cols = cols.toNumber()
 
     if (!isInteger(rows) || rows < 1) {
-      throw new Error('Parameters in function identity must be positive integers')
+      throw new Error('函数 identity 的参数必须为正整数')
     }
     if (!isInteger(cols) || cols < 1) {
-      throw new Error('Parameters in function identity must be positive integers')
+      throw new Error('函数 identity 的参数必须为正整数')
     }
 
     const one = Big ? new BigNumber(1) : 1
@@ -132,7 +132,7 @@ export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typ
       if (format === 'dense') {
         return DenseMatrix.diagonal(size, one, 0, defaultValue)
       }
-      throw new TypeError(`Unknown matrix type "${format}"`)
+      throw new TypeError(`未知的矩阵类型 "${format}"`)
     }
 
     // create and resize array

@@ -82,7 +82,7 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
         if (equalScalar(vjj, 0)) {
           // system cannot be solved
-          throw new Error('Linear system cannot be solved since matrix is singular')
+          throw new Error('线性系统无法求解，因为矩阵奇异')
         }
 
         xj = divideScalar(bj, vjj)
@@ -155,7 +155,7 @@ export const createUsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed
 
         // at this point we must have a value in vjj
         if (equalScalar(vjj, 0)) {
-          throw new Error('Linear system cannot be solved since matrix is singular')
+          throw new Error('线性系统无法求解，因为矩阵奇异')
         }
 
         const xj = divideScalar(bj, vjj)

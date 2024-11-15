@@ -34,7 +34,7 @@ export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed,
       error = max(abs(subtract(Y, Yk)))
 
       if (error > _tolerance && ++iterations > _maxIterations) {
-        throw new Error('computing square root of matrix: iterative method could not converge')
+        throw new Error('计算矩阵的平方根：迭代方法无法收敛')
       }
     } while (error > _tolerance)
 
@@ -71,8 +71,8 @@ export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed,
           if (size[0] === 1) {
             return map(A, sqrt)
           } else {
-            throw new RangeError('Matrix must be square ' +
-            '(size: ' + format(size) + ')')
+            throw new RangeError('矩阵必须是方阵 ' +
+            '(大小: ' + format(size) + ')')
           }
 
         case 2:
@@ -83,14 +83,14 @@ export const createSqrtm = /* #__PURE__ */ factory(name, dependencies, ({ typed,
           if (rows === cols) {
             return _denmanBeavers(A)
           } else {
-            throw new RangeError('Matrix must be square ' +
-              '(size: ' + format(size) + ')')
+            throw new RangeError('矩阵必须是方阵 ' +
+            '(大小: ' + format(size) + ')')
           }
         }
         default:
           // Multi dimensional array
-          throw new RangeError('Matrix must be at most two dimensional ' +
-          '(size: ' + format(size) + ')')
+          throw new RangeError('矩阵最多为二维 ' +
+          '(大小: ' + format(size) + ')')
       }
     }
   })

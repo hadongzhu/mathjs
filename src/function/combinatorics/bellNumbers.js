@@ -28,7 +28,7 @@ export const createBellNumbers = /* #__PURE__ */ factory(name, dependencies, ({ 
   return typed(name, {
     'number | BigNumber': function (n) {
       if (!isInteger(n) || isNegative(n)) {
-        throw new TypeError('Non-negative integer value expected in function bellNumbers')
+        throw new TypeError('函数 bellNumbers 中应为非负整数')
       }
 
       // Sum (k=0, n) S(n,k).

@@ -118,7 +118,7 @@ export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ()
         if (typeof arg === 'object') {
           return Complex(arg)
         } else {
-          throw new TypeError('Input has to be an object with r and phi keys.')
+          throw new TypeError('输入必须是具有 r 和 phi 键的对象。')
         }
       }
       case 2:
@@ -135,14 +135,14 @@ export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ()
             return new Complex({ r, phi })
           }
 
-          throw new TypeError('Phi is not a number nor an angle unit.')
+          throw newTypeError('Phi 不是数字也不是角度单位。')
         } else {
-          throw new TypeError('Radius r is not a number.')
+          throw new TypeError('半径 r 不是数字。')
         }
       }
 
       default:
-        throw new SyntaxError('Wrong number of arguments in function fromPolar')
+        throw new SyntaxError('函数 fromPolar 参数数量错误')
     }
   }
 

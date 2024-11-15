@@ -44,7 +44,7 @@ export const createMad = /* #__PURE__ */ factory(name, dependencies, ({ typed, a
     array = flatten(array.valueOf())
 
     if (array.length === 0) {
-      throw new Error('Cannot calculate median absolute deviation (mad) of an empty array')
+      throw new Error('无法计算空数组的中位数绝对偏差 (mad)')
     }
 
     try {

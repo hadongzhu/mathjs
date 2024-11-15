@@ -107,7 +107,7 @@ export const createDiag = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   function _diag (x, k, size, format) {
     if (!isInteger(k)) {
-      throw new TypeError('Second parameter in function diag must be an integer')
+      throw new TypeError('函数 diag 的第二个参数必须为整数')
     }
 
     const kSuper = k > 0 ? k : 0
@@ -120,7 +120,7 @@ export const createDiag = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       case 2:
         return _getDiagonal(x, k, format, size, kSub, kSuper)
     }
-    throw new RangeError('Matrix for function diag must be 2 dimensional')
+    throw new RangeError('函数 diag 的矩阵必须是二维的')
   }
 
   function _createDiagonalMatrix (x, k, format, l, kSub, kSuper) {
@@ -128,7 +128,7 @@ export const createDiag = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     const ms = [l + kSub, l + kSuper]
 
     if (format && format !== 'sparse' && format !== 'dense') {
-      throw new TypeError(`Unknown matrix type ${format}"`)
+      throw new TypeError(`未知的矩阵类型 ${format}"`)
     }
 
     // create diagonal matrix

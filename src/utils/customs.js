@@ -14,14 +14,14 @@ export function getSafeProperty (object, prop) {
   }
 
   if (isSafeMethod(object, prop)) {
-    throw new Error(`Cannot access method "${prop}" as a property`)
+    throw new Error(`无法将方法 "${prop}" 作为属性访问`)
   }
 
   if (object === null || object === undefined) {
     throw new TypeError(`Cannot access property "${prop}": object is ${object}`)
   }
 
-  throw new Error('No access to property "' + prop + '"')
+  throw new Error('无法访问属性 "' + prop + '"')
 }
 
 /**
@@ -39,7 +39,7 @@ export function setSafeProperty (object, prop, value) {
     return value
   }
 
-  throw new Error(`No access to property "${prop}"`)
+  throw new Error(`无法访问属性 "${prop}"`)
 }
 
 /**
@@ -89,7 +89,7 @@ function isInteger (prop) {
  */
 export function getSafeMethod (object, method) {
   if (!isSafeMethod(object, method)) {
-    throw new Error('No access to method "' + method + '"')
+    throw new Error('无法访问方法 "' + method + '"')
   }
 
   return object[method]

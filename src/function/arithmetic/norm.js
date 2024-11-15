@@ -177,7 +177,8 @@ export const createNorm = /* #__PURE__ */ factory(
         return Number.POSITIVE_INFINITY
       }
       // invalid parameter value
-      throw new Error('Unsupported parameter value')
+      throw new Error('参数值不支持')
+
     }
 
     /**
@@ -228,7 +229,7 @@ export const createNorm = /* #__PURE__ */ factory(
       // norm(x) = sqrt( max eigenvalue of A*.A)
       const sizeX = x.size()
       if (sizeX[0] !== sizeX[1]) {
-        throw new RangeError('Invalid matrix dimensions')
+        throw new RangeError('矩阵维度无效')
       }
       const tx = ctranspose(x)
       const squaredX = multiply(tx, x)
@@ -282,7 +283,7 @@ export const createNorm = /* #__PURE__ */ factory(
         return _matrixNormTwo(x)
       } // invalid parameter value
 
-      throw new Error('Unsupported parameter value ' + p)
+      throw new Error('参数值不支持 ' + p)
     }
 
     /**
@@ -305,7 +306,7 @@ export const createNorm = /* #__PURE__ */ factory(
         if (sizeX[0] && sizeX[1]) {
           return _matrixNorm(x, p)
         } else {
-          throw new RangeError('Invalid matrix dimensions')
+          throw new RangeError('矩阵维度无效')
         }
       }
     }

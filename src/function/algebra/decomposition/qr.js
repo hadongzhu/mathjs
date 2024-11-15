@@ -258,6 +258,6 @@ export const createQr = /* #__PURE__ */ factory(name, dependencies, (
   }
 
   function _sparseQR (m) {
-    throw new Error('qr not implemented for sparse matrices yet')
+    throw new Error('qr 尚未实现稀疏矩阵')
   }
 })

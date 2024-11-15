@@ -54,8 +54,8 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
               ]
             }
           } else {
-            throw new RangeError('Matrix must be square ' +
-            '(size: ' + format(size) + ')')
+            throw new RangeError('矩阵必须是方阵 ' +
+            '(大小: ' + format(size) + ')')
           }
 
         case 2:
@@ -74,15 +74,15 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
               return _inv(x, rows, cols)
             }
           } else {
-            throw new RangeError('Matrix must be square ' +
-              '(size: ' + format(size) + ')')
+            throw new RangeError('矩阵必须是方阵 ' +
+            '(大小: ' + format(size) + ')')
           }
         }
 
         default:
           // multi dimensional array
-          throw new RangeError('Matrix must be two dimensional ' +
-          '(size: ' + format(size) + ')')
+          throw new RangeError('矩阵必须是二维的 ' +
+          '(大小: ' + format(size) + ')')
       }
     },
 
@@ -107,7 +107,7 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       // this is a 1 x 1 matrix
       value = mat[0][0]
       if (value === 0) {
-        throw Error('Cannot calculate inverse, determinant is zero')
+        throw Error('无法计算逆，行列式为零')
       }
       return [[
         divideScalar(1, value)
@@ -116,7 +116,7 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
       // this is a 2 x 2 matrix
       const d = det(mat)
       if (d === 0) {
-        throw Error('Cannot calculate inverse, determinant is zero')
+        throw Error('无法计算逆，行列式为零')
       }
       return [
         [
@@ -159,7 +159,7 @@ export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
           r++
         }
         if (ABig === 0) {
-          throw Error('Cannot calculate inverse, determinant is zero')
+          throw Error('无法计算逆，行列式为零')
         }
         r = rBig
         if (r !== c) {

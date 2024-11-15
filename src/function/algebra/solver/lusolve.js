@@ -82,7 +82,7 @@ export const createLusolve = /* #__PURE__ */ factory(name, dependencies, ({ type
   function _toMatrix (a) {
     if (isMatrix(a)) { return a }
     if (isArray(a)) { return matrix(a) }
-    throw new TypeError('Invalid Matrix LU decomposition')
+    throw new TypeError('无效的矩阵 LU 分解')
   }
 
   function _lusolve (l, u, p, q, b) {

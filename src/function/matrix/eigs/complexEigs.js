@@ -373,7 +373,7 @@ export function createComplexEigs ({ addScalar, subtract, flatten, multiply, mul
 
     // the algorithm didn't converge
     if (lastConvergenceBefore > 100) {
-      const err = Error('The eigenvalues failed to converge. Only found these eigenvalues: ' + lambdas.join(', '))
+      const err = Error('特征值无法收敛。仅找到这些特征值：' + lambdas.join(', '))
       err.values = lambdas
       err.vectors = []
       throw err

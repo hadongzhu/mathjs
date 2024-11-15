@@ -46,7 +46,7 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () =
    */
   function Range (start, end, step) {
     if (!(this instanceof Range)) {
-      throw new SyntaxError('Constructor must be called with the new operator')
+      throw new SyntaxError('构造函数必须使用 new 运算符调用')
     }
 
     const hasStart = start !== null && start !== undefined
@@ -57,21 +57,21 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () =
       if (isBigNumber(start)) {
         start = start.toNumber()
       } else if (typeof start !== 'number' && !isBigInt(start)) {
-        throw new TypeError('Parameter start must be a number or bigint')
+        throw new TypeError('参数 start 必须为数字 or bigint')
       }
     }
     if (hasEnd) {
       if (isBigNumber(end)) {
         end = end.toNumber()
       } else if (typeof end !== 'number' && !isBigInt(end)) {
-        throw new TypeError('Parameter end must be a number or bigint')
+        throw new TypeError('参数 end 必须为数字 or bigint')
       }
     }
     if (hasStep) {
       if (isBigNumber(step)) {
         step = step.toNumber()
       } else if (typeof step !== 'number' && !isBigInt(step)) {
-        throw new TypeError('Parameter step must be a number or bigint')
+        throw new TypeError('参数 step 必须为数字 or bigint')
       }
     }
 

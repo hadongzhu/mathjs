@@ -12,7 +12,7 @@ export const createFibonacciHeapClass = /* #__PURE__ */ factory(name, dependenci
    * @constructor FibonacciHeap
    */
   function FibonacciHeap () {
-    if (!(this instanceof FibonacciHeap)) { throw new SyntaxError('Constructor must be called with the new operator') }
+    if (!(this instanceof FibonacciHeap)) { throw new SyntaxError('构造函数必须使用 new 运算符调用') }
 
     // initialize fields
     this._minimum = null

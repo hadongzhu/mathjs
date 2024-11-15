@@ -84,7 +84,7 @@ export const createSort = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     } else if (order === 'natural') {
       return compareNatural
     } else {
-      throw new Error('String "asc", "desc", or "natural" expected')
+      throw new Error('应为字符串 "asc"、"desc" 或 "natural"')
     }
   }
 
@@ -96,7 +96,7 @@ export const createSort = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   function _arrayIsVector (array) {
     if (size(array).length !== 1) {
-      throw new Error('One dimensional array expected')
+      throw new Error('应为一维数组')
     }
   }
 
@@ -108,7 +108,7 @@ export const createSort = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   function _matrixIsVector (matrix) {
     if (matrix.size().length !== 1) {
-      throw new Error('One dimensional matrix expected')
+      throw new Error('应为一维矩阵')
     }
   }
 })

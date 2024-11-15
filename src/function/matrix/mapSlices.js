@@ -47,7 +47,7 @@ export const createMapSlices = /* #__PURE__ */ factory(name, dependencies, ({ ty
   return typed(name, {
     'Array | Matrix, number | BigNumber, function': function (mat, dim, callback) {
       if (!isInteger(dim)) {
-        throw new TypeError('Integer number expected for dimension')
+        throw new TypeError('应为维度的整数')
       }
 
       const size = Array.isArray(mat) ? arraySize(mat) : mat.size()

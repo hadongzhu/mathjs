@@ -43,7 +43,7 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
     'Array, Array, number': function (b, a, w) {
       if (w < 0) {
-        throw new Error('w must be a positive number')
+        throw new Error('w 必须为正数')
       }
       const w2 = createBins(w)
       return _freqz(b, a, w2)
@@ -66,7 +66,7 @@ export const createFreqz = /* #__PURE__ */ factory(name, dependencies, ({ typed,
     },
     'Matrix, Matrix, number': function (b, a, w) {
       if (w < 0) {
-        throw new Error('w must be a positive number')
+        throw new Error('w 必须为正数')
       }
       const _w = createBins(w)
       const { h } = _freqz(b.valueOf(), a.valueOf(), _w)

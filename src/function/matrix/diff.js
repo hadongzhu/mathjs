@@ -61,7 +61,7 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       }
     },
     'Array | Matrix, number': function (arr, dim) {
-      if (!isInteger(dim)) throw new RangeError('Dimension must be a whole number')
+      if (!isInteger(dim)) throw new RangeError('维度必须为整数')
       if (isMatrix(arr)) {
         return matrix(_recursive(arr.toArray(), dim))
       } else {
@@ -87,7 +87,7 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
       arr = arr.toArray() // Makes sure arrays like [ matrix([0, 1]), matrix([1, 0]) ] are processed properly
     }
     if (!Array.isArray(arr)) {
-      throw RangeError('Array/Matrix does not have that many dimensions')
+      throw RangeError('数组/矩阵维度不足')
     }
     if (dim > 0) {
       const result = []
@@ -98,7 +98,7 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     } else if (dim === 0) {
       return _diff(arr)
     } else {
-      throw RangeError('Cannot have negative dimension')
+      throw RangeError('维度不能为负数')
     }
   }
 
@@ -137,7 +137,7 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
     if (!obj1IsArray && !obj2IsArray) {
       return subtract(obj2, obj1) // Difference is (second - first) NOT (first - second)
     }
-    throw TypeError('Cannot calculate difference between 1 array and 1 non-array')
+    throw TypeError('无法计算 1 个数组和 1 个非数组之间的差异')
   }
 
   /**
@@ -149,7 +149,7 @@ export const createDiff = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    */
   function _ArrayDiff (arr1, arr2) {
     if (arr1.length !== arr2.length) {
-      throw RangeError('Not all sub-arrays have the same length')
+      throw RangeError('存在子数组长度不同')
     }
     const result = []
     const size = arr1.length

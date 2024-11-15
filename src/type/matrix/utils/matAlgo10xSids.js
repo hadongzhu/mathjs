@@ -32,7 +32,7 @@ export const createMatAlgo10xSids = /* #__PURE__ */ factory(name, dependencies, 
     const adt = s._datatype
 
     // sparse matrix cannot be a Pattern matrix
-    if (!avalues) { throw new Error('Cannot perform operation on Pattern Sparse Matrix and Scalar value') }
+    if (!avalues) { throw new Error('无法在模式稀疏矩阵和标量值上执行操作') }
 
     // rows & columns
     const rows = asize[0]

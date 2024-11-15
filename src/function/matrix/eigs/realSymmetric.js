@@ -16,7 +16,7 @@ export function createRealSymmetric ({ config, addScalar, subtract, abs, atan, c
       return diagBig(arr, prec, computeVectors)
     }
 
-    throw TypeError('Unsupported data type: ' + type)
+    throw TypeError('不支持的数据类型：' + type)
   }
 
   // diagonalization implementation for number (efficient)

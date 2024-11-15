@@ -34,12 +34,12 @@ export function assignFactory ({ subset, matrix }) {
         return subset(object, index, value)
       } else if (typeof object === 'object') {
         if (!index.isObjectProperty()) {
-          throw TypeError('Cannot apply a numeric index as object property')
+          throw TypeError('无法将数值索引应用为对象属性')
         }
         setSafeProperty(object, index.getObjectProperty(), value)
         return object
       } else {
-        throw new TypeError('Cannot apply index: unsupported type of object')
+        throw new TypeError('无法应用索引：不支持的对象类型')
       }
     } catch (err) {
       throw errorTransform(err)

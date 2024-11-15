@@ -21,7 +21,7 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ No
 
       // validate input
       if (!Array.isArray(this.items) || !this.items.every(isNode)) {
-        throw new TypeError('Array containing Nodes expected')
+        throw new TypeError('应为包含节点的数组')
       }
     }
 

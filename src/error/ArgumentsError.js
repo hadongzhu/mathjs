@@ -9,7 +9,7 @@
  */
 export function ArgumentsError (fn, count, min, max) {
   if (!(this instanceof ArgumentsError)) {
-    throw new SyntaxError('Constructor must be called with the new operator')
+    throw new SyntaxError('构造函数必须使用 new 运算符调用')
   }
 
   this.fn = fn
@@ -17,9 +17,8 @@ export function ArgumentsError (fn, count, min, max) {
   this.min = min
   this.max = max
 
-  this.message = 'Wrong number of arguments in function ' + fn +
-      ' (' + count + ' provided, ' +
-      min + ((max !== undefined && max !== null) ? ('-' + max) : '') + ' expected)'
+  this.message = '函数 ' + fn + ' 参数数量错误 (已提供 ' + count + ' 个参数，需要 ' +
+        min + ((max !== undefined && max !== null) ? ('-' + max) : '') + ' 个参数)'
 
   this.stack = (new Error()).stack
 }

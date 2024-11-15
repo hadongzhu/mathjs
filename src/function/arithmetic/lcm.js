@@ -82,7 +82,7 @@ export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, m
    */
   function _lcmBigNumber (a, b) {
     if (!a.isInt() || !b.isInt()) {
-      throw new Error('Parameters in function lcm must be integer numbers')
+      throw new Error('函数 lcm 的参数必须为整数')
     }
 
     if (a.isZero()) {

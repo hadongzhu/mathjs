@@ -10,7 +10,7 @@
  */
 export function IndexError (index, min, max) {
   if (!(this instanceof IndexError)) {
-    throw new SyntaxError('Constructor must be called with the new operator')
+    throw new SyntaxError('构造函数必须使用 new 运算符调用')
   }
 
   this.index = index
@@ -23,11 +23,11 @@ export function IndexError (index, min, max) {
   }
 
   if (this.min !== undefined && this.index < this.min) {
-    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')'
+    this.message = '索引超出范围 (' + this.index + ' < ' + this.min + ')'
   } else if (this.max !== undefined && this.index >= this.max) {
-    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')'
+    this.message = '索引超出范围 (' + this.index + ' > ' + (this.max - 1) + ')'
   } else {
-    this.message = 'Index out of range (' + this.index + ')'
+    this.message = '索引超出范围 (' + this.index + ')'
   }
 
   this.stack = (new Error()).stack
