@@ -1,5 +1,6 @@
 import { isConstantNode, typeOf } from '../../utils/is.js'
 import { factory } from '../../utils/factory.js'
+import { safeNumberType } from '../../utils/number.js'
 
 const name = 'derivative'
 const dependencies = [
@@ -76,12 +77,20 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     return options.simplify ? simplify(res) : res
   }
 
-  typed.addConversion(
-    { from: 'identifier', to: 'SymbolNode', convert: parse })
+  function parseIdentifier (string) {
+    const symbol = parse(string)
+    if (!symbol.isSymbolNode) {
+      throw new TypeError('Invalid variable. ' +
+        `Cannot parse ${JSON.stringify(string)} into a variable in function derivative`)
+    }
+    return symbol
+  }
 
   const derivative = typed(name, {
     'Node, SymbolNode': plainDerivative,
-    'Node, SymbolNode, Object': plainDerivative
+    'Node, SymbolNode, Object': plainDerivative,
+    'Node, string': (node, symbol) => plainDerivative(node, parseIdentifier(symbol)),
+    'Node, string, Object': (node, symbol, options) => plainDerivative(node, parseIdentifier(symbol), options)
 
     /* TODO: implement and test syntax with order of derivatives -> implement as an option {order: number}
     'Node, SymbolNode, ConstantNode': function (expr, variable, {order}) {
@@ -95,9 +104,6 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     }
     */
   })
-
-  typed.removeConversion(
-    { from: 'identifier', to: 'SymbolNode', convert: parse })
 
   derivative._simplify = true
 
@@ -172,7 +178,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
     },
 
     'Object, FunctionAssignmentNode, string': function (constNodes, node, varName) {
-      if (node.params.indexOf(varName) === -1) {
+      if (!node.params.includes(varName)) {
         constNodes[node] = true
         return true
       }
@@ -754,7 +760,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
    * @return {ConstantNode}
    */
   function createConstantNode (value, valueType) {
-    return new ConstantNode(numeric(value, valueType || config.number))
+    return new ConstantNode(numeric(value, valueType || safeNumberType(String(value), config)))
   }
 
   return derivative

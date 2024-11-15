@@ -1,6 +1,7 @@
 import { factory } from '../utils/factory.js'
 import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode, rule2Node } from '../utils/is.js'
 import { deepMap } from '../utils/collection.js'
+import { safeNumberType } from '../utils/number.js'
 import { hasOwnProperty } from '../utils/object.js'
 
 const name = 'parse'
@@ -1024,7 +1025,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * multiply, divide, modulus
+   * multiply, divide
    * @return {Node} node
    * @private
    */
@@ -1073,6 +1074,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     while (true) {
       if ((state.tokenType === TOKENTYPE.SYMBOL) ||
           (state.token === 'in' && isConstantNode(node)) ||
+          (state.token === 'in' && isOperatorNode(node) && node.fn === 'unaryMinus' && isConstantNode(node.args[0])) ||
           (state.tokenType === TOKENTYPE.NUMBER &&
               !isConstantNode(last) &&
               (!isOperatorNode(last) || last.op === '!')) ||
@@ -1102,7 +1104,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
    * @private
    */
   function parseRule2 (state) {
-    let node = parsePercentage(state)
+    let node = parseModulusPercentage(state)
     let last = node
     const tokenStates = []
 
@@ -1120,12 +1122,12 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
           getTokenSkipNewline(state)
 
           // Match the "symbol" part of the pattern, or a left parenthesis
-          if (state.tokenType === TOKENTYPE.SYMBOL || state.token === '(') {
+          if (state.tokenType === TOKENTYPE.SYMBOL || state.token === '(' || state.token === 'in') {
             // We've matched the pattern "number / number symbol".
             // Rewind once and build the "number / number" node; the symbol will be consumed later
             Object.assign(state, tokenStates.pop())
             tokenStates.pop()
-            last = parsePercentage(state)
+            last = parseModulusPercentage(state)
             node = new OperatorNode('/', 'divide', [node, last])
           } else {
             // Not a match, so rewind
@@ -1147,11 +1149,11 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   /**
-   * percentage or mod
+   * modulus and percentage
    * @return {Node} node
    * @private
    */
-  function parsePercentage (state) {
+  function parseModulusPercentage (state) {
     let node, name, fn, params
 
     node = parseUnary(state)
@@ -1160,6 +1162,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       '%': 'mod',
       mod: 'mod'
     }
+
     while (hasOwnProperty(operators, state.token)) {
       name = state.token
       fn = operators[name]
@@ -1341,7 +1344,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
 
       if (hasOwnProperty(CONSTANTS, name)) { // true, false, null, ...
         node = new ConstantNode(CONSTANTS[name])
-      } else if (NUMERIC_CONSTANTS.indexOf(name) !== -1) { // NaN, Infinity
+      } else if (NUMERIC_CONSTANTS.includes(name)) { // NaN, Infinity
         node = new ConstantNode(numeric(name, 'number'))
       } else {
         node = new SymbolNode(name)
@@ -1373,7 +1376,7 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
     let params
 
     while ((state.token === '(' || state.token === '[' || state.token === '.') &&
-        (!types || types.indexOf(state.token) !== -1)) { // eslint-disable-line no-unmodified-loop-condition
+        (!types || types.includes(state.token))) { // eslint-disable-line no-unmodified-loop-condition
       params = []
 
       if (state.token === '(') {
@@ -1677,7 +1680,10 @@ export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
       numberStr = state.token
       getToken(state)
 
-      return new ConstantNode(numeric(numberStr, config.number))
+      const numericType = safeNumberType(numberStr, config)
+      const value = numeric(numberStr, numericType)
+
+      return new ConstantNode(value)
     }
 
     return parseParentheses(state)

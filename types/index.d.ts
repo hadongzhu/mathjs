@@ -11,7 +11,7 @@ export type NoLiteralType<T> = T extends number
       : T
 
 // TODO: introduce generics for MathCollection, MathMatrix, and MathArray
-export type MathNumericType = number | BigNumber | Fraction | Complex
+export type MathNumericType = number | BigNumber | bigint | Fraction | Complex
 export type MathScalarType = MathNumericType | Unit
 export type MathArray = MathNumericType[] | MathNumericType[][] // TODO: MathArray can also contain Unit
 export type MathCollection = MathArray | Matrix
@@ -246,8 +246,17 @@ export interface ConditionalNodeCtor {
   ): ConditionalNode
 }
 
-export interface ConstantNode<TValue extends string | number = number>
-  extends MathNode {
+export interface ConstantNode<
+  TValue extends
+    | string
+    | number
+    | boolean
+    | null
+    | undefined
+    | bigint
+    | BigNumber
+    | Fraction = number
+> extends MathNode {
   type: 'ConstantNode'
   isConstantNode: true
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -255,7 +264,17 @@ export interface ConstantNode<TValue extends string | number = number>
 }
 
 export interface ConstantNodeCtor {
-  new <TValue extends string | number = string>(
+  new <
+    TValue extends
+      | string
+      | number
+      | boolean
+      | null
+      | undefined
+      | bigint
+      | BigNumber
+      | Fraction = string
+  >(
     value: TValue
   ): ConstantNode<TValue>
 }
@@ -508,6 +527,7 @@ export interface MathJsInstance extends MathJsFactory {
   RelationalNode: RelationalNodeCtor
   SymbolNode: SymbolNodeCtor
 
+  Unit: UnitCtor
   Matrix: MatrixCtor
 
   /**
@@ -544,7 +564,9 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Set configuration options for math.js, and get current options. Will
    * emit a ‘config’ event, with arguments (curr, prev, changes).
-   * @param options Available options: {number} epsilon Minimum relative
+   * @param options Available options: {number} relTol Minimum relative
+   * difference between two compared values, used by all comparison
+   * functions. {number} absTol Minimum absolute
    * difference between two compared values, used by all comparison
    * functions. {string} matrix A string ‘Matrix’ (default) or ‘Array’.
    * {string} number A string ‘number’ (default), ‘BigNumber’, or
@@ -585,9 +607,21 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created bignumber
    */
   bignumber(
-    x?: number | string | Fraction | BigNumber | Unit | boolean | null
+    x?: number | string | Fraction | BigNumber | bigint | Unit | boolean | null
   ): BigNumber
   bignumber<T extends MathCollection>(x: T): T
+
+  /**
+   * Create a bigint, which can store integers with arbitrary precision.
+   * When a matrix is provided, all elements will be converted to
+   * bigint.
+   * @param x Value for the integer, 0 by default.
+   * @returns The created bigint
+   */
+  bigint(
+    x?: number | string | Fraction | BigNumber | bigint | boolean | null
+  ): bigint
+  bigint<T extends MathCollection>(x: T): T
 
   /**
    * Create a boolean or convert a string or number to a boolean. In case
@@ -669,7 +703,14 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns a fraction
    */
   fraction(
-    value: number | string | BigNumber | Unit | Fraction | FractionDefinition
+    value:
+      | number
+      | string
+      | BigNumber
+      | bigint
+      | Unit
+      | Fraction
+      | FractionDefinition
   ): Fraction
   fraction(values: MathCollection): MathCollection
   /**
@@ -718,7 +759,15 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created number
    */
   number(
-    value?: string | number | BigNumber | Fraction | boolean | Unit | null
+    value?:
+      | string
+      | number
+      | BigNumber
+      | bigint
+      | Fraction
+      | boolean
+      | Unit
+      | null
   ): number
   number(value?: MathCollection): number | MathCollection
   /**
@@ -728,6 +777,28 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns The created number
    */
   number(unit: Unit, valuelessUnit: Unit | string): number
+
+  /**
+   * Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
+   * @param value The value to be converted
+   * @param outputType The desired numeric output type
+   */
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'number'
+  ): number
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'BigNumber'
+  ): BigNumber
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'bigint'
+  ): bigint
+  numeric(
+    value: string | number | BigNumber | bigint | Fraction,
+    outputType: 'Fraction'
+  ): Fraction
 
   /**
    * Create a Sparse Matrix. The function creates a new math.type.Matrix
@@ -971,6 +1042,15 @@ export interface MathJsInstance extends MathJsFactory {
   simplifyCore(expr: MathNode | string, options?: SimplifyOptions): MathNode
 
   /**
+   * Gives the number of “leaf nodes” in the parse tree of the given
+   * expression. A leaf node is one that has no subexpressions, essentially
+   * either a symbol or a constant. Note that `5!` has just one leaf, the `5`;
+   * the unary factorial operator does not add a leaf. On the other hand,
+   * function symbols do add leaves, so `sin(x)/cos(x)` has four leaves.
+   */
+  leafCount(expr: MathNode): number
+
+  /**
    *  Replaces variable nodes with their scoped values
    * @param node Tree to replace variable nodes in
    * @param scope Scope to read/write variables
@@ -1036,7 +1116,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Sum of x and y
    */
   add<T extends MathType>(x: T, y: T): T
+  add<T extends MathType>(...values: T[]): T
   add(x: MathType, y: MathType): MathType
+  add(...values: MathType[]): MathType
 
   /**
    * Calculate the cubic root of a value.
@@ -1191,9 +1273,9 @@ export interface MathJsInstance extends MathJsFactory {
   gcd<T extends number | BigNumber | Fraction | Matrix>(args: T[]): T
 
   /**
-   * Calculate the hypotenusa of a list with values. The hypotenusa is
+   * Calculate the hypotenuse of a list with values. The hypotenuse is
    * defined as: hypot(a, b, c, ...) = sqrt(a^2 + b^2 + c^2 + ...) For
-   * matrix input, the hypotenusa is calculated for all values in the
+   * matrix input, the hypotenuse is calculated for all values in the
    * matrix.
    * @param args A list with numeric values or an Array or Matrix. Matrix
    * and Array input is flattened and returns a single number for the
@@ -1261,9 +1343,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Divisor
    * @returns Returns the remainder of x divided by y
    */
-  mod<T extends number | BigNumber | Fraction | MathCollection>(
+  mod<T extends number | BigNumber | bigint | Fraction | MathCollection>(
     x: T,
-    y: number | BigNumber | Fraction | MathCollection
+    y: number | BigNumber | bigint | Fraction | MathCollection
   ): NoLiteralType<T>
 
   /**
@@ -1283,6 +1365,8 @@ export interface MathJsInstance extends MathJsFactory {
   multiply(x: Unit, y: Unit): Unit
   multiply(x: number, y: number): number
   multiply(x: MathType, y: MathType): MathType
+  multiply<T extends MathType>(...values: T[]): T
+  multiply(...values: MathType[]): MathType
 
   /**
    * Calculate the norm of a number, vector or matrix. The second
@@ -1318,7 +1402,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y The exponent
    * @returns x to the power y
    */
-  pow(x: MathType, y: number | BigNumber | Complex): MathType
+  pow(x: MathType, y: number | BigNumber | bigint | Complex): MathType
 
   /**
    * Compute the sign of a value. The sign of a value x is: 1 when x > 1
@@ -1397,9 +1481,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Second value to and
    * @returns AND of x and y
    */
-  bitAnd<T extends number | BigNumber | MathCollection>(
+  bitAnd<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): NoLiteralType<T>
 
   /**
@@ -1409,7 +1493,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param x Value to not
    * @returns NOT of x
    */
-  bitNot<T extends number | BigNumber | MathCollection>(x: T): T
+  bitNot<T extends number | BigNumber | bigint | MathCollection>(x: T): T
 
   /**
    * Bitwise OR two values, x | y. For matrices, the function is evaluated
@@ -1419,7 +1503,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Second value to or
    * @returns OR of x and y
    */
-  bitOr<T extends number | BigNumber | MathCollection>(x: T, y: T): T
+  bitOr<T extends number | BigNumber | bigint | MathCollection>(x: T, y: T): T
 
   /**
    * Bitwise XOR two values, x ^ y. For matrices, the function is
@@ -1428,9 +1512,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Second value to xor
    * @returns XOR of x and y
    */
-  bitXor<T extends number | BigNumber | MathCollection>(
+  bitXor<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): NoLiteralType<T>
 
   /**
@@ -1441,9 +1525,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Amount of shifts
    * @returns x shifted left y times
    */
-  leftShift<T extends number | BigNumber | MathCollection>(
+  leftShift<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): NoLiteralType<T>
 
   /**
@@ -1454,9 +1538,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @param y Amount of shifts
    * @returns x sign-filled shifted right y times
    */
-  rightArithShift<T extends number | BigNumber | MathCollection>(
+  rightArithShift<T extends number | BigNumber | bigint | MathCollection>(
     x: T,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): NoLiteralType<T>
 
   /**
@@ -1627,8 +1711,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   and(
-    x: number | BigNumber | Complex | Unit | MathCollection,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1638,7 +1722,7 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when input is a zero or empty value.
    */
   not(
-    x: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1651,8 +1735,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   or(
-    x: number | BigNumber | Complex | Unit | MathCollection,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /**
@@ -1665,8 +1749,8 @@ export interface MathJsInstance extends MathJsFactory {
    * nonzero/nonempty value.
    */
   xor(
-    x: number | BigNumber | Complex | Unit | MathCollection,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    x: number | BigNumber | bigint | Complex | Unit | MathCollection,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): boolean | MathCollection
 
   /*************************************************************************
@@ -1892,10 +1976,10 @@ export interface MathJsInstance extends MathJsFactory {
   inv<T extends number | Complex | MathCollection>(x: T): NoLiteralType<T>
 
   /**
-   * Calculate the kronecker product of two matrices or vectors
+   * Calculate the Kronecker product of two matrices or vectors
    * @param x First vector
    * @param y Second vector
-   * @returns Returns the kronecker product of x and y
+   * @returns Returns the Kronecker product of x and y
    */
   kron(x: MathCollection, y: MathCollection): Matrix
 
@@ -1911,7 +1995,29 @@ export interface MathJsInstance extends MathJsFactory {
   map<T extends MathCollection>(
     x: T,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    callback: (value: any, index: any, matrix: T) => MathType | string
+    callback: (value: any, index: number[], matrix: T) => MathType | string
+  ): T
+
+  /**
+   * Iterate over all elements of multiple matrices/arrays, and executes the given
+   * callback function.
+   * @param x The first matrix to iterate on.
+   * @param args The rest of the matrices and at the end the callback function is invoked with multiple
+   * parameters: the values of the elements, the indices of the elements, and
+   * the matrices/arrays being traversed.
+   * @returns Transformed map of matrices
+   */
+  map<T extends MathCollection>(
+    x: T,
+    ...args: Array<
+      | T
+      | ((
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          value: any,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ...args: Array<any | number[] | T>
+        ) => MathType | string)
+    >
   ): T
 
   /**
@@ -2185,16 +2291,16 @@ export interface MathJsInstance extends MathJsFactory {
    **/
 
   /**
-   * Calculate N-dimensional fourier transform
+   * Calculate N-dimensional Fourier transform
    * @param {Array | Matrix} arr    An array or matrix
-   * @return {Array | Matrix}       N-dimensional fourier transformation of the array
+   * @return {Array | Matrix}       N-dimensional Fourier transformation of the array
    */
   fft<T extends MathCollection>(arr: T): T
 
   /**
-   * Calculate N-dimensional inverse fourier transform
+   * Calculate N-dimensional inverse Fourier transform
    * @param {Array | Matrix} arr    An array or matrix
-   * @return {Array | Matrix}       N-dimensional fourier transformation of the array
+   * @return {Array | Matrix}       N-dimensional Fourier transformation of the array
    */
   ifft<T extends MathCollection>(arr: T): T
 
@@ -2318,7 +2424,7 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x
    * == y. x and y are considered equal when the relative difference
-   * between x and y is smaller than the configured epsilon. The function
+   * between x and y is smaller than the configured relTol and absTol. The function
    * cannot be used to compare values smaller than approximately 2.22e-16.
    * For matrices, the function is evaluated element wise.
    * @param x First value to compare
@@ -2372,7 +2478,7 @@ export interface MathJsInstance extends MathJsFactory {
    * Test whether two values are equal.
    *
    * The function tests whether the relative difference between x and y is
-   * smaller than the configured epsilon. The function cannot be used to
+   * smaller than the configured relTol and absTol. The function cannot be used to
    * compare values smaller than approximately 2.22e-16. For matrices, the
    * function is evaluated element wise. In case of complex numbers, x.re
    * must equal y.re, and x.im must equal y.im. Values null and undefined
@@ -2400,7 +2506,7 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Test whether value x is larger than y. The function returns true when
    * x is larger than y and the relative difference between x and y is
-   * larger than the configured epsilon. The function cannot be used to
+   * larger than the configured relTol and absTol. The function cannot be used to
    * compare values smaller than approximately 2.22e-16. For matrices, the
    * function is evaluated element wise.
    * @param x First value to compare
@@ -2412,7 +2518,7 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Test whether value x is larger or equal to y. The function returns
    * true when x is larger than y or the relative difference between x and
-   * y is smaller than the configured epsilon. The function cannot be used
+   * y is smaller than the configured relTol and absTol. The function cannot be used
    * to compare values smaller than approximately 2.22e-16. For matrices,
    * the function is evaluated element wise.
    * @param x First value to compare
@@ -2425,7 +2531,7 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Test whether value x is smaller than y. The function returns true
    * when x is smaller than y and the relative difference between x and y
-   * is smaller than the configured epsilon. The function cannot be used
+   * is smaller than the configured relTol and absTol. The function cannot be used
    * to compare values smaller than approximately 2.22e-16. For matrices,
    * the function is evaluated element wise.
    * @param x First value to compare
@@ -2437,7 +2543,7 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Test whether value x is smaller or equal to y. The function returns
    * true when x is smaller than y or the relative difference between x
-   * and y is smaller than the configured epsilon. The function cannot be
+   * and y is smaller than the configured relTol and absTol. The function cannot be
    * used to compare values smaller than approximately 2.22e-16. For
    * matrices, the function is evaluated element wise.
    * @param x First value to compare
@@ -2453,22 +2559,22 @@ export interface MathJsInstance extends MathJsFactory {
   /**
    * Determines if two expressions are symbolically equal, i.e. one is the
    * result of valid algebraic manipulations on the other.
-   * @param {Node|string} expr1 The first expression to compare
-   * @param {Node|string} expr2 The second expression to compare
+   * @param {Node} expr1 The first expression to compare
+   * @param {Node} expr2 The second expression to compare
    * @param {Object} [options] Optional option object, passed to simplify
    * @returns {boolean} Returns true if a valid manipulation making the
    * expressions equal is found.
    */
   symbolicEqual(
-    expr1: MathNode | string,
-    expr2: MathNode | string,
+    expr1: MathNode,
+    expr2: MathNode,
     options?: SimplifyOptions
   ): boolean
 
   /**
    * Test whether two values are unequal. The function tests whether the
    * relative difference between x and y is larger than the configured
-   * epsilon. The function cannot be used to compare values smaller than
+   * relTol and absTol. The function cannot be used to compare values smaller than
    * approximately 2.22e-16. For matrices, the function is evaluated
    * element wise. In case of complex numbers, x.re must unequal y.re, or
    * x.im must unequal y.im. Values null and undefined are compared
@@ -2802,6 +2908,19 @@ export interface MathJsInstance extends MathJsFactory {
   prod(A: MathCollection): MathScalarType
 
   /**
+   * @param A A single matrix
+   * @param probOrN prob is the order of the quantile, while N is the
+   * amount of evenly distributed steps of probabilities; only one of
+   * these options can be provided
+   * @param sorted =false is data sorted in ascending order
+   * @returns Quantile(s)
+   */
+  quantileSeq<T extends MathScalarType>(
+    A: T[] | T[][],
+    prob: number | BigNumber,
+    sorted?: boolean
+  ): T
+  /**
    * Compute the prob order quantile of a matrix or a list with values.
    * The sequence is sorted and the middle value is returned. Supported
    * types of sequence values are: Number, BigNumber, Unit Supported types
@@ -2819,7 +2938,7 @@ export interface MathJsInstance extends MathJsFactory {
     A: MathCollection,
     prob: number | BigNumber | MathArray,
     sorted?: boolean
-  ): number | BigNumber | Unit | MathArray
+  ): MathScalarType | MathArray
 
   /**
    * Compute the standard deviation of a matrix or a list with values. The
@@ -3067,10 +3186,10 @@ export interface MathJsInstance extends MathJsFactory {
   acot<T extends BigNumber | Complex>(x: T): T
 
   /**
-   * Calculate the hyperbolic arccotangent of a value, defined as acoth(x)
+   * Calculate the inverse hyperbolic tangent of a value, defined as acoth(x)
    * = (ln((x+1)/x) + ln(x/(x-1))) / 2.
    * @param x Function input
-   * @returns The hyperbolic arccotangent of x
+   * @returns The inverse hyperbolic tangent of x
    */
   acoth(x: number): number
   acoth<T extends BigNumber | Complex>(x: T): T
@@ -3084,10 +3203,10 @@ export interface MathJsInstance extends MathJsFactory {
   acsc<T extends BigNumber | Complex>(x: T): T
 
   /**
-   * Calculate the hyperbolic arccosecant of a value, defined as acsch(x)
+   * Calculate the inverse hyperbolic cosecant of a value, defined as acsch(x)
    * = ln(1/x + sqrt(1/x^2 + 1)).
    * @param x Function input
-   * @returns The hyperbolic arccosecant of x
+   * @returns The inverse hyperbolic cosecant of x
    */
   acsch(x: number): number
   acsch<T extends BigNumber | Complex>(x: T): T
@@ -3273,6 +3392,8 @@ export interface MathJsInstance extends MathJsFactory {
 
   isBigNumber(x: unknown): x is BigNumber
 
+  isBigInt(x: unknown): x is bigint
+
   isComplex(x: unknown): x is Complex
 
   isFraction(x: unknown): x is Fraction
@@ -3309,6 +3430,14 @@ export interface MathJsInstance extends MathJsFactory {
   isRegExp(x: unknown): x is RegExp
 
   isObject(x: unknown): boolean
+
+  isMap<T, U>(x: unknown): x is Map<T, U>
+
+  isPartitionedMap<T, U>(x: unknown): x is PartitionedMap<T, U>
+
+  isObjectWrappingMap<T extends string | number | symbol, U>(
+    x: unknown
+  ): x is ObjectWrappingMap<T, U>
 
   isNull(x: unknown): x is null
 
@@ -3364,7 +3493,7 @@ export interface MathJsInstance extends MathJsFactory {
    * Test whether a value is an numeric value. In case of a string,
    *  true is returned if the string contains a numeric value.
    * @param x Value to be tested
-   * @returns Returns true when x is a number, BigNumber, Fraction, Boolean, or a String containing number.
+   * @returns Returns true when x is a number, BigNumber, bigint, Fraction, Boolean, or a String containing number.
    * Returns false for other types.
    * Throws an error in case of unknown types.
    */
@@ -3389,7 +3518,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when x is NaN. Throws an error in case of an
    * unknown data type.
    */
-  isNaN(x: number | BigNumber | Fraction | MathCollection | Unit): boolean
+  isNaN(
+    x: number | BigNumber | bigint | Fraction | MathCollection | Unit
+  ): boolean
 
   /**
    * Test whether a value is negative: smaller than zero. The function
@@ -3399,18 +3530,20 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when x is larger than zero. Throws an error in
    * case of an unknown data type.
    */
-  isNegative(x: number | BigNumber | Fraction | MathCollection | Unit): boolean
+  isNegative(
+    x: number | BigNumber | bigint | Fraction | MathCollection | Unit
+  ): boolean
 
   /**
    * Test whether a value is an numeric value. The function is evaluated
    * element-wise in case of Array or Matrix input.
    * @param x Value to be tested
-   * @returns Returns true when x is a number, BigNumber, Fraction, or
+   * @returns Returns true when x is a number, BigNumber, bigint, Fraction, or
    * boolean. Returns false for other types. Throws an error in case of
    * unknown types.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  isNumeric(x: any): x is number | BigNumber | Fraction | boolean
+  isNumeric(x: any): x is number | BigNumber | bigint | Fraction | boolean
 
   /**
    * Test whether a value is positive: larger than zero. The function
@@ -3420,7 +3553,9 @@ export interface MathJsInstance extends MathJsFactory {
    * @returns Returns true when x is larger than zero. Throws an error in
    * case of an unknown data type.
    */
-  isPositive(x: number | BigNumber | Fraction | MathCollection | Unit): boolean
+  isPositive(
+    x: number | BigNumber | bigint | Fraction | MathCollection | Unit
+  ): boolean
 
   /**
    * Test whether a value is prime: has no divisors other than itself and
@@ -3913,15 +4048,17 @@ export interface MathJSON {
   fixPrefix?: boolean
 }
 
+export interface BaseUnit {
+  dimensions: number[]
+  key: string
+}
+
 export interface UnitComponent {
   power: number
   prefix: string
   unit: {
     name: string
-    base: {
-      dimensions: number[]
-      key: string
-    }
+    base: BaseUnit
     prefixes: Record<string, UnitPrefix>
     value: number
     offset: number
@@ -3938,8 +4075,7 @@ export interface UnitPrefix {
 export interface Unit {
   valueOf(): string
   clone(): Unit
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  hasBase(base: any): boolean
+  hasBase(base: BaseUnit | string | undefined): boolean
   equalBase(unit: Unit): boolean
   equals(unit: Unit): boolean
   multiply(unit: Unit): Unit
@@ -3962,6 +4098,40 @@ export interface Unit {
   value: number
   fixPrefix: boolean
   skipAutomaticSimplification: true
+}
+
+export type UnitSystemName = 'si' | 'cgs' | 'us' | 'auto'
+
+export interface UnitStatic {
+  PREFIXES: Record<string, UnitPrefix>
+  BASE_DIMENSIONS: string[]
+  BASE_UNITS: Record<string, BaseUnit>
+  UNIT_SYSTEMS: Record<
+    UnitSystemName,
+    Record<string, { unit: Unit; prefix: UnitPrefix }>
+  >
+  UNITS: Record<string, Unit>
+  parse(str: string): Unit
+  isValuelessUnit(name: string): boolean
+  fromJSON(json: MathJSON): Unit
+  isValidAlpha(c: string): boolean
+  createUnit(
+    obj: Record<string, string | Unit | UnitDefinition>,
+    options?: { override: boolean }
+  ): Unit
+  createUnitSingle(
+    name: string,
+    definition: string | Unit | UnitDefinition
+  ): Unit
+  getUnitSystem(): UnitSystemName
+  setUnitSystem(name: UnitSystemName): void
+}
+
+export interface UnitCtor extends UnitStatic {
+  new (
+    value: number | BigNumber | Fraction | Complex | boolean,
+    name: string
+  ): Unit
 }
 
 export interface CreateUnitOptions {
@@ -4044,6 +4214,15 @@ export interface UnitDefinition {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Index {}
+
+export interface PartitionedMap<T, U> {
+  a: Map<T, U>
+  b: Map<T, U>
+}
+
+export interface ObjectWrappingMap<T extends string | number | symbol, U> {
+  wrappedObject: Record<T, U>
+}
 
 export interface EvalFunction {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -4216,14 +4395,44 @@ export interface MathNode {
 }
 
 export interface Parser {
+  /**
+   * Evaluate an expression. Returns the result of the expression.
+   * @param expr The expression to evaluate
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   evaluate(expr: string | string[]): any
+  /**
+   * Retrieve a variable or function from the parser’s scope.
+   * @param name The name of the variable or function to be retrieved
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get(variable: string): any
+  get(name: string): any
+  /**
+   * Retrieve an object with all defined variables in the parser’s scope.
+   * @returns An object with all defined variables
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getAll(): { [key: string]: any }
+  /**
+   * Retrieve a map with all defined variables in the parser’s scope.
+   */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  set: (variable: string, value: any) => void
+  getAllAsMap(): Map<string, any>
+  /**
+   * Set a variable or function in the parser’s scope.
+   * @param name The name of the variable or function to be set
+   * @param value The value of the variable or function to be set
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  set: (name: string, value: any) => void
+  /**
+   * Remove a variable or function from the parser’s scope.
+   * @param name The name of the variable or function to be removed
+   */
+  remove: (name: string) => void
+  /**
+   * Completely clear the parser’s scope.
+   */
   clear: () => void
 }
 
@@ -4246,7 +4455,14 @@ export interface FormatOptions {
    * elsewhere. Lower bound is included, upper bound is excluded. For
    * example '123.4' and '1.4e7'.
    */
-  notation?: 'fixed' | 'exponential' | 'engineering' | 'auto'
+  notation?:
+    | 'fixed'
+    | 'exponential'
+    | 'engineering'
+    | 'auto'
+    | 'hex'
+    | 'bin'
+    | 'oct'
 
   /**
    * A number between 0 and 16 to round the digits of the number. In case
@@ -4292,9 +4508,15 @@ export interface Help {
 }
 
 export interface ConfigOptions {
+  relTol?: number
+  absTol?: number
+  /**
+   * @deprecated Use `relTol` and `absTol` instead
+   */
   epsilon?: number
   matrix?: 'Matrix' | 'Array'
-  number?: 'number' | 'BigNumber' | 'Fraction'
+  number?: 'number' | 'BigNumber' | 'bigint' | 'Fraction'
+  numberFallback?: 'number' | 'BigNumber'
   precision?: number
   predictable?: boolean
   randomSeed?: string | null
@@ -4315,10 +4537,21 @@ export interface MathJsChain<TValue> {
    */
   bignumber(
     this: MathJsChain<
-      number | string | Fraction | BigNumber | Unit | boolean | null
+      number | string | Fraction | BigNumber | bigint | Unit | boolean | null
     >
   ): MathJsChain<BigNumber>
   bignumber<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
+
+  /**
+   * Create a bigint, which can store integers with arbitrary precision.
+   * When a matrix is provided, all elements will be converted to bigint.
+   */
+  bigint(
+    this: MathJsChain<
+      number | string | Fraction | BigNumber | bigint | boolean | null
+    >
+  ): MathJsChain<bigint>
+  bigint<T extends MathCollection>(this: MathJsChain<T>): MathJsChain<T>
 
   /**
    * Create a boolean or convert a string or number to a boolean. In case
@@ -4381,7 +4614,13 @@ export interface MathJsChain<TValue> {
    */
   fraction(
     this: MathJsChain<
-      number | string | BigNumber | Unit | Fraction | FractionDefinition
+      | number
+      | string
+      | BigNumber
+      | bigint
+      | Unit
+      | Fraction
+      | FractionDefinition
     >,
     denominator?: number
   ): MathJsChain<Fraction>
@@ -4415,7 +4654,7 @@ export interface MathJsChain<TValue> {
    */
   number(
     this: MathJsChain<
-      string | number | BigNumber | Fraction | boolean | Unit | null
+      string | number | BigNumber | bigint | Fraction | boolean | Unit | null
     >,
     valuelessUnit?: Unit | string
   ): MathJsChain<number>
@@ -4423,6 +4662,27 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<MathCollection>,
     valuelessUnit?: Unit | string
   ): MathJsChain<MathCollection>
+
+  /**
+   * Convert a numeric input to a specific numeric type: number, BigNumber, bigint, or Fraction.
+   * @param outputType The desired numeric output type
+   */
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'number'
+  ): MathJsChain<number>
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'BigNumber'
+  ): MathJsChain<BigNumber>
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'bigint'
+  ): MathJsChain<bigint>
+  numeric(
+    this: MathJsChain<string | number | BigNumber | bigint | Fraction>,
+    outputType: 'Fraction'
+  ): MathJsChain<Fraction>
 
   /**
    * Create a Sparse Matrix. The function creates a new math.type.Matrix
@@ -4636,6 +4896,15 @@ export interface MathJsChain<TValue> {
     this: MathJsChain<MathNode | string>,
     options?: SimplifyOptions
   ): MathJsChain<MathNode>
+
+  /**
+   * Gives the number of “leaf nodes” in the parse tree of the given
+   * expression. A leaf node is one that has no subexpressions, essentially
+   * either a symbol or a constant. Note that `5!` has just one leaf, the `5`;
+   * the unary factorial operator does not add a leaf. On the other hand,
+   * function symbols do add leaves, so `sin(x)/cos(x)` has four leaves.
+   */
+  leafCount(this: MathJsChain<MathNode>): MathJsChain<number>
 
   /**
    * Calculate the Sparse Matrix LU decomposition with full pivoting.
@@ -4866,9 +5135,9 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<T>
 
   /**
-   * Calculate the hypotenusa of a list with values. The hypotenusa is
+   * Calculate the hypotenuse of a list with values. The hypotenuse is
    * defined as: hypot(a, b, c, ...) = sqrt(a^2 + b^2 + c^2 + ...) For
-   * matrix input, the hypotenusa is calculated for all values in the
+   * matrix input, the hypotenuse is calculated for all values in the
    * matrix.
    */
   hypot<T extends number | BigNumber>(this: MathJsChain<T[]>): MathJsChain<T>
@@ -4945,9 +5214,9 @@ export interface MathJsChain<TValue> {
    * @see http://en.wikipedia.org/wiki/Modulo_operation.
    * @param y Divisor
    */
-  mod<T extends number | BigNumber | Fraction | MathCollection>(
+  mod<T extends number | BigNumber | bigint | Fraction | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber | Fraction | MathCollection
+    y: number | BigNumber | bigint | Fraction | MathCollection
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -4993,7 +5262,7 @@ export interface MathJsChain<TValue> {
    */
   pow(
     this: MathJsChain<MathType>,
-    y: number | BigNumber | Complex
+    y: number | BigNumber | bigint | Complex
   ): MathJsChain<MathType>
 
   /**
@@ -5079,9 +5348,9 @@ export interface MathJsChain<TValue> {
    * evaluated element wise.
    * @param y Second value to and
    */
-  bitAnd<T extends number | BigNumber | MathCollection>(
+  bitAnd<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5090,7 +5359,7 @@ export interface MathJsChain<TValue> {
    * base.
    */
 
-  bitNot<T extends number | BigNumber | MathCollection>(
+  bitNot<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>
   ): MathJsChain<T>
 
@@ -5100,7 +5369,7 @@ export interface MathJsChain<TValue> {
    * print base.
    * @param y Second value to or
    */
-  bitOr<T extends number | BigNumber | MathCollection>(
+  bitOr<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
     y: T
   ): MathJsChain<T>
@@ -5110,9 +5379,9 @@ export interface MathJsChain<TValue> {
    * evaluated element wise.
    * @param y Second value to xor
    */
-  bitXor<T extends number | BigNumber | MathCollection>(
+  bitXor<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber | MathCollection
+    y: number | BigNumber | bigint | MathCollection
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5121,9 +5390,9 @@ export interface MathJsChain<TValue> {
    * function is evaluated on the best prefix base.
    * @param y Amount of shifts
    */
-  leftShift<T extends number | BigNumber | MathCollection>(
+  leftShift<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5132,9 +5401,9 @@ export interface MathJsChain<TValue> {
    * the function is evaluated on the best prefix base.
    * @param y Amount of shifts
    */
-  rightArithShift<T extends number | BigNumber | MathCollection>(
+  rightArithShift<T extends number | BigNumber | bigint | MathCollection>(
     this: MathJsChain<T>,
-    y: number | BigNumber
+    y: number | BigNumber | bigint
   ): MathJsChain<NoLiteralType<T>>
 
   /**
@@ -5286,8 +5555,10 @@ export interface MathJsChain<TValue> {
    * @param y Second value to and
    */
   and(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /**
@@ -5295,7 +5566,9 @@ export interface MathJsChain<TValue> {
    * the function is evaluated element wise.
    */
   not(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >
   ): MathJsChain<boolean | MathCollection>
 
   /**
@@ -5305,8 +5578,10 @@ export interface MathJsChain<TValue> {
    * @param y Second value to or
    */
   or(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /**
@@ -5316,8 +5591,10 @@ export interface MathJsChain<TValue> {
    * @param y Second value to xor
    */
   xor(
-    this: MathJsChain<number | BigNumber | Complex | Unit | MathCollection>,
-    y: number | BigNumber | Complex | Unit | MathCollection
+    this: MathJsChain<
+      number | BigNumber | bigint | Complex | Unit | MathCollection
+    >,
+    y: number | BigNumber | bigint | Complex | Unit | MathCollection
   ): MathJsChain<boolean | MathCollection>
 
   /*************************************************************************
@@ -5469,7 +5746,7 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<NoLiteralType<T>>
 
   /**
-   * Calculate the kronecker product of two matrices or vectors
+   * Calculate the Kronecker product of two matrices or vectors
    * @param y Second vector
    */
   kron(
@@ -5763,7 +6040,7 @@ export interface MathJsChain<TValue> {
   /**
    * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x
    * == y. x and y are considered equal when the relative difference
-   * between x and y is smaller than the configured epsilon. The function
+   * between x and y is smaller than the configured relTol and absTol. The function
    * cannot be used to compare values smaller than approximately 2.22e-16.
    * For matrices, the function is evaluated element wise.
    * @param y Second value to compare
@@ -5805,7 +6082,7 @@ export interface MathJsChain<TValue> {
    * Test whether two values are equal.
    *
    * The function tests whether the relative difference between x and y is
-   * smaller than the configured epsilon. The function cannot be used to
+   * smaller than the configured relTol and absTol. The function cannot be used to
    * compare values smaller than approximately 2.22e-16. For matrices, the
    * function is evaluated element wise. In case of complex numbers, x.re
    * must equal y.re, and x.im must equal y.im. Values null and undefined
@@ -5831,7 +6108,7 @@ export interface MathJsChain<TValue> {
   /**
    * Test whether value x is larger than y. The function returns true when
    * x is larger than y and the relative difference between x and y is
-   * larger than the configured epsilon. The function cannot be used to
+   * larger than the configured relTol and absTol. The function cannot be used to
    * compare values smaller than approximately 2.22e-16. For matrices, the
    * function is evaluated element wise.
    * @param y Second value to compare
@@ -5844,7 +6121,7 @@ export interface MathJsChain<TValue> {
   /**
    * Test whether value x is larger or equal to y. The function returns
    * true when x is larger than y or the relative difference between x and
-   * y is smaller than the configured epsilon. The function cannot be used
+   * y is smaller than the configured relTol and absTol. The function cannot be used
    * to compare values smaller than approximately 2.22e-16. For matrices,
    * the function is evaluated element wise.
    * @param y Second value to vcompare
@@ -5857,7 +6134,7 @@ export interface MathJsChain<TValue> {
   /**
    * Test whether value x is smaller than y. The function returns true
    * when x is smaller than y and the relative difference between x and y
-   * is smaller than the configured epsilon. The function cannot be used
+   * is smaller than the configured relTol and absTol. The function cannot be used
    * to compare values smaller than approximately 2.22e-16. For matrices,
    * the function is evaluated element wise.
    * @param y Second value to vcompare
@@ -5870,7 +6147,7 @@ export interface MathJsChain<TValue> {
   /**
    * Test whether value x is smaller or equal to y. The function returns
    * true when x is smaller than y or the relative difference between x
-   * and y is smaller than the configured epsilon. The function cannot be
+   * and y is smaller than the configured relTol and absTol. The function cannot be
    * used to compare values smaller than approximately 2.22e-16. For
    * matrices, the function is evaluated element wise.
    * @param y Second value to compare
@@ -5883,22 +6160,21 @@ export interface MathJsChain<TValue> {
   /**
    * Determines if two expressions are symbolically equal, i.e. one is the
    * result of valid algebraic manipulations on the other.
-   * @param {Node|string} expr1 The first expression to compare
-   * @param {Node|string} expr2 The second expression to compare
+   * @param {Node} expr2 The second expression to compare
    * @param {Object} [options] Optional option object, passed to simplify
    * @returns {boolean} Returns true if a valid manipulation making the
    * expressions equal is found.
    */
   symbolicEqual(
-    this: MathJsChain<MathNode | string>,
-    expr2: MathNode | string,
+    this: MathJsChain<MathNode>,
+    expr2: MathNode,
     options?: SimplifyOptions
-  ): boolean
+  ): MathJsChain<boolean>
 
   /**
    * Test whether two values are unequal. The function tests whether the
    * relative difference between x and y is larger than the configured
-   * epsilon. The function cannot be used to compare values smaller than
+   * relTol and absTol. The function cannot be used to compare values smaller than
    * approximately 2.22e-16. For matrices, the function is evaluated
    * element wise. In case of complex numbers, x.re must unequal y.re, or
    * x.im must unequal y.im. Values null and undefined are compared
@@ -6327,7 +6603,7 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<T>
 
   /**
-   * Calculate the hyperbolic arccotangent of a value, defined as acoth(x)
+   * Calculate the inverse hyperbolic tangent of a value, defined as acoth(x)
    * = (ln((x+1)/x) + ln(x/(x-1))) / 2. For matrices, the function is
    * evaluated element wise.
    */
@@ -6346,7 +6622,7 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<T>
 
   /**
-   * Calculate the hyperbolic arccosecant of a value, defined as acsch(x)
+   * Calculate the inverse hyperbolic cosecant of a value, defined as acsch(x)
    * = ln(1/x + sqrt(1/x^2 + 1)). For matrices, the function is evaluated
    * element wise.
    */
@@ -6567,7 +6843,7 @@ export interface MathJsChain<TValue> {
    */
 
   isInteger(
-    this: MathJsChain<number | BigNumber | Fraction | MathCollection>
+    this: MathJsChain<number | BigNumber | bigint | Fraction | MathCollection>
   ): MathJsChain<boolean>
 
   /**
@@ -6591,7 +6867,7 @@ export interface MathJsChain<TValue> {
   ): MathJsChain<boolean>
 
   /**
-   * Test whether a value is an numeric value. The function is evaluated
+   * Test whether a value is a numeric value. The function is evaluated
    * element-wise in case of Array or Matrix input.
    */
 
@@ -6605,7 +6881,9 @@ export interface MathJsChain<TValue> {
    */
 
   isPositive(
-    this: MathJsChain<number | BigNumber | Fraction | MathCollection | Unit>
+    this: MathJsChain<
+      number | BigNumber | bigint | Fraction | MathCollection | Unit
+    >
   ): MathJsChain<boolean>
 
   /**
@@ -6615,7 +6893,7 @@ export interface MathJsChain<TValue> {
    */
 
   isPrime(
-    this: MathJsChain<number | BigNumber | MathCollection>
+    this: MathJsChain<number | BigNumber | bigint | MathCollection>
   ): MathJsChain<boolean>
 
   /**
@@ -6686,6 +6964,7 @@ export const {
   RelationalNode,
   SymbolNode,
   Matrix,
+  Unit,
 
   uninitialized,
   version,
@@ -6723,6 +7002,8 @@ export const {
   simplify,
   simplifyConstant,
   simplifyCore,
+  symbolicEqual,
+  leafCount,
   resolve,
   slu,
   usolve,

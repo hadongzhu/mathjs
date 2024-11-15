@@ -43,6 +43,7 @@ import {
   SymbolNode,
   MathNodeCommon,
   Unit,
+  UnitPrefix,
   Node,
   isSymbolNode,
   MathScalarType
@@ -79,6 +80,10 @@ Basic usage examples
   math.pow(m2by2, 2)
   const angle = 0.2
   math.add(math.pow(math.sin(angle), 2), math.pow(math.cos(angle), 2))
+  math.add(2, 3, 4)
+  math.add(2, 3, math.bignumber(4))
+  math.multiply(2, 3, 4)
+  math.multiply(2, 3, math.bignumber(4))
 
   // std and variance check
 
@@ -257,6 +262,13 @@ Chaining examples
     MathJsChain<MathCollection>
   >()
 
+  // bigint
+  expectTypeOf(math.chain(math.bigint(12))).toMatchTypeOf<MathJsChain<bigint>>()
+  expectTypeOf(math.chain(12).bigint()).toMatchTypeOf<MathJsChain<bigint>>()
+  expectTypeOf(math.chain([12, 13, 14]).bigint()).toMatchTypeOf<
+    MathJsChain<MathCollection>
+  >()
+
   // chain
   expectTypeOf(math.chain(12).bignumber().clone()).toMatchTypeOf<
     MathJsChain<BigNumber>
@@ -328,6 +340,14 @@ Chaining examples
   expectTypeOf(math.chain('12').number()).toMatchTypeOf<MathJsChain<number>>()
   expectTypeOf(math.chain([12, 13, 14]).number()).toMatchTypeOf<
     MathJsChain<MathCollection>
+  >()
+
+  // numeric
+  expectTypeOf(math.chain('12').numeric('bigint')).toMatchTypeOf<
+    MathJsChain<bigint>
+  >()
+  expectTypeOf(math.chain(12).numeric('BigNumber')).toMatchTypeOf<
+    MathJsChain<BigNumber>
   >()
 
   // sparse
@@ -502,6 +522,26 @@ Chaining examples
   expectTypeOf(math.chain(math.parse('a + a + b')).simplify()).toMatchTypeOf<
     MathJsChain<MathNode>
   >()
+
+  // symbolicEqual
+  assert.strictEqual(
+    math.symbolicEqual(math.parse('x*y'), math.parse('y*x')),
+    true
+  )
+  assert.strictEqual(
+    math.symbolicEqual(math.parse('x*y'), math.parse('y*x'), {
+      exactFractions: true
+    }),
+    true
+  )
+  assert.strictEqual(
+    math.chain(math.parse('x*y')).symbolicEqual(math.parse('y*x')).done(),
+    true
+  )
+
+  // leafCount
+  assert.strictEqual(math.leafCount(math.parse('x*y')), 2)
+  assert.strictEqual(math.chain(math.parse('x*y')).leafCount().done(), 2)
 
   // slu
   expectTypeOf(
@@ -1100,10 +1140,15 @@ Expressions examples
     const _x = parser.get('x')
     const f = parser.get('f')
     const _y = parser.getAll()
+    const _z = parser.getAllAsMap()
     const _g = f(3, 3)
 
     parser.set('h', 500)
+    assert.strictEqual(parser.get('h'), 500)
+    assert.strictEqual(parser.evaluate('h'), 500)
     parser.set('hello', (name: string) => `hello, ${name}!`)
+    parser.remove('h')
+    assert.strictEqual(parser.get('h'), undefined)
   }
 
   // clear defined functions and variables
@@ -1583,6 +1628,59 @@ Units examples
 
   // units can be split into other units
   math.unit('1 m').splitUnit(['ft', 'in'])
+}
+
+/**
+ * Unit static methods and members
+ */
+{
+  expectTypeOf(new Unit(15, 'cm')).toMatchTypeOf<Unit>()
+
+  const prefixes = Unit.PREFIXES
+  assert.ok(Object.keys(prefixes).length > 0)
+  expectTypeOf(Unit.PREFIXES).toMatchTypeOf<Record<string, UnitPrefix>>()
+
+  const baseDimensions = Unit.BASE_DIMENSIONS
+  assert.ok(baseDimensions.length > 0)
+  expectTypeOf(Unit.BASE_DIMENSIONS).toMatchTypeOf<string[]>()
+
+  const baseUnits = Unit.BASE_UNITS
+  assert.ok(Object.keys(baseUnits).length > 0)
+
+  const units = Unit.UNITS
+  assert.ok(Object.keys(units).length > 0)
+
+  Unit.createUnit(
+    {
+      foo: {
+        prefixes: 'long',
+        baseName: 'essence-of-foo'
+      },
+      bar: '40 foo',
+      baz: {
+        definition: '1 bar/hour',
+        prefixes: 'long'
+      }
+    },
+    {
+      override: true
+    }
+  )
+
+  Unit.createUnitSingle('knot', '0.514444444 m/s')
+
+  const unitSystems = Unit.UNIT_SYSTEMS
+  assert.ok(Object.keys(unitSystems).length > 0)
+
+  Unit.setUnitSystem('si')
+  assert.strictEqual(Unit.getUnitSystem(), 'si')
+
+  expectTypeOf(Unit.isValuelessUnit('cm')).toMatchTypeOf<boolean>()
+  expectTypeOf(Unit.parse('5cm')).toMatchTypeOf<Unit>()
+  expectTypeOf(
+    Unit.fromJSON({ value: 5.2, unit: 'inch' })
+  ).toMatchTypeOf<Unit>()
+  expectTypeOf(Unit.isValidAlpha('cm')).toMatchTypeOf<boolean>()
 }
 
 /**
@@ -2144,6 +2242,9 @@ Factory Test
   const d = divide(a, b)
   assert.strictEqual(format(c), '16/21')
   assert.strictEqual(format(d), '7/9')
+  assert.strictEqual(format(255, { notation: 'bin' }), '0b11111111')
+  assert.strictEqual(format(255, { notation: 'hex' }), '0xff')
+  assert.strictEqual(format(255, { notation: 'oct' }), '0o377')
 }
 
 /**
@@ -2212,6 +2313,9 @@ Factory Test
     math.isDate,
     math.isRegExp,
     math.isObject,
+    math.isMap,
+    math.isPartitionedMap,
+    math.isObjectWrappingMap,
     math.isNull,
     math.isUndefined,
     math.isAccessorNode,
@@ -2450,7 +2554,7 @@ MathNode examples
 }
 
 /*
-min/max return types
+Statistics functions' return types
 */
 {
   const math = create(all, {})
@@ -2466,7 +2570,7 @@ min/max return types
     math.min([math.unit('5cm'), math.unit('10cm')])
   ).toMatchTypeOf<Unit>()
   expectTypeOf(math.min(123, math.bignumber('456'))).toMatchTypeOf<
-    number | BigNumber | Fraction | Complex | Unit
+    number | BigNumber | bigint | Fraction | Complex | Unit
   >()
   expectTypeOf(
     math.min(
@@ -2505,7 +2609,7 @@ min/max return types
     math.mean([math.unit('5cm'), math.unit('10cm')])
   ).toMatchTypeOf<Unit>()
   expectTypeOf(math.mean(123, math.bignumber('456'))).toMatchTypeOf<
-    number | BigNumber | Fraction | Complex | Unit
+    number | BigNumber | bigint | Fraction | Complex | Unit
   >()
 
   expectTypeOf(math.median(1, 2, 3)).toMatchTypeOf<number>()
@@ -2520,8 +2624,26 @@ min/max return types
     math.median([math.unit('5cm'), math.unit('10cm')])
   ).toMatchTypeOf<Unit>()
   expectTypeOf(math.median(123, math.bignumber('456'))).toMatchTypeOf<
-    number | BigNumber | Fraction | Complex | Unit
+    number | BigNumber | bigint | Fraction | Complex | Unit
   >()
+
+  expectTypeOf(math.quantileSeq([1, 2, 3], 0.75)).toMatchTypeOf<number>()
+  expectTypeOf(math.quantileSeq([1, 2, 3, 4, 5], [0.25, 0.75])).toMatchTypeOf<
+    MathArray | MathScalarType
+  >()
+  expectTypeOf(
+    math.quantileSeq([1, 2, 3, 4, 5], [0.25, 0.75]) as number[]
+  ).toMatchTypeOf<number[]>()
+  expectTypeOf(math.quantileSeq([[1, 2, 3]], 0.75)).toMatchTypeOf<number>()
+  expectTypeOf(
+    math.quantileSeq([math.bignumber('123')], 0.75)
+  ).toMatchTypeOf<BigNumber>()
+  expectTypeOf(math.quantileSeq(math.matrix([1, 2, 3]), 0.75)).toMatchTypeOf<
+    MathScalarType | MathArray
+  >()
+  expectTypeOf(
+    math.quantileSeq([math.unit('5cm'), math.unit('10cm')], 0.75)
+  ).toMatchTypeOf<Unit>()
 }
 
 /*

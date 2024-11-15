@@ -252,7 +252,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
             recPoly(node.args[0])
           }
         } else {
-          if (oper.indexOf(node.op) === -1) {
+          if (!oper.includes(node.op)) {
             throw new Error('多项式表达式中的运算符 ' + node.op + ' 无效')
           }
           for (let i = 0; i < node.args.length; i++) {
@@ -536,7 +536,7 @@ export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
         throw new Error('存在未解析的函数调用')
       } else if (tp === 'OperatorNode') {
         // ***** OperatorName *****
-        if ('+-*^'.indexOf(node.op) === -1) throw new Error('运算符 ' + node.op + ' 无效')
+        if (!'+-*^'.includes(node.op)) throw new Error('运算符 ' + node.op + ' 无效')
 
         if (noPai !== null) {
           // -(unary),^  : children of *,+,-

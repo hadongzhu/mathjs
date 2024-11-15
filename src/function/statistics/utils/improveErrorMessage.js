@@ -14,7 +14,7 @@ export function improveErrorMessage (err, fnName, value) {
   // TODO: add information with the index (also needs transform in expression parser)
   let details
 
-  if (String(err).indexOf('不支持的类型') !== -1) {
+  if (String(err).includes('不支持的类型')) {
     details = arguments.length > 2
       ? ' (类型: ' + typeOf(value) + ', 值: ' + JSON.stringify(value) + ')'
       : ' (类型: ' + err.data.actual + ')'
@@ -22,7 +22,7 @@ export function improveErrorMessage (err, fnName, value) {
     return new TypeError('无法计算 ' + fnName + '，参数类型错误' + details)
   }
 
-  if (String(err).indexOf('复数') !== -1) {
+  if (String(err).includes('复数')) {
     details = arguments.length > 2
       ? ' (类型: ' + typeOf(value) + ', 值: ' + JSON.stringify(value) + ')'
       : ''
